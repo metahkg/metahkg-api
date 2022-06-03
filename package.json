@@ -7,7 +7,7 @@
   "author": "wcyat <wcyat@wcyat.me>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --declaration",
     "lint": "prettier --write src"
   },
   "dependencies": {
