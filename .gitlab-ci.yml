@@ -27,7 +27,8 @@ build:
     - yarn install
     - yarn lint
     - yarn build
-    - git commit -a -m build || exit 0
+    - git add -A
+    - git commit -a -m "build and lint" || exit 0
     - git push origin $CI_COMMIT_BRANCH
   rules:
     - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"

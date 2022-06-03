@@ -1,0 +1,24 @@
+# Metahkg Api
+
+Access the Metahkg API.
+
+## Install
+
+```bash
+yarn add https://gitlab.com/metahkg/metahkg-api.git
+```
+
+## Usage
+
+```typescript
+import Api from "metahkg-api";
+
+async function main () {
+    const api = Api({
+        // choose a server or leave blank for /
+        baseUrl: "https://metahkg.org",
+        // user jwt token, leave blank if not logged in
+        token: "eyfcsgbsaabbdwqjog",
+    });
+}
+```
