@@ -1,0 +1,5 @@
+/.lh/
+/.vscode/
+*.log
+/node_modules/
+/.idea/

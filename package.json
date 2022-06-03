@@ -1,0 +1,17 @@
+{
+  "name": "metahkg-api",
+  "version": "2.0.0",
+  "description": "Access the metahkg api.",
+  "main": "dist/index.js",
+  "repository": "https://gitlab.com/metahkg/metahkg-api",
+  "author": "wcyat <wcyat@wcyat.me>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "lint": "prettier --write src"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "typescript": "^4.7.2"
+  }
+}

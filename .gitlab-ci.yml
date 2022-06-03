@@ -1,0 +1,54 @@
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+  - review
+  - dast
+  - staging
+  - canary
+  - production
+  - incremental rollout 10%
+  - incremental rollout 25%
+  - incremental rollout 50%
+  - incremental rollout 100%
+  - performance
+  - cleanup
+
+build:
+  stage: build
+  image: node:18
+  before_script:
+    - git checkout $CI_COMMIT_BRANCH
+    - git config user.name metahkg-bot
+    - git config user.email bot@metahkg.org
+    - git remote set-url origin https://wcyat:$gitlab_token@gitlab.com/$CI_PROJECT_PATH
+  script:
+    - yarn install
+    - yarn build
+    - git commit -a -m build || exit 0
+    - git push origin $CI_COMMIT_BRANCH
+  rules:
+    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
+
+lint:
+  stage: lint
+  image: node:18
+  before_script:
+    - git checkout $CI_COMMIT_BRANCH
+    - git config user.name metahkg-bot
+    - git config user.email bot@metahkg.org
+    - git remote set-url origin https://wcyat:$gitlab_token@gitlab.com/$CI_PROJECT_PATH
+  script:
+    - yarn install
+    - yarn lint
+    - git commit -a -m lint || exit 0
+    - git push origin $CI_COMMIT_BRANCH
+  rules:
+    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
+
+sast:
+  stage: test
+
+include:
+  - template: Auto-DevOps.gitlab-ci.yml

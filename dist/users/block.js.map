@@ -1,0 +1,1 @@
+{"version":3,"file":"block.js","sourceRoot":"","sources":["../../src/users/block.ts"],"names":[],"mappings":";AAEA,SAAwB,KAAK,CAAC,KAAY;IACtC,OAAO,CAAC,OAA2B,EAAE,EAAE;QACnC,MAAM,EAAE,MAAM,EAAE,GAAG,OAAO,CAAC;QAC3B,OAAO,KAAK,CAAC,IAAI,CAAwB,cAAc,EAAE,EAAE,MAAM,EAAE,CAAC,CAAC;IACzE,CAAC,CAAC;AACN,CAAC;AALD,wBAKC"}
