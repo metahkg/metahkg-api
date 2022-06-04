@@ -71,7 +71,7 @@ publish:
     - |
       if [ "$CI_COMMIT_BRANCH" = "dev" ]; then npm publish --tag dev; else npm publish; fi;
   rules:
-    - if: $CI_COMMIT_AUTHOR == "metahkg-bot <bot@metahkg.org>" && $CI_COMMIT_MESSAGE = "build"
+    - if: $CI_COMMIT_AUTHOR == "metahkg-bot <bot@metahkg.org>" && $CI_COMMIT_MESSAGE == "build"
 
 sast:
   stage: test
