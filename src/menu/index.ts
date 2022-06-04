@@ -10,6 +10,6 @@ export default function menu(axios: Axios) {
         profile: profile(axios),
         /** the main menu (get threads by category) */
         main: main(axios),
-        search: search(axios)
+        search: search(axios),
     };
 }

@@ -20,7 +20,7 @@ export default function threads(axios: Axios) {
         pin: pin(axios),
         unpin: unpin(axios),
         create: create(axios),
-        comments : {
+        comments: {
             get: getComment(axios),
             replies: replies(axios),
             vote: vote(axios),

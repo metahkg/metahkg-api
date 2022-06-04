@@ -12,7 +12,7 @@ function menu(axios) {
         profile: (0, userProfile_1.default)(axios),
         /** the main menu (get threads by category) */
         main: (0, main_1.default)(axios),
-        search: (0, search_1.default)(axios)
+        search: (0, search_1.default)(axios),
     };
 }
 exports.default = menu;

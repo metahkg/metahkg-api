@@ -34,6 +34,6 @@ export default function Api(options: {
         users: users(axios),
         profile: profile(axios),
         menu: menu(axios),
-        category: category(axios)
+        category: category(axios),
     };
 }

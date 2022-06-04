@@ -30,7 +30,7 @@ function Api(options) {
         users: (0, users_1.default)(axios),
         profile: (0, profile_1.default)(axios),
         menu: (0, menu_1.default)(axios),
-        category: (0, category_1.default)(axios)
+        category: (0, category_1.default)(axios),
     };
 }
 exports.default = Api;
