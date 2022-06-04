@@ -65,7 +65,7 @@ publish:
     - if [ "$CI_COMMIT_BRANCH" = "dev" ]; then suffix="-dev"; else suffix=""; fi;
     - NPM_PACKAGE_ORIGNAL_VERSION=$(node -p "require('./package.json').version")
     - NPM_PACKAGE_VERSION=$(node -p "require('./package.json').version + \"${suffix}\"")
-    - sed -i "s/${NPM_PACKAGE_ORIGINAL_VERSION}/${NPM_PACKAGE_VERSION}" package.json
+    - sed -i "s/${NPM_PACKAGE_ORIGINAL_VERSION}/${NPM_PACKAGE_VERSION}/" package.json
 
     # Compare the version in package.json to all published versions.
     # If the package.json version has not yet been published, run `npm publish`.
