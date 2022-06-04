@@ -3,7 +3,7 @@ import { Axios } from "axios";
 export default function status(axios: Axios) {
     return () => {
         return axios.get<{
-            action: boolean;
+            active: boolean;
             id?: number;
             name?: string;
             token?: string;

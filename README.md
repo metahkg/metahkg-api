@@ -5,7 +5,7 @@ Access the Metahkg API.
 ## Install
 
 ```bash
-yarn add https://gitlab.com/metahkg/metahkg-api.git
+yarn add metahkg-api
 ```
 
 ## Usage
