@@ -52,8 +52,7 @@ publish:
   image: node:latest
   stage: deploy
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_REF_NAME =~ /^v\d+\.\d+\.\d+.*$/
-      changes:
+    - changes:
         - package.json
   script:
     # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry
@@ -71,7 +70,7 @@ publish:
     # Compare the version in package.json to all published versions.
     # If the package.json version has not yet been published, run `npm publish`.
     - |
-      npm publish
+      if [ "$CI_COMMIT_BRANCH" = "dev" ]; then npm publish --tag dev; else npm publish; fi;
 
 sast:
   stage: test
