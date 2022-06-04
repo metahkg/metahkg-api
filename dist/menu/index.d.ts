@@ -41,7 +41,7 @@ export default function menu(axios: Axios): {
             replies: (options: {
                 threadId: number;
                 commentId: number;
-            }) => Promise<import("axios").AxiosResponse<Comment[], any>>;
+            }) => Promise<import("axios").AxiosResponse<import("../types/thread/comment").Comment[], any>>;
             vote: (options: {
                 threadId: number;
                 commentId: number;

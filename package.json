@@ -1,6 +1,6 @@
 {
   "name": "metahkg-api",
-  "version": "2.0.0-2-dev",
+  "version": "2.0.0-4-dev",
   "description": "Access the metahkg api.",
   "main": "dist/index.js",
   "repository": "https://gitlab.com/metahkg/metahkg-api",
@@ -9,7 +9,8 @@
   "scripts": {
     "build": "tsc --declaration",
     "lint": "prettier --write src",
-    "test": "exit 0"
+    "test": "exit 0",
+    "deploy": "yarn build && yarn publish"
   },
   "dependencies": {
     "axios": "^0.27.2",
