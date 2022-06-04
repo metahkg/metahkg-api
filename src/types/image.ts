@@ -4,9 +4,3 @@ export type Image = {
     /** comment id */
     cid: number;
 };
-export interface Images {
-    /** thread id */
-    id: number;
-    /** images list */
-    images: Image[];
-}

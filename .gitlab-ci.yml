@@ -25,13 +25,53 @@ build:
     - git remote set-url origin https://wcyat:$gitlab_token@gitlab.com/$CI_PROJECT_PATH
   script:
     - yarn install
-    - yarn lint
     - yarn build
     - git add -A
-    - git commit -a -m "build and lint" || exit 0
+    - git commit -a -m build || exit 0
     - git push origin $CI_COMMIT_BRANCH
   rules:
     - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
+
+lint:
+  stage: lint
+  image: node:18
+  before_script:
+    - git checkout $CI_COMMIT_BRANCH
+    - git config user.name metahkg-bot
+    - git config user.email bot@metahkg.org
+    - git remote set-url origin https://wcyat:$gitlab_token@gitlab.com/$CI_PROJECT_PATH
+  script:
+    - yarn install
+    - yarn lint
+    - git commit -a -m lint || exit 0
+    - git push origin $CI_COMMIT_BRANCH
+  rules:
+    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
+
+publish:
+  image: node:latest
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_REF_NAME =~ /^v\d+\.\d+\.\d+.*$/
+      changes:
+        - package.json
+  script:
+    # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry
+    - |
+      echo "_auth=${npm_token}" >> ~/.npmrc;
+      echo "email=wcyat@wcyat.me" >> ~/.npmrc;
+      echo "always-auth=true" >> ~/.npmrc
+
+    # Extract a few values from package.json
+    - if [ "$CI_COMMIT_BRANCH" = "dev" ]; then suffix="-dev"; else suffix=""; fi;
+    - NPM_PACKAGE_ORIGNAL_VERSION=$(node -p "require('./package.json').version")
+    - NPM_PACKAGE_VERSION=$(node -p "require('./package.json').version + \"${suffix}\"")
+    - sed -i "s/${NPM_PACKAGE_ORIGINAL_VERSION}/${NPM_PACKAGE_VERSION}" package.json
+
+    # Compare the version in package.json to all published versions.
+    # If the package.json version has not yet been published, run `npm publish`.
+    - |
+      npm publish
 
 sast:
   stage: test
