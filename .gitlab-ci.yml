@@ -63,7 +63,7 @@ publish:
 
     # Extract a few values from package.json
     - if [ "$CI_COMMIT_BRANCH" = "dev" ]; then suffix="-dev"; else suffix=""; fi;
-    - NPM_PACKAGE_ORIGNAL_VERSION=$(node -p "require('./package.json').version")
+    - NPM_PACKAGE_ORIGINAL_VERSION=$(node -p "require('./package.json').version")
     - NPM_PACKAGE_VERSION=$(node -p "require('./package.json').version + \"${suffix}\"")
     - sed -i "s/${NPM_PACKAGE_ORIGINAL_VERSION}/${NPM_PACKAGE_VERSION}/" package.json
 
