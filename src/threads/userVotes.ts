@@ -1,5 +1,5 @@
 import { Axios } from "axios";
-import { UserVotes } from "../../types/thread/userVotes";
+import { UserVotes } from "../types/thread/userVotes";
 
 export default function userVotes(axios: Axios) {
     return (options: { threadId: number }) => {

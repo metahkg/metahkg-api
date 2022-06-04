@@ -1,6 +1,6 @@
 import { Axios } from "axios";
-import objToQuery from "../../lib/objToQuery";
-import { Images } from "../../types/images";
+import objToQuery from "../lib/objToQuery";
+import { Images } from "../types/images";
 
 export default function images(axios: Axios) {
     return (options: { threadId: number; commentId?: number }) => {

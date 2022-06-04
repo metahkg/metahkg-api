@@ -13,7 +13,7 @@ yarn add https://gitlab.com/metahkg/metahkg-api.git
 ```typescript
 import Api from "metahkg-api";
 
-async function main () {
+async function main() {
     const api = Api({
         // choose a server or leave blank for /
         baseUrl: "https://metahkg.org",
@@ -21,4 +21,6 @@ async function main () {
         token: "eyfcsgbsaabbdwqjog",
     });
 }
+
+await api.threads.thread({ threadId: 1 }).then(console.log);
 ```

@@ -1,5 +1,5 @@
 import { Axios } from "axios";
-import { OK } from "../../types/ok";
+import { OK } from "../types/ok";
 
 export default function unpin(axios: Axios) {
     return (options: { threadId: number }) => {

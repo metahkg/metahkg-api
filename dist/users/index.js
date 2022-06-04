@@ -14,7 +14,7 @@ const unblock_1 = __importDefault(require("./unblock"));
 const verify_1 = __importDefault(require("./verify"));
 function users(axios) {
     return {
-        avatar: (0, avatar_1.default)(axios),
+        uploadAvatar: (0, avatar_1.default)(axios),
         block: (0, block_1.default)(axios),
         editprofile: (0, editprofile_1.default)(axios),
         login: (0, login_1.default)(axios),

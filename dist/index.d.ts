@@ -11,7 +11,7 @@ export default function Api(options: {
             threadId: number;
             commentId?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/images").Images, any>>;
-        thread: (options: {
+        get: (options: {
             threadId: number;
             page?: number;
             start?: number;
@@ -21,27 +21,6 @@ export default function Api(options: {
         userVotes: (options: {
             threadId: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/userVotes").UserVotes, any>>;
-        getComment: (options: {
-            threadId: number;
-            commentId: number;
-        }) => Promise<import("axios").AxiosResponse<import("./types/thread/comment").Comment, any>>;
-        replies: (options: {
-            threadId: number;
-            commentId: number;
-        }) => Promise<import("axios").AxiosResponse<Comment[], any>>;
-        vote: (options: {
-            threadId: number;
-            commentId: number;
-            vote: "U" | "D";
-        }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
-        addComment: (options: {
-            threadId: number;
-            comment: string;
-            rtoken: string;
-            quote?: number;
-        }) => Promise<import("axios").AxiosResponse<{
-            id: number;
-        }, any>>;
         pin: (options: {
             threadId: number;
             commentId: number;
@@ -57,9 +36,32 @@ export default function Api(options: {
         }) => Promise<import("axios").AxiosResponse<{
             id: number;
         }, any>>;
+        comments: {
+            get: (options: {
+                threadId: number;
+                commentId: number;
+            }) => Promise<import("axios").AxiosResponse<import("./types/thread/comment").Comment, any>>;
+            replies: (options: {
+                threadId: number;
+                commentId: number;
+            }) => Promise<import("axios").AxiosResponse<Comment[], any>>;
+            vote: (options: {
+                threadId: number;
+                commentId: number;
+                vote: "U" | "D";
+            }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
+            add: (options: {
+                threadId: number;
+                comment: string;
+                rtoken: string;
+                quote?: number;
+            }) => Promise<import("axios").AxiosResponse<{
+                id: number;
+            }, any>>;
+        };
     };
     users: {
-        avatar: (options: {
+        uploadAvatar: (options: {
             avatar: File;
         }) => Promise<import("axios").AxiosResponse<any, any>>;
         block: (options: {
@@ -107,5 +109,95 @@ export default function Api(options: {
             email: string;
             code: string;
         }) => Promise<import("axios").AxiosResponse<import("./types/token").Token, any>>;
+    };
+    profile: {
+        avatars: (options: {
+            userId: number;
+        }) => Promise<import("axios").AxiosResponse<string, any>>;
+        userProfile: (options: {
+            userId: number;
+            nameonly?: boolean;
+        }) => Promise<import("axios").AxiosResponse<string, any>>;
+    };
+    menu: {
+        threads: {
+            checkExist: (options: {
+                threadId: number;
+            }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
+            images: (options: {
+                threadId: number;
+                commentId?: number;
+            }) => Promise<import("axios").AxiosResponse<import("./types/images").Images, any>>;
+            get: (options: {
+                threadId: number;
+                page?: number;
+                start?: number;
+                end?: number;
+                sort?: "vote";
+            }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Thread, any>>;
+            userVotes: (options: {
+                threadId: number;
+            }) => Promise<import("axios").AxiosResponse<import("./types/thread/userVotes").UserVotes, any>>;
+            pin: (options: {
+                threadId: number;
+                commentId: number;
+            }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
+            unpin: (options: {
+                threadId: number;
+            }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
+            create: (options: {
+                comment: string;
+                rtoken: string;
+                title: string;
+                category: number;
+            }) => Promise<import("axios").AxiosResponse<{
+                id: number;
+            }, any>>;
+            comments: {
+                get: (options: {
+                    threadId: number;
+                    commentId: number;
+                }) => Promise<import("axios").AxiosResponse<import("./types/thread/comment").Comment, any>>;
+                replies: (options: {
+                    threadId: number;
+                    commentId: number;
+                }) => Promise<import("axios").AxiosResponse<Comment[], any>>;
+                vote: (options: {
+                    threadId: number;
+                    commentId: number;
+                    vote: "U" | "D";
+                }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
+                add: (options: {
+                    threadId: number;
+                    comment: string;
+                    rtoken: string;
+                    quote?: number;
+                }) => Promise<import("axios").AxiosResponse<{
+                    id: number;
+                }, any>>;
+            };
+        };
+        profile: (options: {
+            userId: number;
+            nameonly?: boolean;
+        }) => Promise<import("axios").AxiosResponse<string, any>>;
+        main: (options: {
+            categoryId: number;
+            sort?: "Latest" | "Viral";
+            page?: number;
+        }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
+        search: (options: {
+            page?: number;
+            searchQuery: string;
+            sort?: "Relevence" | "Topic" | "LastReply";
+            mode?: "Title" | "OP";
+        }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
+    };
+    category: {
+        info: (option: {
+            categoryId?: number;
+            threadId?: number;
+        }) => Promise<import("axios").AxiosResponse<import("./types/category").Category, any>>;
+        categories: () => Promise<import("axios").AxiosResponse<import("./types/category").Category[], any>>;
     };
 };

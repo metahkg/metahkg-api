@@ -1,3 +1,3 @@
 export default function objToQuery(obj: {
-    [key: string]: any;
+    [key: string]: string | number;
 }): string;

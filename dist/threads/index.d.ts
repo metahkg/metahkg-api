@@ -7,7 +7,7 @@ export default function threads(axios: Axios): {
         threadId: number;
         commentId?: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/images").Images, any>>;
-    thread: (options: {
+    get: (options: {
         threadId: number;
         page?: number;
         start?: number;
@@ -17,27 +17,6 @@ export default function threads(axios: Axios): {
     userVotes: (options: {
         threadId: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/userVotes").UserVotes, any>>;
-    getComment: (options: {
-        threadId: number;
-        commentId: number;
-    }) => Promise<import("axios").AxiosResponse<import("../types/thread/comment").Comment, any>>;
-    replies: (options: {
-        threadId: number;
-        commentId: number;
-    }) => Promise<import("axios").AxiosResponse<Comment[], any>>;
-    vote: (options: {
-        threadId: number;
-        commentId: number;
-        vote: "U" | "D";
-    }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
-    addComment: (options: {
-        threadId: number;
-        comment: string;
-        rtoken: string;
-        quote?: number;
-    }) => Promise<import("axios").AxiosResponse<{
-        id: number;
-    }, any>>;
     pin: (options: {
         threadId: number;
         commentId: number;
@@ -53,4 +32,27 @@ export default function threads(axios: Axios): {
     }) => Promise<import("axios").AxiosResponse<{
         id: number;
     }, any>>;
+    comments: {
+        get: (options: {
+            threadId: number;
+            commentId: number;
+        }) => Promise<import("axios").AxiosResponse<import("../types/thread/comment").Comment, any>>;
+        replies: (options: {
+            threadId: number;
+            commentId: number;
+        }) => Promise<import("axios").AxiosResponse<Comment[], any>>;
+        vote: (options: {
+            threadId: number;
+            commentId: number;
+            vote: "U" | "D";
+        }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
+        add: (options: {
+            threadId: number;
+            comment: string;
+            rtoken: string;
+            quote?: number;
+        }) => Promise<import("axios").AxiosResponse<{
+            id: number;
+        }, any>>;
+    };
 };

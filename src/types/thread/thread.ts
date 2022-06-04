@@ -1,6 +1,7 @@
 import { User } from "../user";
 import { Comment } from "./comment";
-export interface Thread {
+
+export interface Summary {
     id: number;
     pin?: Comment;
     op: User;
@@ -13,3 +14,5 @@ export interface Thread {
     createdAt: string;
     conversation: Comment[];
 }
+
+export type Thread = Summary & { conversation: Comment[] };

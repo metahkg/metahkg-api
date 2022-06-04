@@ -1,6 +1,6 @@
 import { Axios } from "axios";
-import objToQuery from "../../lib/objToQuery";
-import { Thread } from "../../types/thread/thread";
+import objToQuery from "../lib/objToQuery";
+import { Thread } from "../types/thread/thread";
 
 export default function thread(axios: Axios) {
     return (options: {

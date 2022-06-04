@@ -1,6 +1,6 @@
 import { Axios } from "axios";
 export default function users(axios: Axios): {
-    avatar: (options: {
+    uploadAvatar: (options: {
         avatar: File;
     }) => Promise<import("axios").AxiosResponse<any, any>>;
     block: (options: {

@@ -12,7 +12,7 @@ import verify from "./verify";
 
 export default function users(axios: Axios) {
     return {
-        avatar: avatar(axios),
+        uploadAvatar: avatar(axios),
         block: block(axios),
         editprofile: editprofile(axios),
         login: login(axios),
