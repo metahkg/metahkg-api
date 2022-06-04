@@ -1,4 +1,5 @@
 stages:
+  - debug
   - lint
   - test
   - build
@@ -14,6 +15,16 @@ stages:
   - incremental rollout 100%
   - performance
   - cleanup
+
+debug:
+  stage: debug
+  image: node:18
+  script:
+    |
+    echo($CI_COMMIT_AUTHOR)
+    echo ($CI_COMMIT_MESSAGE)
+    echo ($CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>" || $CI_COMMIT_MESSAGE == "lint")
+    echo ($CI_COMMIT_AUTHOR == "metahkg-bot <bot@metahkg.org>" && $CI_COMMIT_MESSAGE == "build")
 
 build:
   stage: build
