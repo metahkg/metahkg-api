@@ -34,7 +34,7 @@ export default function users(axios: Axios): {
         newPassword?: string;
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK | import("../types/token").Token, any>>;
     status: () => Promise<import("axios").AxiosResponse<{
-        action: boolean;
+        active: boolean;
         id?: number;
         name?: string;
         token?: string;
