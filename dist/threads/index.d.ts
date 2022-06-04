@@ -6,7 +6,7 @@ export default function threads(axios: Axios): {
     images: (options: {
         threadId: number;
         commentId?: number;
-    }) => Promise<import("axios").AxiosResponse<import("../types/images").Images, any>>;
+    }) => Promise<import("axios").AxiosResponse<import("../types/image").Image[], any>>;
     get: (options: {
         threadId: number;
         page?: number;
