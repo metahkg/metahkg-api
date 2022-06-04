@@ -1,5 +1,5 @@
 import { Axios } from "axios";
-import { Comment } from "../../types/thread/comment"
+import { Comment } from "../../types/thread/comment";
 
 export default function replies(axios: Axios) {
     return (options: { threadId: number; commentId: number }) => {
