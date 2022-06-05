@@ -1,10 +1,10 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.4",
-  "serialNumber": "urn:uuid:97e730aa-42e8-4ad7-be06-96a5a5432da8",
+  "serialNumber": "urn:uuid:63ba2ff5-db4f-4298-b472-bc2e9c3f4e1f",
   "version": 1,
   "metadata": {
-    "timestamp": "2022-06-05T03:43:35Z",
+    "timestamp": "2022-06-05T04:24:46Z",
     "tools": [
       {
         "vendor": "GitLab",
