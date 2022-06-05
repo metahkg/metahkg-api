@@ -3,7 +3,7 @@ import { Summary } from "../types/thread/thread";
 
 export default function (axios: Axios) {
     return (options: {
-        // maximum length 25
+        /** maximum length 25 */
         threads: number[];
     }) => {
         const { threads } = options;
