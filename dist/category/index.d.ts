@@ -1,8 +1,8 @@
 import { Axios } from "axios";
 export default function category(axios: Axios): {
-    info: (option: {
+    info: (options: import("../types/xor").RequireAtLeastOne<{
         categoryId?: number;
         threadId?: number;
-    }) => Promise<import("axios").AxiosResponse<import("../types/category").Category, any>>;
+    }, "categoryId" | "threadId">) => Promise<import("axios").AxiosResponse<import("../types/category").Category, any>>;
     categories: () => Promise<import("axios").AxiosResponse<import("../types/category").Category[], any>>;
 };
