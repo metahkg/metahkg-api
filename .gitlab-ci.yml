@@ -15,26 +15,10 @@ stages:
   - performance
   - cleanup
 
-build:
-  stage: build
-  image: node:18
-  before_script:
-    - git checkout $CI_COMMIT_BRANCH
-    - git config user.name metahkg-bot
-    - git config user.email bot@metahkg.org
-    - git remote set-url origin https://wcyat:$gitlab_token@gitlab.com/$CI_PROJECT_PATH
-  script:
-    - yarn install
-    - yarn build
-    - git add -A
-    - git commit -a -m build || exit 0
-    - git push origin $CI_COMMIT_BRANCH
-  rules:
-    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>" || $CI_COMMIT_MESSAGE == "lint"
-
-lint:
-  stage: lint
-  image: node:18
+publish:
+  image: node:latest
+  stage: deploy
+  allow_failure: true
   before_script:
     - git checkout $CI_COMMIT_BRANCH
     - git config user.name metahkg-bot
@@ -43,16 +27,10 @@ lint:
   script:
     - yarn install
     - yarn lint
-    - git commit -a -m lint || exit 0
+    - yarn build
+    - git add -A
+    - git commit -a -m "build and lint"
     - git push origin $CI_COMMIT_BRANCH
-  rules:
-    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
-
-publish:
-  image: node:latest
-  stage: deploy
-  allow_failure: true
-  script:
     # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry
     - |
       echo "registry=https://registry.npmjs.com/" >> ~/.npmrc
@@ -71,7 +49,7 @@ publish:
     - |
       if [ "$CI_COMMIT_BRANCH" = "dev" ]; then npm publish --tag dev; else npm publish; fi;
   rules:
-    - if: $CI_COMMIT_AUTHOR == "metahkg-bot <bot@metahkg.org>" && $CI_COMMIT_MESSAGE == "build"
+    - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
 
 sast:
   stage: test
