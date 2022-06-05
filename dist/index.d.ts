@@ -63,7 +63,7 @@ export default function Api(options: {
     users: {
         uploadAvatar: (options: {
             avatar: File;
-        }) => Promise<import("axios").AxiosResponse<any, any>>;
+        }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
         block: (options: {
             userId: number;
         }) => Promise<import("axios").AxiosResponse<{
