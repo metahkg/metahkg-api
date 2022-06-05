@@ -1,6 +1,6 @@
 {
   "name": "metahkg-api",
-  "version": "2.0.0-11",
+  "version": "2.0.0-12",
   "description": "Access the metahkg api.",
   "main": "dist/index.js",
   "repository": "https://gitlab.com/metahkg/metahkg-api.git",
