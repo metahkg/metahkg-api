@@ -9,7 +9,7 @@ const search_1 = __importDefault(require("./search"));
 function menu(axios) {
     return {
         threads: (0, threads_1.default)(axios),
-        profile: (0, history_1.default)(axios),
+        history: (0, history_1.default)(axios),
         /** the main menu (get threads by category) */
         main: (0, main_1.default)(axios),
         search: (0, search_1.default)(axios),
