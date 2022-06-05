@@ -43,7 +43,12 @@ publish:
     - git commit -a -m "build and lint"
     - git push origin $CI_COMMIT_BRANCH
     # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry
-    - npm set registry https://registry.npmjs.com/:authToken=$npm_token
+    - |
+      echo "registry=https://registry.npmjs.com/" >> ~/.npmrc
+      echo "_auth=\"${npm_token}\"" >> ~/.npmrc;
+      echo "email=wcyat@wcyat.me" >> ~/.npmrc;
+      echo "always-auth=true" >> ~/.npmrc
+      npm set registry https://registry.npmjs.com/:authToken=$npm_token
 
     # Extract a few values from package.json
     - if [ "$CI_COMMIT_BRANCH" = "dev" ]; then suffix="-dev"; else suffix=""; fi;
