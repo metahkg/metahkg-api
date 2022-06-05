@@ -17,4 +17,4 @@ FROM node:18-alpine
 WORKDIR /usr/src/app
 
 COPY ./package.json ./
-COPY --from=build ./dist ./dist
+COPY --from=build /usr/src/app/dist ./dist

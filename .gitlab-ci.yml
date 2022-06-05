@@ -43,7 +43,7 @@ publish:
     - git commit -a -m "build and lint"
     - git push origin $CI_COMMIT_BRANCH
     # login to npm registry
-    - echo '//registry.npmjs.com/:_authToken=${NPM_TOKEN}' >> ~/.npmrc
+    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
     # Extract a few values from package.json
     - if [ "$CI_COMMIT_BRANCH" = "dev" ]; then suffix="-dev"; else suffix=""; fi;
     - NPM_PACKAGE_ORIGINAL_VERSION=$(node -p "require('./package.json').version")
