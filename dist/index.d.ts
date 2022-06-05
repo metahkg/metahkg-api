@@ -117,7 +117,7 @@ export default function Api(options: {
         userProfile: (options: {
             userId: number | "self";
             nameonly?: boolean;
-        }) => Promise<import("axios").AxiosResponse<string, any>>;
+        }) => Promise<import("axios").AxiosResponse<import("./types/user").Profile, any>>;
     };
     menu: {
         threads: {
@@ -180,7 +180,7 @@ export default function Api(options: {
         profile: (options: {
             userId: number | "self";
             nameonly?: boolean;
-        }) => Promise<import("axios").AxiosResponse<string, any>>;
+        }) => Promise<import("axios").AxiosResponse<import("./types/user").Profile, any>>;
         main: (options: {
             categoryId: number;
             sort?: "Latest" | "Viral";

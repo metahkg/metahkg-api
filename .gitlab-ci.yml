@@ -40,7 +40,7 @@ publish:
     - yarn lint
     - yarn build
     - git add -A
-    - git commit -a -m "build and lint"
+    - git commit -a -m "build and lint" || echo "nothing to commit, skipping"
     - git push origin $CI_COMMIT_BRANCH
     # login to npm registry
     - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
