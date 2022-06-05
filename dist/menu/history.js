@@ -6,7 +6,10 @@ const objToQuery_1 = __importDefault(require("../lib/objToQuery"));
 function default_1(axios) {
     return (options) => {
         const { userId, sort, page } = options;
-        const query = (0, objToQuery_1.default)({ sort: sort && sort === "Topic" ? 0 : 1, page });
+        const query = (0, objToQuery_1.default)({
+            sort: sort && { Topic: 0, LastReply: 1, 0: 0, 1: 1 }[sort],
+            page,
+        });
         return axios.get(`/menu/history/${userId}${query ? `?${query}` : ""}`);
     };
 }
