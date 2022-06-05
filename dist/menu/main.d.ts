@@ -1,7 +1,9 @@
 import { Axios } from "axios";
 import { Summary } from "../types/thread/thread";
-export default function (axios: Axios): (options: {
-    categoryId: number | string;
+import { RequireAtLeastOne } from "../types/xor";
+export default function (axios: Axios): (options: RequireAtLeastOne<{
+    categoryId?: number;
+    threadId?: number;
     sort?: "Latest" | "Viral" | 0 | 1;
     page?: number;
-}) => Promise<import("axios").AxiosResponse<Summary[], any>>;
+}, "categoryId" | "threadId">) => Promise<import("axios").AxiosResponse<Summary[], any>>;
