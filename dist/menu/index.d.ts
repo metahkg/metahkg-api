@@ -58,7 +58,7 @@ export default function menu(axios: Axios): {
         };
     };
     profile: (options: {
-        userId: number;
+        userId: number | "self";
         nameonly?: boolean;
     }) => Promise<import("axios").AxiosResponse<string, any>>;
     /** the main menu (get threads by category) */
