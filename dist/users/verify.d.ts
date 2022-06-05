@@ -1,6 +1,6 @@
 import { Axios } from "axios";
-import { Token } from "../types/token";
+import { ErrorMsg } from "../threads/error";
 export default function verify(axios: Axios): (options: {
     email: string;
     code: string;
-}) => Promise<import("axios").AxiosResponse<Token, any>>;
+}) => Promise<ErrorMsg>;
