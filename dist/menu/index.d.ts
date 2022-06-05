@@ -9,11 +9,12 @@ export default function menu(axios: Axios): {
         page?: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Summary[], any>>;
     /** the main menu (get threads by category) */
-    main: (options: {
-        categoryId: string | number;
+    main: (options: import("../types/xor").RequireAtLeastOne<{
+        categoryId?: number;
+        threadId?: number;
         sort?: 0 | 1 | "Latest" | "Viral";
         page?: number;
-    }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Summary[], any>>;
+    }, "categoryId" | "threadId">) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Summary[], any>>;
     search: (options: {
         page?: number;
         searchQuery: string;
