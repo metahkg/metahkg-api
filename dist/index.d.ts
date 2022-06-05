@@ -137,7 +137,7 @@ export default function Api(options: {
             page?: number;
             searchQuery: string;
             sort?: 0 | 2 | 1 | "Topic" | "LastReply" | "Relevance";
-            mode?: "Title" | "OP";
+            mode?: 0 | 1 | "Title" | "OP";
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
     };
     category: {

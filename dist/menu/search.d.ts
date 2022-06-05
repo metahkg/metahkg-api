@@ -4,5 +4,5 @@ export default function (axios: Axios): (options: {
     page?: number;
     searchQuery: string;
     sort?: "Relevance" | "Topic" | "LastReply" | 0 | 1 | 2;
-    mode?: "Title" | "OP";
+    mode?: "Title" | "OP" | 0 | 1;
 }) => Promise<import("axios").AxiosResponse<Summary[], any>>;
