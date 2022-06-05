@@ -115,7 +115,7 @@ export default function Api(options: {
             userId: number;
         }) => Promise<import("axios").AxiosResponse<string, any>>;
         userProfile: (options: {
-            userId: number;
+            userId: number | "self";
             nameonly?: boolean;
         }) => Promise<import("axios").AxiosResponse<string, any>>;
     };
@@ -178,7 +178,7 @@ export default function Api(options: {
             };
         };
         profile: (options: {
-            userId: number;
+            userId: number | "self";
             nameonly?: boolean;
         }) => Promise<import("axios").AxiosResponse<string, any>>;
         main: (options: {
