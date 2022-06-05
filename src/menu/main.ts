@@ -4,7 +4,8 @@ import { Summary } from "../types/thread/thread";
 
 export default function (axios: Axios) {
     return (options: {
-        categoryId: number;
+        // category id or bytid<thread id>
+        categoryId: number | string;
         sort?: "Latest" | "Viral" | 0 | 1;
         page?: number;
     }) => {

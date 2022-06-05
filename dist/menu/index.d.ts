@@ -3,7 +3,7 @@ export default function menu(axios: Axios): {
     threads: (options: {
         threads: number[];
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Summary[], any>>;
-    profile: (options: {
+    history: (options: {
         userId: number | "self";
         sort?: 0 | 1 | "Topic" | "LastReply";
         page?: number;
