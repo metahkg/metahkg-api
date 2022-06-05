@@ -60,7 +60,7 @@ export default function menu(axios: Axios): {
     profile: (options: {
         userId: number | "self";
         nameonly?: boolean;
-    }) => Promise<import("axios").AxiosResponse<string, any>>;
+    }) => Promise<import("axios").AxiosResponse<import("../types/user").Profile, any>>;
     /** the main menu (get threads by category) */
     main: (options: {
         categoryId: number;

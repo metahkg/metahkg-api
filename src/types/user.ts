@@ -5,12 +5,12 @@ export interface User {
     role: userRole;
 }
 
-export type Profile =  User & {
+export type Profile = User & {
     /** date string */
     createdAt: string;
     /** number of threads */
     count: 14;
-}
+};
 
 export type userSex = "M" | "F";
 export type userRole = "admin" | "user";
