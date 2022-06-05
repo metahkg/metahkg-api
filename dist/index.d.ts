@@ -183,13 +183,13 @@ export default function Api(options: {
         }) => Promise<import("axios").AxiosResponse<import("./types/user").Profile, any>>;
         main: (options: {
             categoryId: number;
-            sort?: "Latest" | "Viral";
+            sort?: 0 | 1 | "Latest" | "Viral";
             page?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
         search: (options: {
             page?: number;
             searchQuery: string;
-            sort?: "Relevence" | "Topic" | "LastReply";
+            sort?: 0 | 2 | 1 | "Relevance" | "Topic" | "LastReply";
             mode?: "Title" | "OP";
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
     };

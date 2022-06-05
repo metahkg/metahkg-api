@@ -3,6 +3,6 @@ import { Summary } from "../types/thread/thread";
 export default function (axios: Axios): (options: {
     page?: number;
     searchQuery: string;
-    sort?: "Relevence" | "Topic" | "LastReply";
+    sort?: "Relevance" | "Topic" | "LastReply" | 0 | 1 | 2;
     mode?: "Title" | "OP";
 }) => Promise<import("axios").AxiosResponse<Summary[], any>>;
