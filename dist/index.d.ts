@@ -108,7 +108,7 @@ export default function Api(options: {
         verify: (options: {
             email: string;
             code: string;
-        }) => Promise<import("./threads/error").ErrorMsg>;
+        }) => Promise<import("axios").AxiosResponse<import("./types/token").Token, any>>;
     };
     profile: {
         avatars: (options: {

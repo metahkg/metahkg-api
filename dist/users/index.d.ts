@@ -47,5 +47,5 @@ export default function users(axios: Axios): {
     verify: (options: {
         email: string;
         code: string;
-    }) => Promise<import("../threads/error").ErrorMsg>;
+    }) => Promise<import("axios").AxiosResponse<import("../types/token").Token, any>>;
 };
