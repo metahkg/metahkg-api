@@ -10,9 +10,9 @@ export default function menu(axios: Axios): {
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Summary[], any>>;
     /** the main menu (get threads by category) */
     main: (options: {
-        categoryId: number;
+        categoryId: string | number;
         sort?: 0 | 1 | "Latest" | "Viral";
-        page?: number; /** the main menu (get threads by category) */
+        page?: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Summary[], any>>;
     search: (options: {
         page?: number;
