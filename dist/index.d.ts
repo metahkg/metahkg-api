@@ -128,11 +128,12 @@ export default function Api(options: {
             sort?: 0 | 1 | "Topic" | "LastReply";
             page?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
-        main: (options: {
-            categoryId: string | number;
+        main: (options: import("./types/xor").RequireAtLeastOne<{
+            categoryId?: number;
+            threadId?: number;
             sort?: 0 | 1 | "Latest" | "Viral";
             page?: number;
-        }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
+        }, "categoryId" | "threadId">) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
         search: (options: {
             page?: number;
             searchQuery: string;
@@ -141,10 +142,10 @@ export default function Api(options: {
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
     };
     category: {
-        info: (option: {
+        info: (options: import("./types/xor").RequireAtLeastOne<{
             categoryId?: number;
             threadId?: number;
-        }) => Promise<import("axios").AxiosResponse<import("./types/category").Category, any>>;
+        }, "categoryId" | "threadId">) => Promise<import("axios").AxiosResponse<import("./types/category").Category, any>>;
         categories: () => Promise<import("axios").AxiosResponse<import("./types/category").Category[], any>>;
     };
 };
