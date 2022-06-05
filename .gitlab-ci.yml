@@ -22,6 +22,9 @@ build:
   script:
     - yarn install
     - yarn build
+  artifacts:
+    paths:
+      - dist
 
 publish:
   image: node:latest
@@ -39,25 +42,33 @@ publish:
     - git add -A
     - git commit -a -m "build and lint"
     - git push origin $CI_COMMIT_BRANCH
-    # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry
-    - |
-      echo "registry=https://registry.npmjs.com/" >> ~/.npmrc
-      echo "_auth=${npm_token}" >> ~/.npmrc;
-      echo "email=wcyat@wcyat.me" >> ~/.npmrc;
-      echo "always-auth=true" >> ~/.npmrc
-
+    # login to npm registry
+    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
     # Extract a few values from package.json
     - if [ "$CI_COMMIT_BRANCH" = "dev" ]; then suffix="-dev"; else suffix=""; fi;
     - NPM_PACKAGE_ORIGINAL_VERSION=$(node -p "require('./package.json').version")
     - NPM_PACKAGE_VERSION=$(node -p "require('./package.json').version + \"${suffix}\"")
     - sed -i "s/${NPM_PACKAGE_ORIGINAL_VERSION}/${NPM_PACKAGE_VERSION}/" package.json
-
-    # Compare the version in package.json to all published versions.
-    # If the package.json version has not yet been published, run `npm publish`.
-    - |
-      if [ "$CI_COMMIT_BRANCH" = "dev" ]; then npm publish --tag dev; else npm publish; fi;
+    - if [ "$CI_COMMIT_BRANCH" = "dev" ]; then npm publish --tag dev; else npm publish; fi;
   rules:
     - if: $CI_COMMIT_AUTHOR != "metahkg-bot <bot@metahkg.org>"
+
+docker-build:
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --build-arg REACT_APP_build=$CI_COMMIT_SHORT_SHA --pull -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:latest" .
+    - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:latest"
+    - docker build --build-arg REACT_APP_build=$CI_COMMIT_SHORT_SHA --pull -t "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA" .
+    - docker push "$CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA"
+  rules:
+    - if: "$CI_COMMIT_BRANCH"
+      exists:
+        - Dockerfile
 
 sast:
   stage: test
