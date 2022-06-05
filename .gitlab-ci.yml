@@ -1,4 +1,5 @@
 stages:
+  - debug
   - lint
   - test
   - build
@@ -14,6 +15,13 @@ stages:
   - incremental rollout 100%
   - performance
   - cleanup
+
+build:
+  stage: build
+  image: node:18
+  script:
+    - yarn install
+    - yarn build
 
 publish:
   image: node:latest
