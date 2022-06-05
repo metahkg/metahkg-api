@@ -120,67 +120,14 @@ export default function Api(options: {
         }) => Promise<import("axios").AxiosResponse<import("./types/user").Profile, any>>;
     };
     menu: {
-        threads: {
-            checkExist: (options: {
-                threadId: number;
-            }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
-            images: (options: {
-                threadId: number;
-                commentId?: number;
-            }) => Promise<import("axios").AxiosResponse<import("./types/image").Image[], any>>;
-            get: (options: {
-                threadId: number;
-                page?: number;
-                start?: number;
-                end?: number;
-                sort?: "vote";
-            }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Thread, any>>;
-            userVotes: (options: {
-                threadId: number;
-            }) => Promise<import("axios").AxiosResponse<import("./types/thread/userVotes").UserVotes, any>>;
-            pin: (options: {
-                threadId: number;
-                commentId: number;
-            }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
-            unpin: (options: {
-                threadId: number;
-            }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
-            create: (options: {
-                comment: string;
-                rtoken: string;
-                title: string;
-                category: number;
-            }) => Promise<import("axios").AxiosResponse<{
-                id: number;
-            }, any>>;
-            comments: {
-                get: (options: {
-                    threadId: number;
-                    commentId: number;
-                }) => Promise<import("axios").AxiosResponse<import("./types/thread/comment").Comment, any>>;
-                replies: (options: {
-                    threadId: number;
-                    commentId: number;
-                }) => Promise<import("axios").AxiosResponse<import("./types/thread/comment").Comment[], any>>;
-                vote: (options: {
-                    threadId: number;
-                    commentId: number;
-                    vote: "U" | "D";
-                }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
-                add: (options: {
-                    threadId: number;
-                    comment: string;
-                    rtoken: string;
-                    quote?: number;
-                }) => Promise<import("axios").AxiosResponse<{
-                    id: number;
-                }, any>>;
-            };
-        };
+        threads: (options: {
+            threads: number[];
+        }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
         profile: (options: {
             userId: number | "self";
-            nameonly?: boolean;
-        }) => Promise<import("axios").AxiosResponse<import("./types/user").Profile, any>>;
+            sort?: 0 | 1 | "Topic" | "LastReply";
+            page?: number;
+        }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
         main: (options: {
             categoryId: number;
             sort?: 0 | 1 | "Latest" | "Viral";
@@ -189,7 +136,7 @@ export default function Api(options: {
         search: (options: {
             page?: number;
             searchQuery: string;
-            sort?: 0 | 2 | 1 | "Relevance" | "Topic" | "LastReply";
+            sort?: 0 | 2 | 1 | "Topic" | "LastReply" | "Relevance";
             mode?: "Title" | "OP";
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
     };
