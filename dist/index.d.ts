@@ -129,7 +129,7 @@ export default function Api(options: {
             page?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
         main: (options: {
-            categoryId: number;
+            categoryId: string | number;
             sort?: 0 | 1 | "Latest" | "Viral";
             page?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
