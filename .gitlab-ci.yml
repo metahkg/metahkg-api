@@ -22,6 +22,9 @@ build:
   script:
     - yarn install
     - yarn build
+  artifacts:
+    paths:
+      - dist
 
 publish:
   image: node:latest
@@ -42,7 +45,7 @@ publish:
     # If no .npmrc is included in the repo, generate a temporary one that is configured to publish to GitLab's NPM registry
     - |
       echo "registry=https://registry.npmjs.com/" >> ~/.npmrc
-      echo "_auth=${npm_token}" >> ~/.npmrc;
+      echo "_auth=\"${npm_token}\"" >> ~/.npmrc;
       echo "email=wcyat@wcyat.me" >> ~/.npmrc;
       echo "always-auth=true" >> ~/.npmrc
 
