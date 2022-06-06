@@ -20,6 +20,6 @@ async function main() {
         // user jwt token, leave blank if not logged in
         token: "eyfcsgbsaabbdwqjog",
     });
-    await api.threads.thread({ threadId: 1 }).then(console.log);
+    await api.threads.get({ threadId: 1 }).then(console.log);
 }
 ```
