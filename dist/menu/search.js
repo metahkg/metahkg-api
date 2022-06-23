@@ -8,7 +8,8 @@ function default_1(axios) {
         const { page, searchQuery, sort, mode } = options;
         const query = (0, objToQuery_1.default)({
             page,
-            sort: sort && { Relevance: 0, Created: 1, LastReply: 2, 0: 0, 1: 1, 2: 2 }[sort],
+            sort: sort &&
+                { Relevance: 0, Created: 1, LastReply: 2, 0: 0, 1: 1, 2: 2 }[sort],
             mode: mode && { Title: 0, OP: 1, 0: 0, 1: 1 }[mode],
             q: searchQuery,
         });

@@ -13,7 +13,8 @@ export default function (axios: Axios) {
         const query = objToQuery({
             page,
             sort:
-                sort && { Relevance: 0, Created: 1, LastReply: 2, 0: 0, 1: 1, 2: 2 }[sort],
+                sort &&
+                { Relevance: 0, Created: 1, LastReply: 2, 0: 0, 1: 1, 2: 2 }[sort],
             mode: mode && { Title: 0, OP: 1, 0: 0, 1: 1 }[mode],
             q: searchQuery,
         });
