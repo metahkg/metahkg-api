@@ -108,7 +108,7 @@ export default function Api(options: {
         verify: (options: {
             email: string;
             code: string;
-        }) => Promise<import("./threads/error").ErrorMsg>;
+        }) => Promise<import("axios").AxiosResponse<import("./types/token").Token, any>>;
     };
     profile: {
         avatars: (options: {
@@ -125,7 +125,7 @@ export default function Api(options: {
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
         history: (options: {
             userId: number | "self";
-            sort?: 0 | 1 | "Topic" | "LastReply";
+            sort?: 0 | 1 | "Created" | "LastReply";
             page?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
         main: (options: import("./types/xor").RequireAtLeastOne<{
@@ -137,7 +137,7 @@ export default function Api(options: {
         search: (options: {
             page?: number;
             searchQuery: string;
-            sort?: 0 | 2 | 1 | "Topic" | "LastReply" | "Relevance";
+            sort?: 0 | 2 | 1 | "Created" | "LastReply" | "Relevance";
             mode?: 0 | 1 | "Title" | "OP";
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
     };
