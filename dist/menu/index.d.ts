@@ -5,7 +5,7 @@ export default function menu(axios: Axios): {
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Summary[], any>>;
     history: (options: {
         userId: number | "self";
-        sort?: 0 | 1 | "Topic" | "LastReply";
+        sort?: 0 | 1 | "Created" | "LastReply";
         page?: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Summary[], any>>;
     /** the main menu (get threads by category) */
@@ -18,7 +18,7 @@ export default function menu(axios: Axios): {
     search: (options: {
         page?: number;
         searchQuery: string;
-        sort?: 0 | 2 | 1 | "Topic" | "LastReply" | "Relevance";
+        sort?: 0 | 2 | 1 | "Created" | "LastReply" | "Relevance";
         mode?: 0 | 1 | "Title" | "OP";
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Summary[], any>>;
 };
