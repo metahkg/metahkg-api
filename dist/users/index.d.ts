@@ -8,7 +8,7 @@ export default function users(axios: Axios): {
     }) => Promise<import("axios").AxiosResponse<{
         blocked: number[];
     }, any>>;
-    editprofile: (options: {
+    rename: (options: {
         name: string;
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK & import("../types/token").Token, any>>;
     login: (options: {
