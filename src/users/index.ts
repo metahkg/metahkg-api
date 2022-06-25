@@ -1,7 +1,7 @@
 import { Axios } from "axios";
 import avatar from "./avatar";
 import block from "./block";
-import editprofile from "./editprofile";
+import editprofile from "./rename";
 import login from "./login";
 import register from "./register";
 import resend from "./resend";
