@@ -70,8 +70,7 @@ export default function Api(options: {
             blocked: number[];
         }, any>>;
         editprofile: (options: {
-            name?: string;
-            sex?: import("./types/user").userSex;
+            name: string;
         }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK & import("./types/token").Token, any>>;
         login: (options: {
             userNameOrEmail: string;
