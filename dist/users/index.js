@@ -16,7 +16,7 @@ function users(axios) {
     return {
         uploadAvatar: (0, avatar_1.default)(axios),
         block: (0, block_1.default)(axios),
-        editprofile: (0, rename_1.default)(axios),
+        rename: (0, rename_1.default)(axios),
         login: (0, login_1.default)(axios),
         register: (0, register_1.default)(axios),
         resend: (0, resend_1.default)(axios),
