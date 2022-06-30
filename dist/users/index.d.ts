@@ -27,16 +27,18 @@ export default function users(axios: Axios): {
         email: string;
         rtoken: string;
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
+    forgot: (options: {
+        email: string;
+    }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
     reset: (options: {
         email: string;
-        verificationToken?: string;
-        newPassword?: string;
-    }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK | import("../types/token").Token, any>>;
+        verificationToken: string;
+        newPassword: string;
+    }) => Promise<import("axios").AxiosResponse<import("../types/token").Token, any>>;
     status: () => Promise<import("axios").AxiosResponse<{
         active: boolean;
         id?: number;
         name?: string;
-        token?: string;
     }, any>>;
     unblock: (options: {
         userId: number;
