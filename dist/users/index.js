@@ -12,6 +12,7 @@ const reset_1 = __importDefault(require("./reset"));
 const status_1 = __importDefault(require("./status"));
 const unblock_1 = __importDefault(require("./unblock"));
 const verify_1 = __importDefault(require("./verify"));
+const forgot_1 = __importDefault(require("./forgot"));
 function users(axios) {
     return {
         uploadAvatar: (0, avatar_1.default)(axios),
@@ -20,6 +21,7 @@ function users(axios) {
         login: (0, login_1.default)(axios),
         register: (0, register_1.default)(axios),
         resend: (0, resend_1.default)(axios),
+        forgot: (0, forgot_1.default)(axios),
         reset: (0, reset_1.default)(axios),
         status: (0, status_1.default)(axios),
         unblock: (0, unblock_1.default)(axios),

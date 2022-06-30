@@ -41,13 +41,6 @@ form-data@^4.0.0:
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
-fs@^2.2.0-1:
-  version "2.2.0-1"
-  resolved "http://localhost:4873/fs/-/fs-2.2.0-1.tgz#000673893b3b90d3f4717e3a6aabd81c2dd6bb96"
-  integrity sha512-VARMi8qGP0ORLAC0YRkQyItvWlGpZclmlvqOUZvPRqsXURUB0C8pl8rDkc4ArICW8ZLQiNHnZBMWoNjwCo03zQ==
-  dependencies:
-    axios "^0.27.2"
-
 mime-db@1.52.0:
   version "1.52.0"
   resolved "https://registry.npmjs.org/mime-db/-/mime-db-1.52.0.tgz"
