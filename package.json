@@ -1,6 +1,6 @@
 {
   "name": "metahkg-api",
-  "version": "2.1.0-1",
+  "version": "2.4.0-1",
   "description": "Access the metahkg api.",
   "main": "dist/index.js",
   "repository": "https://gitlab.com/metahkg/metahkg-api.git",
@@ -16,7 +16,7 @@
     "axios": "^0.27.2"
   },
   "devDependencies": {
-    "prettier": "^2.6.2",
-    "typescript": "^4.7.2"
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
   }
 }

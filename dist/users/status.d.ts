@@ -3,5 +3,4 @@ export default function status(axios: Axios): () => Promise<import("axios").Axio
     active: boolean;
     id?: number;
     name?: string;
-    token?: string;
 }, any>>;
