@@ -9,6 +9,7 @@ import reset from "./reset";
 import status from "./status";
 import unblock from "./unblock";
 import verify from "./verify";
+import forgot from "./forgot";
 
 export default function users(axios: Axios) {
     return {
@@ -18,6 +19,7 @@ export default function users(axios: Axios) {
         login: login(axios),
         register: register(axios),
         resend: resend(axios),
+        forgot: forgot(axios),
         reset: reset(axios),
         status: status(axios),
         unblock: unblock(axios),
