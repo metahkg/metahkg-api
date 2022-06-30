@@ -10,19 +10,21 @@ import status from "./status";
 import unblock from "./unblock";
 import verify from "./verify";
 import forgot from "./forgot";
+import blocklist from "./blocklist";
 
 export default function users(axios: Axios) {
     return {
         uploadAvatar: avatar(axios),
-        block: block(axios),
         rename: rename(axios),
         login: login(axios),
         register: register(axios),
+        verify: verify(axios),
         resend: resend(axios),
         forgot: forgot(axios),
         reset: reset(axios),
         status: status(axios),
+        block: block(axios),
         unblock: unblock(axios),
-        verify: verify(axios),
+        blocklist: blocklist(axios),
     };
 }
