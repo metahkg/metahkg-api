@@ -4,7 +4,7 @@ export default function profile(axios: Axios): {
         userId: number;
     }) => Promise<import("axios").AxiosResponse<string, any>>;
     userProfile: (options: {
-        userId: number | "self";
+        userId: number;
         nameonly?: boolean;
     }) => Promise<import("axios").AxiosResponse<import("../types/user").Profile, any>>;
 };

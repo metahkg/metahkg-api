@@ -3,11 +3,6 @@ export default function users(axios: Axios): {
     uploadAvatar: (options: {
         avatar: File;
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
-    block: (options: {
-        userId: number;
-    }) => Promise<import("axios").AxiosResponse<{
-        blocked: number[];
-    }, any>>;
     rename: (options: {
         name: string;
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK & import("../types/token").Token, any>>;
@@ -23,6 +18,10 @@ export default function users(axios: Axios): {
         sex: import("../types/user").userSex;
         invitecode?: string;
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
+    verify: (options: {
+        email: string;
+        code: string;
+    }) => Promise<import("axios").AxiosResponse<import("../types/token").Token, any>>;
     resend: (options: {
         email: string;
         rtoken: string;
@@ -40,13 +39,11 @@ export default function users(axios: Axios): {
         id?: number;
         name?: string;
     }, any>>;
+    block: (options: {
+        userId: number;
+    }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
     unblock: (options: {
         userId: number;
-    }) => Promise<import("axios").AxiosResponse<{
-        blocked: number[];
-    }, any>>;
-    verify: (options: {
-        email: string;
-        code: string;
-    }) => Promise<import("axios").AxiosResponse<import("../types/token").Token, any>>;
+    }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
+    blocklist: void;
 };
