@@ -8,7 +8,7 @@ export default function thread(axios: Axios) {
         page?: number;
         start?: number;
         end?: number;
-        sort?: "vote";
+        sort?: "score" | "time" | "latest";
     }) => {
         const { threadId, page, start, end, sort } = options;
         const query = objToQuery({ page, start, end, sort });
