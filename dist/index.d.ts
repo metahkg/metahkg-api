@@ -16,7 +16,7 @@ export default function Api(options: {
             page?: number;
             start?: number;
             end?: number;
-            sort?: "vote";
+            sort?: "time" | "score" | "latest";
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Thread, any>>;
         userVotes: (options: {
             threadId: number;
