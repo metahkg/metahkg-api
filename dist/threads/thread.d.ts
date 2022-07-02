@@ -5,5 +5,5 @@ export default function thread(axios: Axios): (options: {
     page?: number;
     start?: number;
     end?: number;
-    sort?: "vote";
+    sort?: "score" | "time" | "latest";
 }) => Promise<import("axios").AxiosResponse<Thread, any>>;
