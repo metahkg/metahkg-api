@@ -1,0 +1,104 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.4",
+  "serialNumber": "urn:uuid:00002b74-22f9-4d5c-b8e3-af860f51d77e",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2022-07-08T11:03:34Z",
+    "tools": [
+      {
+        "vendor": "GitLab",
+        "name": "Gemnasium",
+        "version": "3.3.0"
+      }
+    ],
+    "authors": [
+      {
+        "name": "GitLab",
+        "email": "support@gitlab.com"
+      }
+    ],
+    "properties": [
+      {
+        "name": "gitlab:input_file",
+        "value": "yarn.lock"
+      },
+      {
+        "name": "gitlab:package_manager",
+        "value": "yarn"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "asynckit",
+      "version": "0.4.0",
+      "purl": "pkg:npm/asynckit@0.4.0",
+      "type": "library",
+      "bom-ref": "pkg:npm/asynckit@0.4.0"
+    },
+    {
+      "name": "axios",
+      "version": "0.27.2",
+      "purl": "pkg:npm/axios@0.27.2",
+      "type": "library",
+      "bom-ref": "pkg:npm/axios@0.27.2"
+    },
+    {
+      "name": "combined-stream",
+      "version": "1.0.8",
+      "purl": "pkg:npm/combined-stream@1.0.8",
+      "type": "library",
+      "bom-ref": "pkg:npm/combined-stream@1.0.8"
+    },
+    {
+      "name": "delayed-stream",
+      "version": "1.0.0",
+      "purl": "pkg:npm/delayed-stream@1.0.0",
+      "type": "library",
+      "bom-ref": "pkg:npm/delayed-stream@1.0.0"
+    },
+    {
+      "name": "follow-redirects",
+      "version": "1.15.1",
+      "purl": "pkg:npm/follow-redirects@1.15.1",
+      "type": "library",
+      "bom-ref": "pkg:npm/follow-redirects@1.15.1"
+    },
+    {
+      "name": "form-data",
+      "version": "4.0.0",
+      "purl": "pkg:npm/form-data@4.0.0",
+      "type": "library",
+      "bom-ref": "pkg:npm/form-data@4.0.0"
+    },
+    {
+      "name": "mime-db",
+      "version": "1.52.0",
+      "purl": "pkg:npm/mime-db@1.52.0",
+      "type": "library",
+      "bom-ref": "pkg:npm/mime-db@1.52.0"
+    },
+    {
+      "name": "mime-types",
+      "version": "2.1.35",
+      "purl": "pkg:npm/mime-types@2.1.35",
+      "type": "library",
+      "bom-ref": "pkg:npm/mime-types@2.1.35"
+    },
+    {
+      "name": "prettier",
+      "version": "2.7.1",
+      "purl": "pkg:npm/prettier@2.7.1",
+      "type": "library",
+      "bom-ref": "pkg:npm/prettier@2.7.1"
+    },
+    {
+      "name": "typescript",
+      "version": "4.7.4",
+      "purl": "pkg:npm/typescript@4.7.4",
+      "type": "library",
+      "bom-ref": "pkg:npm/typescript@4.7.4"
+    }
+  ]
+}
