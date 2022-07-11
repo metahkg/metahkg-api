@@ -1,6 +1,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function default_1(axios) {
-    () => {
+    return () => {
         /** get blocked users */
         return axios.get("/users/blocklist");
     };
