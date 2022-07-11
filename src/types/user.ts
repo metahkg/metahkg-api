@@ -9,7 +9,7 @@ export type Profile = User & {
     /** date string */
     createdAt: string;
     /** number of threads */
-    count: 14;
+    count: number;
 };
 
 export type userSex = "M" | "F";
