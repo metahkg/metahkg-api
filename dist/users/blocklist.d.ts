@@ -1,2 +1,3 @@
 import { Axios } from "axios";
-export default function (axios: Axios): void;
+import { User } from "../types/user";
+export default function (axios: Axios): () => Promise<import("axios").AxiosResponse<User[], any>>;

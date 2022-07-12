@@ -106,7 +106,7 @@ export default function Api(options: {
         unblock: (options: {
             userId: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
-        blocklist: void;
+        blocklist: () => Promise<import("axios").AxiosResponse<import("./types/user").User[], any>>;
     };
     profile: {
         avatars: (options: {
