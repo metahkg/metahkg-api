@@ -43,11 +43,11 @@ tagging:
   stage: deploy
   allow_failure: true
   before_script:
-    - apk add git
+    - apk add git nodejs-current
   script:
     - git config --global user.name metahkg-bot
     - git config --global user.email bot@metahkg.org
-    - tag=$(cat package.json | grep version | grep -Eo "[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+")
+    - tag=$(node -e "console.log(require('./package.json').version)")
     - if [ $CI_COMMIT_BRANCH = "dev" ]; then tag=${tag}-dev; fi;
     - git tag "$tag"
     - git push --tags https://root:$gitlab_token@$CI_SERVER_HOST/$CI_PROJECT_PATH.git HEAD:${CI_COMMIT_BRANCH}
