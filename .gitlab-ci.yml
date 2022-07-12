@@ -20,9 +20,8 @@ build:
   stage: build
   image: node:18
   before_script:
-    - git add -A
-    - git commit -a -m "build and lint" || echo "nothing to commit, skipping"
-    - git push origin $CI_COMMIT_BRANCH
+    - git config --global user.name metahkg-bot
+    - git config --global user.email bot@metahkg.org
   script:
     - yarn install
     - yarn build
