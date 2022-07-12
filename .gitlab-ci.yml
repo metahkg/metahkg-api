@@ -22,6 +22,8 @@ build:
   before_script:
     - git config --global user.name metahkg-bot
     - git config --global user.email bot@metahkg.org
+    - git checkout $CI_COMMIT_BRANCH
+    - git remote set-url origin "https://root:${gitlab_token}@$CI_SERVER_HOST/$CI_PROJECT_PATH"
   script:
     - yarn install
     - yarn build
