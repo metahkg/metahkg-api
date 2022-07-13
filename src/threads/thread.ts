@@ -12,6 +12,8 @@ export default function thread(axios: Axios) {
     }) => {
         const { threadId, page, start, end, sort } = options;
         const query = objToQuery({ page, start, end, sort });
-        return axios.get<Thread>(`/thread/${threadId}${query ? "?" + query : ""}`);
+        return axios.get<Thread>(
+            `/thread/${threadId}${query ? "?" + query : ""}`
+        );
     };
 }

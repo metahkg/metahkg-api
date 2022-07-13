@@ -15,4 +15,4 @@ export interface Summary {
     conversation: Comment[];
 }
 
-export type Thread = Summary & { conversation: Comment[] };
+export type Thread = Summary & { conversation: (Comment & { score: number })[] };
