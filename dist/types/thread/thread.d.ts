@@ -14,5 +14,7 @@ export interface Summary {
     conversation: Comment[];
 }
 export declare type Thread = Summary & {
-    conversation: Comment[];
+    conversation: (Comment & {
+        score: number;
+    })[];
 };
