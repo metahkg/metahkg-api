@@ -12,7 +12,6 @@ export interface Summary {
     category: number;
     lastModified: string;
     createdAt: string;
-    conversation: Comment[];
 }
 
 export type Thread = Summary & { conversation: Comment[] };
