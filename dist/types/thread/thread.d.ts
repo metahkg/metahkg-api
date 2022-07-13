@@ -13,5 +13,7 @@ export interface Summary {
     createdAt: string;
 }
 export declare type Thread = Summary & {
-    conversation: Comment[];
+    conversation: (Comment & {
+        score: number;
+    })[];
 };

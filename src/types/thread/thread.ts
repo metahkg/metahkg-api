@@ -14,4 +14,4 @@ export interface Summary {
     createdAt: string;
 }
 
-export type Thread = Summary & { conversation: Comment[] };
+export type Thread = Summary & { conversation: (Comment & { score: number })[] };

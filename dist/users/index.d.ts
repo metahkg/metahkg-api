@@ -45,5 +45,5 @@ export default function users(axios: Axios): {
     unblock: (options: {
         userId: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
-    blocklist: () => Promise<import("axios").AxiosResponse<number[], any>>;
+    blocklist: () => Promise<import("axios").AxiosResponse<import("../types/user").User[], any>>;
 };
