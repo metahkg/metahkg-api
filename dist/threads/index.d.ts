@@ -47,7 +47,7 @@ export default function threads(axios: Axios): {
             commentId: number;
             vote: "U" | "D";
         }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
-        add: (options: {
+        create: (options: {
             threadId: number;
             comment: string;
             rtoken: string;
