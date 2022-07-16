@@ -1,11 +1,11 @@
 import { Axios } from "axios";
-import addComment from "./comments/addComment";
+import createComment from "./comments/create";
 import create from "./create";
 import pin from "./pin";
 import unpin from "./unpin";
 import vote from "./comments/vote";
 import checkExist from "./checkExist";
-import getComment from "./comments/getComment";
+import getComment from "./comments/comment";
 import replies from "./comments/replies";
 import images from "./images";
 import thread from "./thread";
@@ -24,7 +24,7 @@ export default function threads(axios: Axios) {
             get: getComment(axios),
             replies: replies(axios),
             vote: vote(axios),
-            add: addComment(axios),
+            create: createComment(axios),
         },
     };
 }

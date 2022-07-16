@@ -1,6 +1,6 @@
 import { Axios } from "axios";
 
-export default function addComment(axios: Axios) {
+export default function createComment(axios: Axios) {
     return (options: {
         threadId: number;
         comment: string;
