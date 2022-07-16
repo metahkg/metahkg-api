@@ -5,8 +5,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const objToQuery_1 = __importDefault(require("../lib/objToQuery"));
 function thread(axios) {
     return (options) => {
-        const { threadId, page, start, end, sort } = options;
-        const query = (0, objToQuery_1.default)({ page, start, end, sort });
+        const { threadId, page, start, end, sort, limit } = options;
+        const query = (0, objToQuery_1.default)({ page, start, end, sort, limit });
         return axios.get(`/thread/${threadId}${query ? "?" + query : ""}`);
     };
 }

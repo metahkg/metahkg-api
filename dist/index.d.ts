@@ -17,6 +17,7 @@ export default function Api(options: {
             start?: number;
             end?: number;
             sort?: "time" | "score" | "latest";
+            limit?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Thread, any>>;
         userVotes: (options: {
             threadId: number;
@@ -125,18 +126,21 @@ export default function Api(options: {
             userId: number | "self";
             sort?: 0 | 1 | "Created" | "LastReply";
             page?: number;
+            limit?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
         main: (options: import("./types/xor").RequireAtLeastOne<{
             categoryId?: number;
             threadId?: number;
             sort?: 0 | 1 | "Latest" | "Viral";
             page?: number;
+            limit?: number;
         }, "categoryId" | "threadId">) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
         search: (options: {
             page?: number;
             searchQuery: string;
             sort?: 0 | 2 | 1 | "Created" | "LastReply" | "Relevance";
             mode?: 0 | 1 | "Title" | "OP";
+            limit?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Summary[], any>>;
     };
     category: {

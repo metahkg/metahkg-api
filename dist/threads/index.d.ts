@@ -13,6 +13,7 @@ export default function threads(axios: Axios): {
         start?: number;
         end?: number;
         sort?: "time" | "score" | "latest";
+        limit?: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Thread, any>>;
     userVotes: (options: {
         threadId: number;
