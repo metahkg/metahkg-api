@@ -1,24 +1,18 @@
 import { Axios } from "axios";
 import createComment from "./comments/create";
 import create from "./create";
-import pin from "./pin";
-import unpin from "./unpin";
 import vote from "./comments/vote";
 import checkExist from "./checkExist";
 import getComment from "./comments/comment";
 import replies from "./comments/replies";
 import images from "./images";
 import thread from "./thread";
-import userVotes from "./userVotes";
 
 export default function threads(axios: Axios) {
     return {
         checkExist: checkExist(axios),
         images: images(axios),
         get: thread(axios),
-        userVotes: userVotes(axios),
-        pin: pin(axios),
-        unpin: unpin(axios),
         create: create(axios),
         comments: {
             get: getComment(axios),

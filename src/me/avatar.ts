@@ -8,7 +8,7 @@ export default function avatar(axios: Axios) {
         const formData = new FormData();
         formData.append("avatar", avatar);
 
-        return axios.post<OK>("/users/avatar", formData, {
+        return axios.post<OK>("/me/avatar", formData, {
             headers: { "Content-Type": "multipart/form-data" },
         });
     };

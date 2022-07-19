@@ -1,9 +1,9 @@
 import Axios from "axios";
 import category from "./category";
 import menu from "./menu";
-import profile from "./profile";
 import threads from "./threads";
 import users from "./users";
+import me from "./me";
 
 export default function Api(options: {
     baseUrl?: string;
@@ -32,7 +32,7 @@ export default function Api(options: {
     return {
         threads: threads(axios),
         users: users(axios),
-        profile: profile(axios),
+        me: me(axios),
         menu: menu(axios),
         category: category(axios),
     };

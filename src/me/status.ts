@@ -6,6 +6,6 @@ export default function status(axios: Axios) {
             active: boolean;
             id?: number;
             name?: string;
-        }>("/users/status");
+        }>("/me/status");
     };
 }

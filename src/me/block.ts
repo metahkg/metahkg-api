@@ -4,6 +4,6 @@ import { OK } from "../types/ok";
 export default function block(axios: Axios) {
     return (options: { userId: number }) => {
         const { userId } = options;
-        return axios.post<OK>(`/users/block`, { userId });
+        return axios.post<OK>(`/me/block`, { userId });
     };
 }

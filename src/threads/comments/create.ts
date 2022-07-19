@@ -13,7 +13,7 @@ export default function createComment(axios: Axios) {
         return axios.post<{
             /* new comment id */
             id: number;
-        }>(`/thread/${threadId}/comment`, {
+        }>(`/thread/${threadId}/comment/create`, {
             comment,
             rtoken,
             quote,

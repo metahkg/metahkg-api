@@ -1,3 +1,3 @@
-export interface UserVotes {
+export interface votes {
     [commentId: number]: "U" | "D";
 }
