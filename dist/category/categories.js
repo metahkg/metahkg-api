@@ -1,7 +1,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function categories(axios) {
     return () => {
-        return axios.get("/category");
+        return axios.get("/categories");
     };
 }
 exports.default = categories;

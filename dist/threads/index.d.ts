@@ -5,7 +5,6 @@ export default function threads(axios: Axios): {
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
     images: (options: {
         threadId: number;
-        commentId?: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/image").Image[], any>>;
     get: (options: {
         threadId: number;
@@ -15,16 +14,6 @@ export default function threads(axios: Axios): {
         sort?: "time" | "score" | "latest";
         limit?: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Thread, any>>;
-    userVotes: (options: {
-        threadId: number;
-    }) => Promise<import("axios").AxiosResponse<import("../types/thread/userVotes").UserVotes, any>>;
-    pin: (options: {
-        threadId: number;
-        commentId: number;
-    }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
-    unpin: (options: {
-        threadId: number;
-    }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
     create: (options: {
         comment: string;
         rtoken: string;
