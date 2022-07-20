@@ -47,7 +47,7 @@ export default function threads(axios: Axios): {
         images: (options: {
             threadId: number;
             commentId: number;
-        }) => Promise<import("axios").AxiosResponse<import("../types/image").Image[], any>>;
+        }) => Promise<import("axios").AxiosResponse<string[], any>>;
         pin: (options: {
             threadId: number;
             commentId: number;

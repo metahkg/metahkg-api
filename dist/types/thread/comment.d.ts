@@ -12,6 +12,8 @@ export interface Comment {
     createdAt: string;
     /** shortened link */
     slink?: string;
+    /** url of images */
+    images: string[];
     /** number of downvotes */
     D?: number;
     /** number of upvotes */
