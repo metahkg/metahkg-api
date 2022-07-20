@@ -88,7 +88,7 @@ export default function Api(options: {
         }) => Promise<import("axios").AxiosResponse<import("./types/user").Profile, any>>;
     };
     me: {
-        uploadAvatar: (options: {
+        avatar: (options: {
             avatar: File;
         }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
         rename: (options: {
