@@ -1,3 +1,1 @@
-export interface votes {
-    [commentId: number]: "U" | "D";
-}
+export type votes = { cid: number; vote: "U" | "D" }[];
