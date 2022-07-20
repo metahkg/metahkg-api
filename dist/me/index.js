@@ -16,7 +16,7 @@ function users(axios) {
         status: (0, status_1.default)(axios),
         block: (0, block_1.default)(axios),
         unblock: (0, unblock_1.default)(axios),
-        blocklist: (0, blocked_1.default)(axios),
+        blocked: (0, blocked_1.default)(axios),
         votes: (0, votes_1.default)(axios)
     };
 }

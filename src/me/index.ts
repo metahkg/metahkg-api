@@ -9,7 +9,7 @@ import votes from "./votes"
 
 export default function users(axios: Axios) {
     return {
-        uploadAvatar: avatar(axios),
+        avatar: avatar(axios),
         rename: rename(axios),
         status: status(axios),
         block: block(axios),
