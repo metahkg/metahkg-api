@@ -9,7 +9,6 @@ export default function Api(options: {
         }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
         images: (options: {
             threadId: number;
-            commentId?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/image").Image[], any>>;
         get: (options: {
             threadId: number;
@@ -19,16 +18,6 @@ export default function Api(options: {
             sort?: "time" | "score" | "latest";
             limit?: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/thread/thread").Thread, any>>;
-        userVotes: (options: {
-            threadId: number;
-        }) => Promise<import("axios").AxiosResponse<import("./types/thread/userVotes").UserVotes, any>>;
-        pin: (options: {
-            threadId: number;
-            commentId: number;
-        }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
-        unpin: (options: {
-            threadId: number;
-        }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
         create: (options: {
             comment: string;
             rtoken: string;
@@ -62,12 +51,6 @@ export default function Api(options: {
         };
     };
     users: {
-        uploadAvatar: (options: {
-            avatar: File;
-        }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
-        rename: (options: {
-            name: string;
-        }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK & import("./types/token").Token, any>>;
         login: (options: {
             userNameOrEmail: string;
             password: string;
@@ -96,6 +79,21 @@ export default function Api(options: {
             verificationToken: string;
             newPassword: string;
         }) => Promise<import("axios").AxiosResponse<import("./types/token").Token, any>>;
+        avatars: (options: {
+            userId: number;
+        }) => Promise<import("axios").AxiosResponse<string, any>>;
+        profile: (options: {
+            userId: number;
+            nameonly?: boolean;
+        }) => Promise<import("axios").AxiosResponse<import("./types/user").Profile, any>>;
+    };
+    me: {
+        uploadAvatar: (options: {
+            avatar: File;
+        }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
+        rename: (options: {
+            name: string;
+        }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK & import("./types/token").Token, any>>;
         status: () => Promise<import("axios").AxiosResponse<{
             active: boolean;
             id?: number;
@@ -108,15 +106,9 @@ export default function Api(options: {
             userId: number;
         }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
         blocklist: () => Promise<import("axios").AxiosResponse<import("./types/user").User[], any>>;
-    };
-    profile: {
-        avatars: (options: {
-            userId: number;
-        }) => Promise<import("axios").AxiosResponse<string, any>>;
-        userProfile: (options: {
-            userId: number;
-            nameonly?: boolean;
-        }) => Promise<import("axios").AxiosResponse<import("./types/user").Profile, any>>;
+        votes: (options: {
+            threadId: number;
+        }) => Promise<import("axios").AxiosResponse<import("./types/me/votes").votes, any>>;
     };
     menu: {
         threads: (options: {

@@ -4,23 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const create_1 = __importDefault(require("./comments/create"));
 const create_2 = __importDefault(require("./create"));
-const pin_1 = __importDefault(require("./pin"));
-const unpin_1 = __importDefault(require("./unpin"));
 const vote_1 = __importDefault(require("./comments/vote"));
 const checkExist_1 = __importDefault(require("./checkExist"));
 const comment_1 = __importDefault(require("./comments/comment"));
 const replies_1 = __importDefault(require("./comments/replies"));
 const images_1 = __importDefault(require("./images"));
 const thread_1 = __importDefault(require("./thread"));
-const userVotes_1 = __importDefault(require("./userVotes"));
 function threads(axios) {
     return {
         checkExist: (0, checkExist_1.default)(axios),
         images: (0, images_1.default)(axios),
         get: (0, thread_1.default)(axios),
-        userVotes: (0, userVotes_1.default)(axios),
-        pin: (0, pin_1.default)(axios),
-        unpin: (0, unpin_1.default)(axios),
         create: (0, create_2.default)(axios),
         comments: {
             get: (0, comment_1.default)(axios),
