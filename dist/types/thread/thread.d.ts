@@ -6,7 +6,7 @@ export interface Summary {
     pin?: Comment;
     op: User;
     c: number;
-    vote: number;
+    score: number;
     slink?: string;
     title: string;
     category: number;
