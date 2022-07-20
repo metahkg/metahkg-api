@@ -7,6 +7,7 @@ import getComment from "./comments/comment";
 import replies from "./comments/replies";
 import images from "./images";
 import thread from "./thread";
+import comments from "./comments";
 
 export default function threads(axios: Axios) {
     return {
@@ -14,11 +15,6 @@ export default function threads(axios: Axios) {
         images: images(axios),
         get: thread(axios),
         create: create(axios),
-        comments: {
-            get: getComment(axios),
-            replies: replies(axios),
-            vote: vote(axios),
-            create: createComment(axios),
-        },
+        comments: comments(axios),
     };
 }

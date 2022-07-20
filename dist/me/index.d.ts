@@ -1,6 +1,6 @@
 import { Axios } from "axios";
 export default function users(axios: Axios): {
-    uploadAvatar: (options: {
+    avatar: (options: {
         avatar: File;
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
     rename: (options: {

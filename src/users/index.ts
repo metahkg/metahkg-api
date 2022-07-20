@@ -17,6 +17,6 @@ export default function users(axios: Axios) {
         forgot: forgot(axios),
         reset: reset(axios),
         avatars: avatars(axios),
-        profile: profile(axios)
+        profile: profile(axios),
     };
 }

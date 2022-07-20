@@ -5,7 +5,7 @@ import rename from "./rename";
 import status from "./status";
 import unblock from "./unblock";
 import blocked from "./blocked";
-import votes from "./votes"
+import votes from "./votes";
 
 export default function users(axios: Axios) {
     return {
@@ -15,6 +15,6 @@ export default function users(axios: Axios) {
         block: block(axios),
         unblock: unblock(axios),
         blocked: blocked(axios),
-        votes: votes(axios)
+        votes: votes(axios),
     };
 }

@@ -11,7 +11,7 @@ const blocked_1 = __importDefault(require("./blocked"));
 const votes_1 = __importDefault(require("./votes"));
 function users(axios) {
     return {
-        uploadAvatar: (0, avatar_1.default)(axios),
+        avatar: (0, avatar_1.default)(axios),
         rename: (0, rename_1.default)(axios),
         status: (0, status_1.default)(axios),
         block: (0, block_1.default)(axios),

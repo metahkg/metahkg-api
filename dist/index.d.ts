@@ -48,6 +48,18 @@ export default function Api(options: {
             }) => Promise<import("axios").AxiosResponse<{
                 id: number;
             }, any>>;
+            images: (options: {
+                threadId: number;
+                commentId: number;
+            }) => Promise<import("axios").AxiosResponse<import("./types/image").Image[], any>>;
+            pin: (options: {
+                threadId: number;
+                commentId: number;
+            }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
+            unpin: (options: {
+                threadId: number;
+                commentId: number;
+            }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
         };
     };
     users: {
@@ -88,7 +100,7 @@ export default function Api(options: {
         }) => Promise<import("axios").AxiosResponse<import("./types/user").Profile, any>>;
     };
     me: {
-        uploadAvatar: (options: {
+        avatar: (options: {
             avatar: File;
         }) => Promise<import("axios").AxiosResponse<import("./types/ok").OK, any>>;
         rename: (options: {

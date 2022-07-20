@@ -13,8 +13,6 @@ export default function thread(axios: Axios) {
     }) => {
         const { threadId, page, start, end, sort, limit } = options;
         const query = objToQuery({ page, start, end, sort, limit });
-        return axios.get<Thread>(
-            `/thread/${threadId}${query ? "?" + query : ""}`
-        );
+        return axios.get<Thread>(`/thread/${threadId}${query ? "?" + query : ""}`);
     };
 }
