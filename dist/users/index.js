@@ -19,7 +19,7 @@ function users(axios) {
         forgot: (0, forgot_1.default)(axios),
         reset: (0, reset_1.default)(axios),
         avatars: (0, avatars_1.default)(axios),
-        profile: (0, profile_1.default)(axios)
+        profile: (0, profile_1.default)(axios),
     };
 }
 exports.default = users;
