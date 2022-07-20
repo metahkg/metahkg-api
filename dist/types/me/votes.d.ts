@@ -1,3 +1,4 @@
-export interface votes {
-    [commentId: number]: "U" | "D";
-}
+export declare type votes = {
+    cid: number;
+    vote: "U" | "D";
+}[];
