@@ -22,6 +22,7 @@ export default function users(axios: Axios): {
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
     forgot: (options: {
         email: string;
+        rtoken: string;
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
     reset: (options: {
         email: string;
