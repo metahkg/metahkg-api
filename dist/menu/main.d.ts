@@ -6,4 +6,5 @@ export default function (axios: Axios): (options: RequireAtLeastOne<{
     threadId?: number;
     sort?: "Latest" | "Viral" | 0 | 1;
     page?: number;
+    limit?: number;
 }, "categoryId" | "threadId">) => Promise<import("axios").AxiosResponse<Summary[], any>>;

@@ -7,11 +7,13 @@ export default function (axios: Axios) {
         userId: number | "self";
         sort?: "Created" | "LastReply" | 0 | 1;
         page?: number;
+        limit?: number;
     }) => {
-        const { userId, sort, page } = options;
+        const { userId, sort, page, limit } = options;
         const query = objToQuery({
             sort: sort && { Created: 0, LastReply: 1, 0: 0, 1: 1 }[sort],
             page,
+            limit,
         });
         return axios.get<Summary[]>(`/menu/history/${userId}${query ? `?${query}` : ""}`);
     };

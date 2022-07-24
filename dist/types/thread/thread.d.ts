@@ -1,3 +1,4 @@
+import { Image } from "../image";
 import { User } from "../user";
 import { Comment } from "./comment";
 export interface Summary {
@@ -5,12 +6,13 @@ export interface Summary {
     pin?: Comment;
     op: User;
     c: number;
-    vote: number;
+    score: number;
     slink?: string;
     title: string;
     category: number;
     lastModified: string;
     createdAt: string;
+    images: Image[];
 }
 export declare type Thread = Summary & {
     conversation: (Comment & {

@@ -1,1 +1,0 @@
-{"version":3,"file":"rename.js","sourceRoot":"","sources":["../../src/users/rename.ts"],"names":[],"mappings":";AAIA,SAAwB,MAAM,CAAC,KAAY;IACvC,OAAO,CAAC,OAAyB,EAAE,EAAE;QACjC,MAAM,EAAE,IAAI,EAAE,GAAG,OAAO,CAAC;QACzB,OAAO,KAAK,CAAC,GAAG,CAAa,eAAe,EAAE;YAC1C,IAAI;SACP,CAAC,CAAC;IACP,CAAC,CAAC;AACN,CAAC;AAPD,yBAOC"}

@@ -1,6 +1,6 @@
 # Metahkg Api
 
-Access the Metahkg API.
+Wrapper for the [metahkg server](https://gitlab.com/metahkg/metahkg-server).
 
 ## Install
 
@@ -13,13 +13,15 @@ yarn add metahkg-api
 ```typescript
 import Api from "metahkg-api";
 
-async function main() {
-    const api = Api({
-        // choose a server or leave blank for /
-        baseUrl: "https://metahkg.org",
-        // user jwt token, leave blank if not logged in
-        token: "eyfcsgbsaabbdwqjog",
-    });
-    await api.threads.get({ threadId: 1 }).then(console.log);
-}
+const api = Api({
+    // choose a server or leave blank for /
+    baseUrl: "https://metahkg.org",
+    // user jwt token, leave blank if not logged in
+    token: "eyfcsgbsaabbdwqjog",
+    // action to do upon new token received in headers
+    setToken: (token: string) => {
+        // set token
+        localStorage.setItem("token", token);
+    },
+});
 ```

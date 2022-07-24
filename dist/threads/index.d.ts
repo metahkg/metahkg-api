@@ -5,7 +5,6 @@ export default function threads(axios: Axios): {
     }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
     images: (options: {
         threadId: number;
-        commentId?: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/image").Image[], any>>;
     get: (options: {
         threadId: number;
@@ -13,17 +12,8 @@ export default function threads(axios: Axios): {
         start?: number;
         end?: number;
         sort?: "time" | "score" | "latest";
+        limit?: number;
     }) => Promise<import("axios").AxiosResponse<import("../types/thread/thread").Thread, any>>;
-    userVotes: (options: {
-        threadId: number;
-    }) => Promise<import("axios").AxiosResponse<import("../types/thread/userVotes").UserVotes, any>>;
-    pin: (options: {
-        threadId: number;
-        commentId: number;
-    }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
-    unpin: (options: {
-        threadId: number;
-    }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
     create: (options: {
         comment: string;
         rtoken: string;
@@ -46,7 +36,7 @@ export default function threads(axios: Axios): {
             commentId: number;
             vote: "U" | "D";
         }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
-        add: (options: {
+        create: (options: {
             threadId: number;
             comment: string;
             rtoken: string;
@@ -54,5 +44,17 @@ export default function threads(axios: Axios): {
         }) => Promise<import("axios").AxiosResponse<{
             id: number;
         }, any>>;
+        images: (options: {
+            threadId: number;
+            commentId: number;
+        }) => Promise<import("axios").AxiosResponse<string[], any>>;
+        pin: (options: {
+            threadId: number;
+            commentId: number;
+        }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
+        unpin: (options: {
+            threadId: number;
+            commentId: number;
+        }) => Promise<import("axios").AxiosResponse<import("../types/ok").OK, any>>;
     };
 };
