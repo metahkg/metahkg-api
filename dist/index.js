@@ -16,7 +16,10 @@ class Client {
     constructor(baseUrl, instance) {
         this.jsonParseReviver = undefined;
         this.instance = instance ? instance : axios_1.default.create();
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://dev.metahkg.org/api";
+        this.baseUrl =
+            baseUrl !== undefined && baseUrl !== null
+                ? baseUrl
+                : "https://dev.metahkg.org/api";
     }
     /**
      * Get thread
@@ -58,18 +61,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processThread(_response);
         });
     }
@@ -133,18 +139,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processThreadCheck(_response);
         });
     }
@@ -193,18 +202,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processThreadImages(_response);
         });
     }
@@ -267,18 +279,21 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processThreadCreate(_response);
         });
     }
@@ -352,18 +367,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processComment(_response);
         });
     }
@@ -423,18 +441,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processCommentReplies(_response);
         });
     }
@@ -508,18 +529,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processCommentImages(_response);
         });
     }
@@ -593,18 +617,21 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processCommentCreate(_response);
         });
     }
@@ -682,18 +709,21 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processCommentVote(_response);
         });
     }
@@ -767,18 +797,21 @@ class Client {
             method: "PUT",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processCommentPin(_response);
         });
     }
@@ -852,18 +885,21 @@ class Client {
             method: "PUT",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processCommentUnpin(_response);
         });
     }
@@ -929,18 +965,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMeStatus(_response);
         });
     }
@@ -978,18 +1017,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMeBlocked(_response);
         });
     }
@@ -1045,18 +1087,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMeVotes(_response);
         });
     }
@@ -1115,18 +1160,21 @@ class Client {
             method: "POST",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMeBlock(_response);
         });
     }
@@ -1192,18 +1240,21 @@ class Client {
             method: "POST",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMeUnblock(_response);
         });
     }
@@ -1269,18 +1320,21 @@ class Client {
             method: "POST",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMeAvatar(_response);
         });
     }
@@ -1364,18 +1418,21 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMeRename(_response);
         });
     }
@@ -1434,18 +1491,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processCategories(_response);
         });
     }
@@ -1494,18 +1554,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processCategory(_response);
         });
     }
@@ -1561,18 +1624,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processUsersProfile(_response);
         });
     }
@@ -1628,18 +1694,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processUsersProfileName(_response);
         });
     }
@@ -1696,18 +1765,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "image/png"
+                Accept: "image/png",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processUsersProfileAvatar(_response);
         });
     }
@@ -1722,10 +1794,21 @@ class Client {
             }
         }
         if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers["content-disposition"] : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const contentDisposition = response.headers
+                ? response.headers["content-disposition"]
+                : undefined;
+            const fileNameMatch = contentDisposition
+                ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition)
+                : undefined;
             const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Promise.resolve({ fileName: fileName, status: status, data: new Blob([response.data], { type: response.headers["content-type"] }), headers: _headers });
+            return Promise.resolve({
+                fileName: fileName,
+                status: status,
+                data: new Blob([response.data], {
+                    type: response.headers["content-type"],
+                }),
+                headers: _headers,
+            });
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -1755,18 +1838,21 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processUsersLogin(_response);
         });
     }
@@ -1829,18 +1915,21 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processUsersRegister(_response);
         });
     }
@@ -1893,18 +1982,21 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processUsersVerify(_response);
         });
     }
@@ -1960,18 +2052,21 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processUsersResend(_response);
         });
     }
@@ -2034,18 +2129,21 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processUsersForgot(_response);
         });
     }
@@ -2108,18 +2206,21 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processUsersReset(_response);
         });
     }
@@ -2197,18 +2298,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMenuCategory(_response);
         });
     }
@@ -2292,18 +2396,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMenuSearch(_response);
         });
     }
@@ -2369,18 +2476,21 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMenuHistory(_response);
         });
     }
@@ -2438,24 +2548,30 @@ class Client {
         if (threads === undefined || threads === null)
             throw new Error("The parameter 'threads' must be defined and cannot be null.");
         else
-            threads && threads.forEach(item => { url_ += "threads=" + encodeURIComponent("" + item) + "&"; });
+            threads &&
+                threads.forEach((item) => {
+                    url_ += "threads=" + encodeURIComponent("" + item) + "&";
+                });
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
             url: url_,
             headers: {
-                "Accept": "application/json"
+                Accept: "application/json",
             },
-            cancelToken
+            cancelToken,
         };
-        return this.instance.request(options_).catch((_error) => {
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        }).then((_response) => {
+        })
+            .then((_response) => {
             return this.processMenuThreads(_response);
         });
     }
@@ -2513,13 +2629,13 @@ class OK {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new OK();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["response"] = this.response;
         return data;
     }
@@ -2540,13 +2656,13 @@ class Token {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Token();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["token"] = this.token;
         return data;
     }
@@ -2567,13 +2683,13 @@ class ErrorDto {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new ErrorDto();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["error"] = this.error;
         return data;
     }
@@ -2599,21 +2715,25 @@ class User {
             this.id = _data["id"];
             this.name = _data["name"];
             this.sex = _data["sex"];
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : undefined;
+            this.createdAt = _data["createdAt"]
+                ? new Date(_data["createdAt"].toString())
+                : undefined;
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new User();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
         data["sex"] = this.sex;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : undefined;
+        data["createdAt"] = this.createdAt
+            ? this.createdAt.toISOString()
+            : undefined;
         return data;
     }
 }
@@ -2634,13 +2754,13 @@ class Category {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Category();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
         return data;
@@ -2663,13 +2783,13 @@ class Image {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Image();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["cid"] = this.cid;
         data["src"] = this.src;
         return data;
@@ -2692,13 +2812,13 @@ class RemovedComment {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new RemovedComment();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["id"] = this.id;
         data["removed"] = this.removed;
         return data;
@@ -2730,19 +2850,21 @@ class CommentC {
                 for (let item of _data["images"])
                     this.images.push(item);
             }
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : undefined;
+            this.createdAt = _data["createdAt"]
+                ? new Date(_data["createdAt"].toString())
+                : undefined;
             this.slink = _data["slink"];
             this.quote = _data["quote"];
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new CommentC();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["id"] = this.id;
         data["user"] = this.user ? this.user.toJSON() : undefined;
         data["comment"] = this.comment;
@@ -2752,7 +2874,9 @@ class CommentC {
             for (let item of this.images)
                 data["images"].push(item);
         }
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : undefined;
+        data["createdAt"] = this.createdAt
+            ? this.createdAt.toISOString()
+            : undefined;
         data["slink"] = this.slink;
         data["quote"] = this.quote;
         return data;
@@ -2777,13 +2901,13 @@ class Comment extends CommentC {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Comment();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["D"] = this.d;
         data["U"] = this.u;
         if (Array.isArray(this.replies)) {
@@ -2828,20 +2952,24 @@ class Thread {
                 for (let item of _data["images"])
                     this.images.push(Image.fromJS(item));
             }
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : undefined;
-            this.lastModified = _data["lastModified"] ? new Date(_data["lastModified"].toString()) : undefined;
+            this.createdAt = _data["createdAt"]
+                ? new Date(_data["createdAt"].toString())
+                : undefined;
+            this.lastModified = _data["lastModified"]
+                ? new Date(_data["lastModified"].toString())
+                : undefined;
             this.slink = _data["slink"];
             this.pin = _data["pin"] ? CommentC.fromJS(_data["pin"]) : undefined;
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Thread();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["id"] = this.id;
         data["title"] = this.title;
         data["category"] = this.category;
@@ -2858,8 +2986,12 @@ class Thread {
             for (let item of this.images)
                 data["images"].push(item.toJSON());
         }
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : undefined;
-        data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : undefined;
+        data["createdAt"] = this.createdAt
+            ? this.createdAt.toISOString()
+            : undefined;
+        data["lastModified"] = this.lastModified
+            ? this.lastModified.toISOString()
+            : undefined;
         data["slink"] = this.slink;
         data["pin"] = this.pin ? this.pin.toJSON() : undefined;
         return data;
@@ -2887,27 +3019,35 @@ class ThreadMeta {
             this.op = _data["op"] ? User.fromJS(_data["op"]) : new User();
             this.c = _data["c"];
             this.score = _data["score"];
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : undefined;
-            this.lastModified = _data["lastModified"] ? new Date(_data["lastModified"].toString()) : undefined;
+            this.createdAt = _data["createdAt"]
+                ? new Date(_data["createdAt"].toString())
+                : undefined;
+            this.lastModified = _data["lastModified"]
+                ? new Date(_data["lastModified"].toString())
+                : undefined;
             this.slink = _data["slink"];
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new ThreadMeta();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["id"] = this.id;
         data["title"] = this.title;
         data["category"] = this.category;
         data["op"] = this.op ? this.op.toJSON() : undefined;
         data["c"] = this.c;
         data["score"] = this.score;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : undefined;
-        data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : undefined;
+        data["createdAt"] = this.createdAt
+            ? this.createdAt.toISOString()
+            : undefined;
+        data["lastModified"] = this.lastModified
+            ? this.lastModified.toISOString()
+            : undefined;
         data["slink"] = this.slink;
         return data;
     }
@@ -2937,13 +3077,13 @@ class Body {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Body();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["title"] = this.title;
         data["comment"] = this.comment;
         data["rtoken"] = this.rtoken;
@@ -2969,13 +3109,13 @@ class Body2 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Body2();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["comment"] = this.comment;
         data["rtoken"] = this.rtoken;
         data["quote"] = this.quote;
@@ -2998,13 +3138,13 @@ class Body3 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Body3();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["vote"] = this.vote;
         return data;
     }
@@ -3025,13 +3165,13 @@ class Body4 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Body4();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["name"] = this.name;
         return data;
     }
@@ -3046,16 +3186,15 @@ class Id {
             }
         }
     }
-    init(_data) {
-    }
+    init(_data) { }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Id();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         return data;
     }
 }
@@ -3076,13 +3215,13 @@ class Body5 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Body5();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["name"] = this.name;
         data["pwd"] = this.pwd;
         return data;
@@ -3109,13 +3248,13 @@ class Body6 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Body6();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["name"] = this.name;
         data["email"] = this.email;
         data["pwd"] = this.pwd;
@@ -3142,13 +3281,13 @@ class Body7 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Body7();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["email"] = this.email;
         data["code"] = this.code;
         return data;
@@ -3171,13 +3310,13 @@ class Body8 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Body8();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["email"] = this.email;
         data["rtoken"] = this.rtoken;
         return data;
@@ -3200,13 +3339,13 @@ class Body9 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Body9();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["email"] = this.email;
         data["rtoken"] = this.rtoken;
         return data;
@@ -3230,13 +3369,13 @@ class Body10 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Body10();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["email"] = this.email;
         data["code"] = this.code;
         data["pwd"] = this.pwd;
@@ -3274,13 +3413,13 @@ class Anonymous {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Anonymous();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["id"] = this.id;
         return data;
     }
@@ -3301,13 +3440,13 @@ class Anonymous2 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Anonymous2();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["id"] = this.id;
         return data;
     }
@@ -3328,13 +3467,13 @@ class Anonymous3 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Anonymous3();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["active"] = this.active;
         return data;
     }
@@ -3356,13 +3495,13 @@ class Anonymous4 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Anonymous4();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["cid"] = this.cid;
         data["vote"] = this.vote;
         return data;
@@ -3380,13 +3519,13 @@ class Anonymous5 extends OK {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Anonymous5();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["token"] = this.token;
         super.toJSON(data);
         return data;
@@ -3404,13 +3543,13 @@ class Anonymous6 extends User {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Anonymous6();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["count"] = this.count;
         super.toJSON(data);
         return data;
@@ -3432,13 +3571,13 @@ class Anonymous7 {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Anonymous7();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["name"] = this.name;
         return data;
     }
@@ -3461,13 +3600,13 @@ class Quote extends CommentC {
         super.init(_data);
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Quote();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         super.toJSON(data);
         return data;
     }
@@ -3485,13 +3624,13 @@ class Conversation extends Comment {
         }
     }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Conversation();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         data["score"] = this.score;
         super.toJSON(data);
         return data;
@@ -3507,16 +3646,15 @@ class Name {
             }
         }
     }
-    init(_data) {
-    }
+    init(_data) { }
     static fromJS(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         let result = new Name();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === 'object' ? data : {};
+        data = typeof data === "object" ? data : {};
         return data;
     }
 }

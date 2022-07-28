@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse, CancelToken } from 'axios';
+import { AxiosInstance, AxiosResponse, CancelToken } from "axios";
 export declare class Client {
     private instance;
     private baseUrl;
