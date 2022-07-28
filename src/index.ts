@@ -2874,14 +2874,14 @@ export class Client {
 
     /**
      * Get threads in a category
-     * @param category category id
+     * @param category category id, or bytid<thread id>
      * @param sort (optional) Sort threads by `0: latest` or `1: viral`
      * @param page (optional) page number
      * @param limit (optional) limit per page
      * @return Success
      */
     menuCategory(
-        category: number,
+        category: Category2,
         sort?: Sort2,
         page?: number,
         limit?: number,
@@ -3078,12 +3078,14 @@ export class Client {
     /**
      * Get threads created by a user
      * @param id user id
+     * @param sort (optional) Sort threads by `0: Created time` or `1: Last comment time`
      * @param page (optional) page number
      * @param limit (optional) limit per page
      * @return Success
      */
     menuHistory(
         id: number,
+        sort?: Sort4,
         page?: number,
         limit?: number,
         cancelToken?: CancelToken | undefined
@@ -3092,6 +3094,9 @@ export class Client {
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (sort === null) throw new Error("The parameter 'sort' cannot be null.");
+        else if (sort !== undefined)
+            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
         if (page === null) throw new Error("The parameter 'page' cannot be null.");
         else if (page !== undefined)
             url_ += "page=" + encodeURIComponent("" + page) + "&";
@@ -3443,6 +3448,8 @@ export interface Body10 {
     pwd: string;
 }
 
+export interface Category2 {}
+
 export enum Sort2 {
     _0 = 0,
     _1 = 1,
@@ -3454,6 +3461,11 @@ export enum Mode {
 }
 
 export enum Sort3 {
+    _0 = 0,
+    _1 = 1,
+}
+
+export enum Sort4 {
     _0 = 0,
     _1 = 1,
 }

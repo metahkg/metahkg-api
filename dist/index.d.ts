@@ -217,13 +217,13 @@ export declare class Client {
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
     /**
      * Get threads in a category
-     * @param category category id
+     * @param category category id, or bytid<thread id>
      * @param sort (optional) Sort threads by `0: latest` or `1: viral`
      * @param page (optional) page number
      * @param limit (optional) limit per page
      * @return Success
      */
-    menuCategory(category: number, sort?: Sort2, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    menuCategory(category: Category2, sort?: Sort2, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
     protected processMenuCategory(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Search threads
@@ -239,11 +239,12 @@ export declare class Client {
     /**
      * Get threads created by a user
      * @param id user id
+     * @param sort (optional) Sort threads by `0: Created time` or `1: Last comment time`
      * @param page (optional) page number
      * @param limit (optional) limit per page
      * @return Success
      */
-    menuHistory(id: number, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    menuHistory(id: number, sort?: Sort4, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
     protected processMenuHistory(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Get threads
@@ -410,6 +411,8 @@ export interface Body10 {
     code: string;
     pwd: string;
 }
+export interface Category2 {
+}
 export declare enum Sort2 {
     _0 = 0,
     _1 = 1
@@ -419,6 +422,10 @@ export declare enum Mode {
     _1 = 1
 }
 export declare enum Sort3 {
+    _0 = 0,
+    _1 = 1
+}
+export declare enum Sort4 {
     _0 = 0,
     _1 = 1
 }

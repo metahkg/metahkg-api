@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.isConversation = exports.isQuote = exports.UserSex = exports.OKResponse = exports.isAnonymous6 = exports.isAnonymous5 = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Sort = exports.isComment = exports.Vote = exports.Client = void 0;
+exports.ApiException = exports.isConversation = exports.isQuote = exports.UserSex = exports.OKResponse = exports.isAnonymous6 = exports.isAnonymous5 = exports.Sort4 = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Sort = exports.isComment = exports.Vote = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -2229,7 +2229,7 @@ class Client {
     }
     /**
      * Get threads in a category
-     * @param category category id
+     * @param category category id, or bytid<thread id>
      * @param sort (optional) Sort threads by `0: latest` or `1: viral`
      * @param page (optional) page number
      * @param limit (optional) limit per page
@@ -2399,15 +2399,20 @@ class Client {
     /**
      * Get threads created by a user
      * @param id user id
+     * @param sort (optional) Sort threads by `0: Created time` or `1: Last comment time`
      * @param page (optional) page number
      * @param limit (optional) limit per page
      * @return Success
      */
-    menuHistory(id, page, limit, cancelToken) {
+    menuHistory(id, sort, page, limit, cancelToken) {
         let url_ = this.baseUrl + "/menu/history/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (sort === null)
+            throw new Error("The parameter 'sort' cannot be null.");
+        else if (sort !== undefined)
+            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
         else if (page !== undefined)
@@ -2576,6 +2581,11 @@ var Sort3;
     Sort3[Sort3["_0"] = 0] = "_0";
     Sort3[Sort3["_1"] = 1] = "_1";
 })(Sort3 = exports.Sort3 || (exports.Sort3 = {}));
+var Sort4;
+(function (Sort4) {
+    Sort4[Sort4["_0"] = 0] = "_0";
+    Sort4[Sort4["_1"] = 1] = "_1";
+})(Sort4 = exports.Sort4 || (exports.Sort4 = {}));
 function isAnonymous5(object) {
     return object && object[""] === "Anonymous5";
 }

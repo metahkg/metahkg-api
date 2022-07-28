@@ -14,3 +14,5 @@ client
 client.comment(1, 1).then((data) => {
     console.log(data.D);
 }).catch(console.error);
+
+client.category("bytid17").then(console.log).catch(console.error);
