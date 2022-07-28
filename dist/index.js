@@ -2481,10 +2481,7 @@ class Client {
         if (threads === undefined || threads === null)
             throw new Error("The parameter 'threads' must be defined and cannot be null.");
         else
-            threads &&
-                threads.forEach((item) => {
-                    url_ += "threads=" + encodeURIComponent("" + item) + "&";
-                });
+            url_ += "threads=" + JSON.stringify(threads) + "&";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",

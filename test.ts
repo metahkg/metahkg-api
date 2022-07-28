@@ -16,3 +16,7 @@ client.comment(1, 1).then((data) => {
 }).catch(console.error);
 
 client.category("bytid17").then(console.log).catch(console.error);
+
+client.menuThreads([1,2]).then((data) => {
+    console.log(data.map(d => d.id))
+}).catch(console.error);

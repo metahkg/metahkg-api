@@ -3184,11 +3184,7 @@ export class Client {
             throw new Error(
                 "The parameter 'threads' must be defined and cannot be null."
             );
-        else
-            threads &&
-                threads.forEach((item) => {
-                    url_ += "threads=" + encodeURIComponent("" + item) + "&";
-                });
+        else url_ += "threads=" + JSON.stringify(threads) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
