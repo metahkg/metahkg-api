@@ -8,23 +8,17 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-import axios, {
-    AxiosError,
-    AxiosInstance,
-    AxiosRequestConfig,
-    AxiosResponse,
-    CancelToken,
-} from "axios";
-
 export class Client {
-    private instance: AxiosInstance;
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
         undefined;
 
-    constructor(baseUrl?: string, instance?: AxiosInstance) {
-        this.instance = instance ? instance : axios.create();
-
+    constructor(
+        baseUrl?: string,
+        http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }
+    ) {
+        this.http = http ? http : (window as any);
         this.baseUrl =
             baseUrl !== undefined && baseUrl !== null
                 ? baseUrl
@@ -47,8 +41,7 @@ export class Client {
         limit?: number,
         sort?: Sort,
         start?: number,
-        end?: number,
-        cancelToken?: CancelToken | undefined
+        end?: number
     ): Promise<Thread> {
         let url_ = this.baseUrl + "/thread/{id}?";
         if (id === undefined || id === null)
@@ -70,89 +63,87 @@ export class Client {
         else if (end !== undefined) url_ += "end=" + encodeURIComponent("" + end) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processThread(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processThread(_response);
+        });
     }
 
-    protected processThread(response: AxiosResponse): Promise<Thread> {
+    protected processThread(response: Response): Promise<Thread> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = Thread.fromJS(resultData200);
-            return Promise.resolve<Thread>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as Thread);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403 = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
-            return throwException(
-                "Forbidden",
-                status,
-                _responseText,
-                _headers,
-                result403
-            );
+            return response.text().then((_responseText) => {
+                let result403: any = null;
+                result403 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Forbidden",
+                    status,
+                    _responseText,
+                    _headers,
+                    result403
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Thread>(null as any);
     }
@@ -162,72 +153,64 @@ export class Client {
      * @param id thread id
      * @return OK
      */
-    threadCheck(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    threadCheck(id: number): Promise<OK> {
         let url_ = this.baseUrl + "/thread/check?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
         else url_ += "id=" + encodeURIComponent("" + id) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processThreadCheck(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processThreadCheck(_response);
+        });
     }
 
-    protected processThreadCheck(response: AxiosResponse): Promise<OK> {
+    protected processThreadCheck(response: Response): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
-            return Promise.resolve<OK>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as OK);
+                return result200;
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<OK>(null as any);
     }
@@ -237,89 +220,79 @@ export class Client {
      * @param id thread id
      * @return Success
      */
-    threadImages(id: number, cancelToken?: CancelToken | undefined): Promise<Image[]> {
+    threadImages(id: number): Promise<Image[]> {
         let url_ = this.baseUrl + "/thread/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processThreadImages(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processThreadImages(_response);
+        });
     }
 
-    protected processThreadImages(response: AxiosResponse): Promise<Image[]> {
+    protected processThreadImages(response: Response): Promise<Image[]> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) result200!.push(Image.fromJS(item));
-            } else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<Image[]>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as Image[]);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Image[]>(null as any);
     }
@@ -329,109 +302,110 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    threadCreate(body?: Body, cancelToken?: CancelToken | undefined): Promise<Anonymous> {
+    threadCreate(body?: Body): Promise<Anonymous> {
         let url_ = this.baseUrl + "/thread/create";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "POST",
-            url: url_,
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processThreadCreate(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processThreadCreate(_response);
+        });
     }
 
-    protected processThreadCreate(response: AxiosResponse): Promise<Anonymous> {
+    protected processThreadCreate(response: Response): Promise<Anonymous> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = Anonymous.fromJS(resultData200);
-            return Promise.resolve<Anonymous>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as Anonymous);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Category not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Category not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
-            return throwException(
-                "Recaptcha token invalid",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
+            return response.text().then((_responseText) => {
+                let result429: any = null;
+                result429 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Recaptcha token invalid",
+                    status,
+                    _responseText,
+                    _headers,
+                    result429
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Anonymous>(null as any);
     }
@@ -442,11 +416,7 @@ export class Client {
      * @param cid comment id
      * @return Success
      */
-    comment(
-        id: number,
-        cid: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<Comment> {
+    comment(id: number, cid: number): Promise<Comment> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -456,77 +426,72 @@ export class Client {
         url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processComment(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processComment(_response);
+        });
     }
 
-    protected processComment(response: AxiosResponse): Promise<Comment> {
+    protected processComment(response: Response): Promise<Comment> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = Comment.fromJS(resultData200);
-            return Promise.resolve<Comment>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as Comment);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread or comment not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread or comment not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Comment>(null as any);
     }
@@ -537,11 +502,7 @@ export class Client {
      * @param cid comment id
      * @return Success
      */
-    commentReplies(
-        id: number,
-        cid: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<Comment[]> {
+    commentReplies(id: number, cid: number): Promise<Comment[]> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/replies";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -551,94 +512,87 @@ export class Client {
         url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processCommentReplies(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCommentReplies(_response);
+        });
     }
 
-    protected processCommentReplies(response: AxiosResponse): Promise<Comment[]> {
+    protected processCommentReplies(response: Response): Promise<Comment[]> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) result200!.push(Comment.fromJS(item));
-            } else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<Comment[]>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as Comment[]);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread or comment not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread or comment not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 410) {
-            const _responseText = response.data;
-            let result410: any = null;
-            let resultData410 = _responseText;
-            result410 = ErrorDto.fromJS(resultData410);
-            return throwException(
-                "Comment removed",
-                status,
-                _responseText,
-                _headers,
-                result410
-            );
+            return response.text().then((_responseText) => {
+                let result410: any = null;
+                result410 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Comment removed",
+                    status,
+                    _responseText,
+                    _headers,
+                    result410
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Comment[]>(null as any);
     }
@@ -649,11 +603,7 @@ export class Client {
      * @param cid comment id
      * @return Success
      */
-    commentImages(
-        id: number,
-        cid: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<Image[]> {
+    commentImages(id: number, cid: number): Promise<Image[]> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -663,94 +613,87 @@ export class Client {
         url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processCommentImages(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCommentImages(_response);
+        });
     }
 
-    protected processCommentImages(response: AxiosResponse): Promise<Image[]> {
+    protected processCommentImages(response: Response): Promise<Image[]> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) result200!.push(Image.fromJS(item));
-            } else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<Image[]>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as Image[]);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread or comment not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread or comment not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 410) {
-            const _responseText = response.data;
-            let result410: any = null;
-            let resultData410 = _responseText;
-            result410 = ErrorDto.fromJS(resultData410);
-            return throwException(
-                "Comment removed",
-                status,
-                _responseText,
-                _headers,
-                result410
-            );
+            return response.text().then((_responseText) => {
+                let result410: any = null;
+                result410 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Comment removed",
+                    status,
+                    _responseText,
+                    _headers,
+                    result410
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Image[]>(null as any);
     }
@@ -761,11 +704,7 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    commentCreate(
-        id: number,
-        body?: Body2,
-        cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous2> {
+    commentCreate(id: number, body?: Body2): Promise<Anonymous2> {
         let url_ = this.baseUrl + "/thread/{id}/comment/create";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -774,103 +713,107 @@ export class Client {
 
         const content_ = JSON.stringify(body);
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "POST",
-            url: url_,
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processCommentCreate(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCommentCreate(_response);
+        });
     }
 
-    protected processCommentCreate(response: AxiosResponse): Promise<Anonymous2> {
+    protected processCommentCreate(response: Response): Promise<Anonymous2> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = Anonymous2.fromJS(resultData200);
-            return Promise.resolve<Anonymous2>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as Anonymous2);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
-            return throwException(
-                "Recaptcha token invalid",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
+            return response.text().then((_responseText) => {
+                let result429: any = null;
+                result429 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Recaptcha token invalid",
+                    status,
+                    _responseText,
+                    _headers,
+                    result429
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Anonymous2>(null as any);
     }
@@ -882,12 +825,7 @@ export class Client {
      * @param cid comment id
      * @return OK
      */
-    commentVote(
-        id: number,
-        cid: number,
-        body?: Body3,
-        cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    commentVote(id: number, cid: number, body?: Body3): Promise<OK> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/vote";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -899,103 +837,104 @@ export class Client {
 
         const content_ = JSON.stringify(body);
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "POST",
-            url: url_,
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processCommentVote(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCommentVote(_response);
+        });
     }
 
-    protected processCommentVote(response: AxiosResponse): Promise<OK> {
+    protected processCommentVote(response: Response): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
-            return Promise.resolve<OK>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as OK);
+                return result200;
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread or comment not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread or comment not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 410) {
-            const _responseText = response.data;
-            let result410: any = null;
-            let resultData410 = _responseText;
-            result410 = ErrorDto.fromJS(resultData410);
-            return throwException(
-                "Comment removed",
-                status,
-                _responseText,
-                _headers,
-                result410
-            );
+            return response.text().then((_responseText) => {
+                let result410: any = null;
+                result410 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Comment removed",
+                    status,
+                    _responseText,
+                    _headers,
+                    result410
+                );
+            });
         } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
-            return throwException(
-                "User has already voted",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
+            return response.text().then((_responseText) => {
+                let result429: any = null;
+                result429 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "User has already voted",
+                    status,
+                    _responseText,
+                    _headers,
+                    result429
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<OK>(null as any);
     }
@@ -1006,11 +945,7 @@ export class Client {
      * @param cid comment id
      * @return OK
      */
-    commentPin(
-        id: number,
-        cid: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    commentPin(id: number, cid: number): Promise<OK> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/pin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1020,101 +955,102 @@ export class Client {
         url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "PUT",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processCommentPin(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCommentPin(_response);
+        });
     }
 
-    protected processCommentPin(response: AxiosResponse): Promise<OK> {
+    protected processCommentPin(response: Response): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
-            return Promise.resolve<OK>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as OK);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread or comment not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread or comment not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 410) {
-            const _responseText = response.data;
-            let result410: any = null;
-            let resultData410 = _responseText;
-            result410 = ErrorDto.fromJS(resultData410);
-            return throwException(
-                "Comment removed",
-                status,
-                _responseText,
-                _headers,
-                result410
-            );
+            return response.text().then((_responseText) => {
+                let result410: any = null;
+                result410 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Comment removed",
+                    status,
+                    _responseText,
+                    _headers,
+                    result410
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<OK>(null as any);
     }
@@ -1125,11 +1061,7 @@ export class Client {
      * @param cid comment id
      * @return OK
      */
-    commentUnpin(
-        id: number,
-        cid: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    commentUnpin(id: number, cid: number): Promise<OK> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/unpin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1139,101 +1071,102 @@ export class Client {
         url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "PUT",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processCommentUnpin(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCommentUnpin(_response);
+        });
     }
 
-    protected processCommentUnpin(response: AxiosResponse): Promise<OK> {
+    protected processCommentUnpin(response: Response): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
-            return Promise.resolve<OK>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as OK);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread or comment not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread or comment not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 409) {
-            const _responseText = response.data;
-            let result409: any = null;
-            let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
-            return throwException(
-                "Comment not pinned",
-                status,
-                _responseText,
-                _headers,
-                result409
-            );
+            return response.text().then((_responseText) => {
+                let result409: any = null;
+                result409 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Comment not pinned",
+                    status,
+                    _responseText,
+                    _headers,
+                    result409
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<OK>(null as any);
     }
@@ -1242,57 +1175,49 @@ export class Client {
      * Get status
      * @return Success
      */
-    meStatus(cancelToken?: CancelToken | undefined): Promise<Anonymous3> {
+    meStatus(): Promise<Anonymous3> {
         let url_ = this.baseUrl + "/me/status";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeStatus(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMeStatus(_response);
+        });
     }
 
-    protected processMeStatus(response: AxiosResponse): Promise<Anonymous3> {
+    protected processMeStatus(response: Response): Promise<Anonymous3> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = Anonymous3.fromJS(resultData200);
-            return Promise.resolve<Anonymous3>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as Anonymous3);
+                return result200;
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Anonymous3>(null as any);
     }
@@ -1301,74 +1226,61 @@ export class Client {
      * Get blocked users
      * @return Success
      */
-    meBlocked(cancelToken?: CancelToken | undefined): Promise<User[]> {
+    meBlocked(): Promise<User[]> {
         let url_ = this.baseUrl + "/me/blocked";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeBlocked(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMeBlocked(_response);
+        });
     }
 
-    protected processMeBlocked(response: AxiosResponse): Promise<User[]> {
+    protected processMeBlocked(response: Response): Promise<User[]> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) result200!.push(User.fromJS(item));
-            } else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<User[]>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as User[]);
+                return result200;
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<User[]>(null as any);
     }
@@ -1378,89 +1290,82 @@ export class Client {
      * @param id thread id
      * @return Success
      */
-    meVotes(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous4[]> {
+    meVotes(id: number): Promise<Anonymous4[]> {
         let url_ = this.baseUrl + "/me/votes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeVotes(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMeVotes(_response);
+        });
     }
 
-    protected processMeVotes(response: AxiosResponse): Promise<Anonymous4[]> {
+    protected processMeVotes(response: Response): Promise<Anonymous4[]> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) result200!.push(Anonymous4.fromJS(item));
-            } else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<Anonymous4[]>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as Anonymous4[]);
+                return result200;
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Thread not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Thread not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Anonymous4[]>(null as any);
     }
@@ -1469,105 +1374,106 @@ export class Client {
      * Block user
      * @return OK
      */
-    meBlock(cancelToken?: CancelToken | undefined): Promise<OK> {
+    meBlock(): Promise<OK> {
         let url_ = this.baseUrl + "/me/block";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "POST",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeBlock(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMeBlock(_response);
+        });
     }
 
-    protected processMeBlock(response: AxiosResponse): Promise<OK> {
+    protected processMeBlock(response: Response): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
-            return Promise.resolve<OK>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as OK);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "User not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "User not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 409) {
-            const _responseText = response.data;
-            let result409: any = null;
-            let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
-            return throwException(
-                "User already blocked",
-                status,
-                _responseText,
-                _headers,
-                result409
-            );
+            return response.text().then((_responseText) => {
+                let result409: any = null;
+                result409 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "User already blocked",
+                    status,
+                    _responseText,
+                    _headers,
+                    result409
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<OK>(null as any);
     }
@@ -1576,93 +1482,91 @@ export class Client {
      * Unblock user
      * @return OK
      */
-    meUnblock(cancelToken?: CancelToken | undefined): Promise<OK> {
+    meUnblock(): Promise<OK> {
         let url_ = this.baseUrl + "/me/unblock";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "POST",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeUnblock(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMeUnblock(_response);
+        });
     }
 
-    protected processMeUnblock(response: AxiosResponse): Promise<OK> {
+    protected processMeUnblock(response: Response): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
-            return Promise.resolve<OK>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as OK);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 409) {
-            const _responseText = response.data;
-            let result409: any = null;
-            let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
-            return throwException(
-                "User not blocked",
-                status,
-                _responseText,
-                _headers,
-                result409
-            );
+            return response.text().then((_responseText) => {
+                let result409: any = null;
+                result409 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "User not blocked",
+                    status,
+                    _responseText,
+                    _headers,
+                    result409
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<OK>(null as any);
     }
@@ -1672,7 +1576,7 @@ export class Client {
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
      * @return OK
      */
-    meAvatar(avatar?: FileParameter, cancelToken?: CancelToken | undefined): Promise<OK> {
+    meAvatar(avatar?: FileParameter): Promise<OK> {
         let url_ = this.baseUrl + "/me/avatar";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1686,126 +1590,133 @@ export class Client {
                 avatar.fileName ? avatar.fileName : "avatar"
             );
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "POST",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeAvatar(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMeAvatar(_response);
+        });
     }
 
-    protected processMeAvatar(response: AxiosResponse): Promise<OK> {
+    protected processMeAvatar(response: Response): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
-            return Promise.resolve<OK>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as OK);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 413) {
-            const _responseText = response.data;
-            let result413: any = null;
-            let resultData413 = _responseText;
-            result413 = ErrorDto.fromJS(resultData413);
-            return throwException(
-                "File too large",
-                status,
-                _responseText,
-                _headers,
-                result413
-            );
+            return response.text().then((_responseText) => {
+                let result413: any = null;
+                result413 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "File too large",
+                    status,
+                    _responseText,
+                    _headers,
+                    result413
+                );
+            });
         } else if (status === 415) {
-            const _responseText = response.data;
-            let result415: any = null;
-            let resultData415 = _responseText;
-            result415 = ErrorDto.fromJS(resultData415);
-            return throwException(
-                "File type not supported",
-                status,
-                _responseText,
-                _headers,
-                result415
-            );
+            return response.text().then((_responseText) => {
+                let result415: any = null;
+                result415 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "File type not supported",
+                    status,
+                    _responseText,
+                    _headers,
+                    result415
+                );
+            });
         } else if (status === 422) {
-            const _responseText = response.data;
-            let result422: any = null;
-            let resultData422 = _responseText;
-            result422 = ErrorDto.fromJS(resultData422);
-            return throwException(
-                "File unprocessable",
-                status,
-                _responseText,
-                _headers,
-                result422
-            );
+            return response.text().then((_responseText) => {
+                let result422: any = null;
+                result422 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "File unprocessable",
+                    status,
+                    _responseText,
+                    _headers,
+                    result422
+                );
+            });
         } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500 = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
-            return throwException(
-                "Internal server error",
-                status,
-                _responseText,
-                _headers,
-                result500
-            );
+            return response.text().then((_responseText) => {
+                let result500: any = null;
+                result500 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Internal server error",
+                    status,
+                    _responseText,
+                    _headers,
+                    result500
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<OK>(null as any);
     }
@@ -1815,98 +1726,98 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    meRename(body?: Body4, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
+    meRename(body?: Body4): Promise<Anonymous5> {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "PUT",
-            url: url_,
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeRename(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMeRename(_response);
+        });
     }
 
-    protected processMeRename(response: AxiosResponse): Promise<Anonymous5> {
+    protected processMeRename(response: Response): Promise<Anonymous5> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-
-            return Promise.resolve<Anonymous5>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as Anonymous5);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Unauthorized",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 409) {
-            const _responseText = response.data;
-            let result409: any = null;
-            let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
-            return throwException(
-                "Name already taken",
-                status,
-                _responseText,
-                _headers,
-                result409
-            );
+            return response.text().then((_responseText) => {
+                let result409: any = null;
+                result409 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Name already taken",
+                    status,
+                    _responseText,
+                    _headers,
+                    result409
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Anonymous5>(null as any);
     }
@@ -1915,62 +1826,49 @@ export class Client {
      * Get categories
      * @return Success
      */
-    categories(cancelToken?: CancelToken | undefined): Promise<Category[]> {
+    categories(): Promise<Category[]> {
         let url_ = this.baseUrl + "/categories";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processCategories(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCategories(_response);
+        });
     }
 
-    protected processCategories(response: AxiosResponse): Promise<Category[]> {
+    protected processCategories(response: Response): Promise<Category[]> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) result200!.push(Category.fromJS(item));
-            } else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<Category[]>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as Category[]);
+                return result200;
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Category[]>(null as any);
     }
@@ -1980,84 +1878,79 @@ export class Client {
      * @param id category id, or `bytid<thread id>`
      * @return Success
      */
-    category(id: Id, cancelToken?: CancelToken | undefined): Promise<Category> {
+    category(id: Id): Promise<Category> {
         let url_ = this.baseUrl + "/category/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processCategory(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCategory(_response);
+        });
     }
 
-    protected processCategory(response: AxiosResponse): Promise<Category> {
+    protected processCategory(response: Response): Promise<Category> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = Category.fromJS(resultData200);
-            return Promise.resolve<Category>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as Category);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Category not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Category not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Category>(null as any);
     }
@@ -2067,85 +1960,82 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    usersProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6> {
+    usersProfile(id: number): Promise<Anonymous6> {
         let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processUsersProfile(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersProfile(_response);
+        });
     }
 
-    protected processUsersProfile(response: AxiosResponse): Promise<Anonymous6> {
+    protected processUsersProfile(response: Response): Promise<Anonymous6> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-
-            return Promise.resolve<Anonymous6>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as Anonymous6);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "User not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "User not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Anonymous6>(null as any);
     }
@@ -2155,87 +2045,82 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    usersProfileName(
-        id: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous7> {
+    usersProfileName(id: number): Promise<Anonymous7> {
         let url_ = this.baseUrl + "/users/{id}/name";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processUsersProfileName(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersProfileName(_response);
+        });
     }
 
-    protected processUsersProfileName(response: AxiosResponse): Promise<Anonymous7> {
+    protected processUsersProfileName(response: Response): Promise<Anonymous7> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = Anonymous7.fromJS(resultData200);
-            return Promise.resolve<Anonymous7>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as Anonymous7);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "User not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "User not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Anonymous7>(null as any);
     }
@@ -2245,87 +2130,72 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    usersProfileAvatar(
-        id: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<FileResponse> {
+    usersProfileAvatar(id: number): Promise<FileResponse> {
         let url_ = this.baseUrl + "/users/{id}/avatar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
-            responseType: "blob",
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "image/png",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processUsersProfileAvatar(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersProfileAvatar(_response);
+        });
     }
 
-    protected processUsersProfileAvatar(response: AxiosResponse): Promise<FileResponse> {
+    protected processUsersProfileAvatar(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200 || status === 206) {
             const contentDisposition = response.headers
-                ? response.headers["content-disposition"]
+                ? response.headers.get("content-disposition")
                 : undefined;
             const fileNameMatch = contentDisposition
                 ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition)
                 : undefined;
             const fileName =
                 fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Promise.resolve({
-                fileName: fileName,
-                status: status,
-                data: new Blob([response.data], {
-                    type: response.headers["content-type"],
-                }),
-                headers: _headers,
+            return response.blob().then((blob) => {
+                return {
+                    fileName: fileName,
+                    data: blob,
+                    status: status,
+                    headers: _headers,
+                };
             });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<FileResponse>(null as any);
     }
@@ -2335,97 +2205,95 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    usersLogin(body?: Body5, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body?: Body5): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "POST",
-            url: url_,
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processUsersLogin(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersLogin(_response);
+        });
     }
 
-    protected processUsersLogin(response: AxiosResponse): Promise<Token> {
+    protected processUsersLogin(response: Response): Promise<Token> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = Token.fromJS(resultData200);
-            return Promise.resolve<Token>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as Token);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Login failed",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Login failed",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status === 409) {
-            const _responseText = response.data;
-            let result409: any = null;
-            let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
-            return throwException(
-                "Email verification needed",
-                status,
-                _responseText,
-                _headers,
-                result409
-            );
+            return response.text().then((_responseText) => {
+                let result409: any = null;
+                result409 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Email verification needed",
+                    status,
+                    _responseText,
+                    _headers,
+                    result409
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Token>(null as any);
     }
@@ -2435,81 +2303,74 @@ export class Client {
      * @param body (optional)
      * @return Success, verification email sent.
      */
-    usersRegister(body?: Body6, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body?: Body6): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "POST",
-            url: url_,
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processUsersRegister(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersRegister(_response);
+        });
     }
 
-    protected processUsersRegister(response: AxiosResponse): Promise<OK> {
+    protected processUsersRegister(response: Response): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
-            return Promise.resolve<OK>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as OK);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            return throwException(
-                "Bad request / registration disabled / invalid invite code",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "Bad request / registration disabled / invalid invite code",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         } else if (status === 409) {
-            const _responseText = response.data;
-            let result409: any = null;
-            let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
-            return throwException(
-                "Email or username already in use",
-                status,
-                _responseText,
-                _headers,
-                result409
-            );
+            return response.text().then((_responseText) => {
+                let result409: any = null;
+                result409 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Email or username already in use",
+                    status,
+                    _responseText,
+                    _headers,
+                    result409
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<OK>(null as any);
     }
@@ -2519,85 +2380,80 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    usersVerify(body?: Body7, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body?: Body7): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "POST",
-            url: url_,
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processUsersVerify(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersVerify(_response);
+        });
     }
 
-    protected processUsersVerify(response: AxiosResponse): Promise<Token> {
+    protected processUsersVerify(response: Response): Promise<Token> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = Token.fromJS(resultData200);
-            return Promise.resolve<Token>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as Token);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
-            return throwException(
-                "Code incorrect or expired / email not found",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
+            return response.text().then((_responseText) => {
+                let result401: any = null;
+                result401 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Code incorrect or expired / email not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result401
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Token>(null as any);
     }
@@ -2607,97 +2463,95 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    usersResend(body?: Body8, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body?: Body8): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "POST",
-            url: url_,
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processUsersResend(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersResend(_response);
+        });
     }
 
-    protected processUsersResend(response: AxiosResponse): Promise<OK> {
+    protected processUsersResend(response: Response): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
-            return Promise.resolve<OK>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as OK);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Email not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Email not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
-            return throwException(
-                "Too many requests / ReCAPTCHA token invalid",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
+            return response.text().then((_responseText) => {
+                let result429: any = null;
+                result429 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Too many requests / ReCAPTCHA token invalid",
+                    status,
+                    _responseText,
+                    _headers,
+                    result429
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<OK>(null as any);
     }
@@ -2707,97 +2561,95 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    usersForgot(body?: Body9, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body?: Body9): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "POST",
-            url: url_,
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processUsersForgot(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersForgot(_response);
+        });
     }
 
-    protected processUsersForgot(response: AxiosResponse): Promise<OK> {
+    protected processUsersForgot(response: Response): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
-            return Promise.resolve<OK>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as OK);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "User not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "User not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
-            return throwException(
-                "Too many requests / ReCAPTCHA token invalid",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
+            return response.text().then((_responseText) => {
+                let result429: any = null;
+                result429 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Too many requests / ReCAPTCHA token invalid",
+                    status,
+                    _responseText,
+                    _headers,
+                    result429
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<OK>(null as any);
     }
@@ -2807,97 +2659,95 @@ export class Client {
      * @param body (optional)
      * @return Success
      */
-    usersReset(body?: Body10, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body?: Body10): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
 
-        let options_: AxiosRequestConfig = {
-            data: content_,
+        let options_: RequestInit = {
+            body: content_,
             method: "POST",
-            url: url_,
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processUsersReset(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUsersReset(_response);
+        });
     }
 
-    protected processUsersReset(response: AxiosResponse): Promise<Token> {
+    protected processUsersReset(response: Response): Promise<Token> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = Token.fromJS(resultData200);
-            return Promise.resolve<Token>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as Token);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "User not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "User not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
-            return throwException(
-                "Too many requests",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
+            return response.text().then((_responseText) => {
+                let result429: any = null;
+                result429 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Too many requests",
+                    status,
+                    _responseText,
+                    _headers,
+                    result429
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<Token>(null as any);
     }
@@ -2914,8 +2764,7 @@ export class Client {
         category: number,
         sort?: Sort2,
         page?: number,
-        limit?: number,
-        cancelToken?: CancelToken | undefined
+        limit?: number
     ): Promise<ThreadMeta[]> {
         let url_ = this.baseUrl + "/menu/{category}?";
         if (category === undefined || category === null)
@@ -2932,82 +2781,75 @@ export class Client {
             url_ += "limit=" + encodeURIComponent("" + limit) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMenuCategory(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMenuCategory(_response);
+        });
     }
 
-    protected processMenuCategory(response: AxiosResponse): Promise<ThreadMeta[]> {
+    protected processMenuCategory(response: Response): Promise<ThreadMeta[]> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) result200!.push(ThreadMeta.fromJS(item));
-            } else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<ThreadMeta[]>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as ThreadMeta[]);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "Category not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Category not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<ThreadMeta[]>(null as any);
     }
@@ -3026,8 +2868,7 @@ export class Client {
         mode?: Mode,
         sort?: Sort3,
         page?: number,
-        limit?: number,
-        cancelToken?: CancelToken | undefined
+        limit?: number
     ): Promise<ThreadMeta[]> {
         let url_ = this.baseUrl + "/menu/search?";
         if (q === undefined || q === null)
@@ -3047,70 +2888,60 @@ export class Client {
             url_ += "limit=" + encodeURIComponent("" + limit) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMenuSearch(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMenuSearch(_response);
+        });
     }
 
-    protected processMenuSearch(response: AxiosResponse): Promise<ThreadMeta[]> {
+    protected processMenuSearch(response: Response): Promise<ThreadMeta[]> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) result200!.push(ThreadMeta.fromJS(item));
-            } else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<ThreadMeta[]>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as ThreadMeta[]);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<ThreadMeta[]>(null as any);
     }
@@ -3122,12 +2953,7 @@ export class Client {
      * @param limit (optional) limit per page
      * @return Success
      */
-    menuHistory(
-        id: number,
-        page?: number,
-        limit?: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<ThreadMeta[]> {
+    menuHistory(id: number, page?: number, limit?: number): Promise<ThreadMeta[]> {
         let url_ = this.baseUrl + "/menu/history/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -3140,82 +2966,75 @@ export class Client {
             url_ += "limit=" + encodeURIComponent("" + limit) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMenuHistory(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMenuHistory(_response);
+        });
     }
 
-    protected processMenuHistory(response: AxiosResponse): Promise<ThreadMeta[]> {
+    protected processMenuHistory(response: Response): Promise<ThreadMeta[]> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) result200!.push(ThreadMeta.fromJS(item));
-            } else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<ThreadMeta[]>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as ThreadMeta[]);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
-            return throwException(
-                "User not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                result404 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "User not found",
+                    status,
+                    _responseText,
+                    _headers,
+                    result404
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<ThreadMeta[]>(null as any);
     }
@@ -3225,10 +3044,7 @@ export class Client {
      * @param threads Thread ids
      * @return Success
      */
-    menuThreads(
-        threads: number[],
-        cancelToken?: CancelToken | undefined
-    ): Promise<ThreadMeta[]> {
+    menuThreads(threads: number[]): Promise<ThreadMeta[]> {
         let url_ = this.baseUrl + "/menu/threads?";
         if (threads === undefined || threads === null)
             throw new Error(
@@ -3241,181 +3057,74 @@ export class Client {
                 });
         url_ = url_.replace(/[?&]$/, "");
 
-        let options_: AxiosRequestConfig = {
+        let options_: RequestInit = {
             method: "GET",
-            url: url_,
             headers: {
                 Accept: "application/json",
             },
-            cancelToken,
         };
 
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMenuThreads(_response);
-            });
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processMenuThreads(_response);
+        });
     }
 
-    protected processMenuThreads(response: AxiosResponse): Promise<ThreadMeta[]> {
+    protected processMenuThreads(response: Response): Promise<ThreadMeta[]> {
         const status = response.status;
         let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
+        if (response.headers && response.headers.forEach) {
+            response.headers.forEach((v: any, k: any) => (_headers[k] = v));
         }
         if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200) result200!.push(ThreadMeta.fromJS(item));
-            } else {
-                result200 = <any>null;
-            }
-            return Promise.resolve<ThreadMeta[]>(result200);
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                result200 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(
+                              _responseText,
+                              this.jsonParseReviver
+                          ) as ThreadMeta[]);
+                return result200;
+            });
         } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
+            return response.text().then((_responseText) => {
+                let result400: any = null;
+                result400 =
+                    _responseText === ""
+                        ? null
+                        : (JSON.parse(_responseText, this.jsonParseReviver) as ErrorDto);
+                return throwException(
+                    "Invalid request",
+                    status,
+                    _responseText,
+                    _headers,
+                    result400
+                );
+            });
         } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
+            return response.text().then((_responseText) => {
+                return throwException(
+                    "An unexpected server error occurred.",
+                    status,
+                    _responseText,
+                    _headers
+                );
+            });
         }
         return Promise.resolve<ThreadMeta[]>(null as any);
     }
 }
 
-export class OK implements IOK {
-    response!: OKResponse;
-
-    constructor(data?: IOK) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.response = _data["response"];
-        }
-    }
-
-    static fromJS(data: any): OK {
-        data = typeof data === "object" ? data : {};
-        let result = new OK();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["response"] = this.response;
-        return data;
-    }
-}
-
-export interface IOK {
+export interface OK {
     response: OKResponse;
 }
 
-export class Token implements IToken {
-    token!: string;
-
-    constructor(data?: IToken) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.token = _data["token"];
-        }
-    }
-
-    static fromJS(data: any): Token {
-        data = typeof data === "object" ? data : {};
-        let result = new Token();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["token"] = this.token;
-        return data;
-    }
-}
-
-export interface IToken {
+export interface Token {
     token: string;
 }
 
-export class ErrorDto implements IErrorDto {
-    /** error message */
-    error!: string;
-
-    constructor(data?: IErrorDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.error = _data["error"];
-        }
-    }
-
-    static fromJS(data: any): ErrorDto {
-        data = typeof data === "object" ? data : {};
-        let result = new ErrorDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["error"] = this.error;
-        return data;
-    }
-}
-
-export interface IErrorDto {
+export interface ErrorDto {
     /** error message */
     error: string;
 }
@@ -3426,55 +3135,7 @@ export enum Vote {
     D = "D",
 }
 
-export class User implements IUser {
-    /** user id */
-    id!: number;
-    /** User name */
-    name!: string;
-    sex!: UserSex;
-    /** date when user was created */
-    createdAt!: Date;
-
-    constructor(data?: IUser) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.sex = _data["sex"];
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): User {
-        data = typeof data === "object" ? data : {};
-        let result = new User();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["sex"] = this.sex;
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : <any>undefined;
-        return data;
-    }
-}
-
-export interface IUser {
+export interface User {
     /** user id */
     id: number;
     /** User name */
@@ -3484,207 +3145,26 @@ export interface IUser {
     createdAt: Date;
 }
 
-export class Category implements ICategory {
-    /** category id */
-    id!: number;
-    /** category name */
-    name!: string;
-
-    constructor(data?: ICategory) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-        }
-    }
-
-    static fromJS(data: any): Category {
-        data = typeof data === "object" ? data : {};
-        let result = new Category();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data;
-    }
-}
-
-export interface ICategory {
+export interface Category {
     /** category id */
     id: number;
     /** category name */
     name: string;
 }
 
-export class Image implements IImage {
-    cid!: number;
-    /** image source url */
-    src!: string;
-
-    constructor(data?: IImage) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.cid = _data["cid"];
-            this.src = _data["src"];
-        }
-    }
-
-    static fromJS(data: any): Image {
-        data = typeof data === "object" ? data : {};
-        let result = new Image();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["cid"] = this.cid;
-        data["src"] = this.src;
-        return data;
-    }
-}
-
-export interface IImage {
+export interface Image {
     cid: number;
     /** image source url */
     src: string;
 }
 
-export class RemovedComment implements IRemovedComment {
-    id!: number;
-    removed!: boolean;
-
-    constructor(data?: IRemovedComment) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.removed = _data["removed"];
-        }
-    }
-
-    static fromJS(data: any): RemovedComment {
-        data = typeof data === "object" ? data : {};
-        let result = new RemovedComment();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["removed"] = this.removed;
-        return data;
-    }
-}
-
-export interface IRemovedComment {
+export interface RemovedComment {
     id: number;
     removed: boolean;
 }
 
 /** Comment object with constants only (without upvotes, downvotes and replies) */
-export class CommentC implements ICommentC {
-    /** comment id */
-    id!: number;
-    /** user created the comment */
-    user!: User;
-    /** comment in stringified html */
-    comment!: string;
-    /** comment converted to plain text */
-    text!: string;
-    images!: string[];
-    createdAt!: Date;
-    /** shortened link to the comment */
-    slink!: string;
-    quote?: Quote;
-
-    constructor(data?: ICommentC) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.user = new User();
-            this.images = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.user = _data["user"] ? User.fromJS(_data["user"]) : new User();
-            this.comment = _data["comment"];
-            this.text = _data["text"];
-            if (Array.isArray(_data["images"])) {
-                this.images = [] as any;
-                for (let item of _data["images"]) this.images!.push(item);
-            }
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : <any>undefined;
-            this.slink = _data["slink"];
-            this.quote = _data["quote"];
-        }
-    }
-
-    static fromJS(data: any): CommentC {
-        data = typeof data === "object" ? data : {};
-        let result = new CommentC();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
-        data["comment"] = this.comment;
-        data["text"] = this.text;
-        if (Array.isArray(this.images)) {
-            data["images"] = [];
-            for (let item of this.images) data["images"].push(item);
-        }
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : <any>undefined;
-        data["slink"] = this.slink;
-        data["quote"] = this.quote;
-        return data;
-    }
-}
-
-/** Comment object with constants only (without upvotes, downvotes and replies) */
-export interface ICommentC {
+export interface CommentC {
     /** comment id */
     id: number;
     /** user created the comment */
@@ -3701,160 +3181,16 @@ export interface ICommentC {
 }
 
 /** Comment object */
-export class Comment extends CommentC implements IComment {
+export interface Comment extends CommentC {
     /** number of downvotes */
-    d?: number;
+    D?: number;
     /** number of upvotes */
-    u?: number;
-    /** list of comment ids that are replies to this comment */
-    replies?: number[];
-
-    constructor(data?: IComment) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.d = _data["D"];
-            this.u = _data["U"];
-            if (Array.isArray(_data["replies"])) {
-                this.replies = [] as any;
-                for (let item of _data["replies"]) this.replies!.push(item);
-            }
-        }
-    }
-
-    static fromJS(data: any): Comment {
-        data = typeof data === "object" ? data : {};
-        let result = new Comment();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["D"] = this.d;
-        data["U"] = this.u;
-        if (Array.isArray(this.replies)) {
-            data["replies"] = [];
-            for (let item of this.replies) data["replies"].push(item);
-        }
-        super.toJSON(data);
-        return data;
-    }
-}
-
-/** Comment object */
-export interface IComment extends ICommentC {
-    /** number of downvotes */
-    d?: number;
-    /** number of upvotes */
-    u?: number;
+    U?: number;
     /** list of comment ids that are replies to this comment */
     replies?: number[];
 }
 
-export class Thread implements IThread {
-    /** thread id */
-    id!: number;
-    /** thread title */
-    title!: string;
-    category!: number;
-    op!: User;
-    /** number of comments in the thread (i.e. `conversation.length`) */
-    c!: number;
-    /** An array of comments. Comment ids must not be duplicated. */
-    conversation!: (Conversation | RemovedComment)[];
-    /** score of the thread (first comment) (`upvotes - downvotes`) */
-    score!: number;
-    images!: Image[];
-    /** date when thread was created */
-    createdAt!: Date;
-    /** date when thread was last modified */
-    lastModified!: Date;
-    /** shortened link to the thread */
-    slink!: string;
-    /** pinned comment */
-    pin?: CommentC;
-
-    constructor(data?: IThread) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.op = new User();
-            this.conversation = [];
-            this.images = [];
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.title = _data["title"];
-            this.category = _data["category"];
-            this.op = _data["op"] ? User.fromJS(_data["op"]) : new User();
-            this.c = _data["c"];
-            if (Array.isArray(_data["conversation"])) {
-                this.conversation = [] as any;
-                for (let item of _data["conversation"]) this.conversation!.push(item);
-            }
-            this.score = _data["score"];
-            if (Array.isArray(_data["images"])) {
-                this.images = [] as any;
-                for (let item of _data["images"]) this.images!.push(Image.fromJS(item));
-            }
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : <any>undefined;
-            this.lastModified = _data["lastModified"]
-                ? new Date(_data["lastModified"].toString())
-                : <any>undefined;
-            this.slink = _data["slink"];
-            this.pin = _data["pin"] ? CommentC.fromJS(_data["pin"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): Thread {
-        data = typeof data === "object" ? data : {};
-        let result = new Thread();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["title"] = this.title;
-        data["category"] = this.category;
-        data["op"] = this.op ? this.op.toJSON() : <any>undefined;
-        data["c"] = this.c;
-        if (Array.isArray(this.conversation)) {
-            data["conversation"] = [];
-            for (let item of this.conversation) data["conversation"].push(item);
-        }
-        data["score"] = this.score;
-        if (Array.isArray(this.images)) {
-            data["images"] = [];
-            for (let item of this.images) data["images"].push(item.toJSON());
-        }
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : <any>undefined;
-        data["lastModified"] = this.lastModified
-            ? this.lastModified.toISOString()
-            : <any>undefined;
-        data["slink"] = this.slink;
-        data["pin"] = this.pin ? this.pin.toJSON() : <any>undefined;
-        return data;
-    }
-}
-
-export interface IThread {
+export interface Thread {
     /** thread id */
     id: number;
     /** thread title */
@@ -3879,75 +3215,7 @@ export interface IThread {
 }
 
 /** Thread metadata (no comments, images and pinned comment) */
-export class ThreadMeta implements IThreadMeta {
-    id!: number;
-    title!: string;
-    category!: number;
-    op!: User;
-    c!: number;
-    score!: number;
-    createdAt!: Date;
-    lastModified!: Date;
-    slink!: string;
-
-    constructor(data?: IThreadMeta) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.op = new User();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.title = _data["title"];
-            this.category = _data["category"];
-            this.op = _data["op"] ? User.fromJS(_data["op"]) : new User();
-            this.c = _data["c"];
-            this.score = _data["score"];
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : <any>undefined;
-            this.lastModified = _data["lastModified"]
-                ? new Date(_data["lastModified"].toString())
-                : <any>undefined;
-            this.slink = _data["slink"];
-        }
-    }
-
-    static fromJS(data: any): ThreadMeta {
-        data = typeof data === "object" ? data : {};
-        let result = new ThreadMeta();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["title"] = this.title;
-        data["category"] = this.category;
-        data["op"] = this.op ? this.op.toJSON() : <any>undefined;
-        data["c"] = this.c;
-        data["score"] = this.score;
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : <any>undefined;
-        data["lastModified"] = this.lastModified
-            ? this.lastModified.toISOString()
-            : <any>undefined;
-        data["slink"] = this.slink;
-        return data;
-    }
-}
-
-/** Thread metadata (no comments, images and pinned comment) */
-export interface IThreadMeta {
+export interface ThreadMeta {
     id: number;
     title: string;
     category: number;
@@ -3965,288 +3233,36 @@ export enum Sort {
     Latest = "latest",
 }
 
-export class Body implements IBody {
-    title!: string;
-    comment!: string;
-    rtoken!: string;
-    category!: number;
-
-    constructor(data?: IBody) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.title = _data["title"];
-            this.comment = _data["comment"];
-            this.rtoken = _data["rtoken"];
-            this.category = _data["category"];
-        }
-    }
-
-    static fromJS(data: any): Body {
-        data = typeof data === "object" ? data : {};
-        let result = new Body();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["title"] = this.title;
-        data["comment"] = this.comment;
-        data["rtoken"] = this.rtoken;
-        data["category"] = this.category;
-        return data;
-    }
-}
-
-export interface IBody {
+export interface Body {
     title: string;
     comment: string;
     rtoken: string;
     category: number;
 }
 
-export class Body2 implements IBody2 {
-    comment!: string;
-    rtoken!: string;
-    quote?: number;
-
-    constructor(data?: IBody2) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.comment = _data["comment"];
-            this.rtoken = _data["rtoken"];
-            this.quote = _data["quote"];
-        }
-    }
-
-    static fromJS(data: any): Body2 {
-        data = typeof data === "object" ? data : {};
-        let result = new Body2();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["comment"] = this.comment;
-        data["rtoken"] = this.rtoken;
-        data["quote"] = this.quote;
-        return data;
-    }
-}
-
-export interface IBody2 {
+export interface Body2 {
     comment: string;
     rtoken: string;
     quote?: number;
 }
 
-export class Body3 implements IBody3 {
-    vote!: Vote;
-
-    constructor(data?: IBody3) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.vote = _data["vote"];
-        }
-    }
-
-    static fromJS(data: any): Body3 {
-        data = typeof data === "object" ? data : {};
-        let result = new Body3();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["vote"] = this.vote;
-        return data;
-    }
-}
-
-export interface IBody3 {
+export interface Body3 {
     vote: Vote;
 }
 
-export class Body4 implements IBody4 {
-    name!: string;
-
-    constructor(data?: IBody4) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-        }
-    }
-
-    static fromJS(data: any): Body4 {
-        data = typeof data === "object" ? data : {};
-        let result = new Body4();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["name"] = this.name;
-        return data;
-    }
-}
-
-export interface IBody4 {
+export interface Body4 {
     name: string;
 }
 
-export class Id implements IId {
-    constructor(data?: IId) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
+export interface Id {}
 
-    init(_data?: any) {}
-
-    static fromJS(data: any): Id {
-        data = typeof data === "object" ? data : {};
-        let result = new Id();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        return data;
-    }
-}
-
-export interface IId {}
-
-export class Body5 implements IBody5 {
-    /** Username or email */
-    name!: Name;
-    pwd!: string;
-
-    constructor(data?: IBody5) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.pwd = _data["pwd"];
-        }
-    }
-
-    static fromJS(data: any): Body5 {
-        data = typeof data === "object" ? data : {};
-        let result = new Body5();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["name"] = this.name;
-        data["pwd"] = this.pwd;
-        return data;
-    }
-}
-
-export interface IBody5 {
+export interface Body5 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
 
-export class Body6 implements IBody6 {
-    name!: string;
-    email!: string;
-    pwd!: string;
-    sex!: UserSex;
-    rtoken!: string;
-    /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
-    inviteCode?: string;
-
-    constructor(data?: IBody6) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-            this.email = _data["email"];
-            this.pwd = _data["pwd"];
-            this.sex = _data["sex"];
-            this.rtoken = _data["rtoken"];
-            this.inviteCode = _data["inviteCode"];
-        }
-    }
-
-    static fromJS(data: any): Body6 {
-        data = typeof data === "object" ? data : {};
-        let result = new Body6();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["name"] = this.name;
-        data["email"] = this.email;
-        data["pwd"] = this.pwd;
-        data["sex"] = this.sex;
-        data["rtoken"] = this.rtoken;
-        data["inviteCode"] = this.inviteCode;
-        return data;
-    }
-}
-
-export interface IBody6 {
+export interface Body6 {
     name: string;
     email: string;
     pwd: string;
@@ -4256,168 +3272,23 @@ export interface IBody6 {
     inviteCode?: string;
 }
 
-export class Body7 implements IBody7 {
-    email!: string;
-    /** Verification code sent to email */
-    code!: string;
-
-    constructor(data?: IBody7) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.code = _data["code"];
-        }
-    }
-
-    static fromJS(data: any): Body7 {
-        data = typeof data === "object" ? data : {};
-        let result = new Body7();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["email"] = this.email;
-        data["code"] = this.code;
-        return data;
-    }
-}
-
-export interface IBody7 {
+export interface Body7 {
     email: string;
     /** Verification code sent to email */
     code: string;
 }
 
-export class Body8 implements IBody8 {
-    email!: string;
-    rtoken!: string;
-
-    constructor(data?: IBody8) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.rtoken = _data["rtoken"];
-        }
-    }
-
-    static fromJS(data: any): Body8 {
-        data = typeof data === "object" ? data : {};
-        let result = new Body8();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["email"] = this.email;
-        data["rtoken"] = this.rtoken;
-        return data;
-    }
-}
-
-export interface IBody8 {
+export interface Body8 {
     email: string;
     rtoken: string;
 }
 
-export class Body9 implements IBody9 {
-    email!: string;
-    rtoken!: string;
-
-    constructor(data?: IBody9) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.rtoken = _data["rtoken"];
-        }
-    }
-
-    static fromJS(data: any): Body9 {
-        data = typeof data === "object" ? data : {};
-        let result = new Body9();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["email"] = this.email;
-        data["rtoken"] = this.rtoken;
-        return data;
-    }
-}
-
-export interface IBody9 {
+export interface Body9 {
     email: string;
     rtoken: string;
 }
 
-export class Body10 implements IBody10 {
-    email!: string;
-    /** Verification code sent to email */
-    code!: string;
-    pwd!: string;
-
-    constructor(data?: IBody10) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.code = _data["code"];
-            this.pwd = _data["pwd"];
-        }
-    }
-
-    static fromJS(data: any): Body10 {
-        data = typeof data === "object" ? data : {};
-        let result = new Body10();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["email"] = this.email;
-        data["code"] = this.code;
-        data["pwd"] = this.pwd;
-        return data;
-    }
-}
-
-export interface IBody10 {
+export interface Body10 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -4439,257 +3310,34 @@ export enum Sort3 {
     _1 = 1,
 }
 
-export class Anonymous implements IAnonymous {
-    id!: number;
-
-    constructor(data?: IAnonymous) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): Anonymous {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        return data;
-    }
-}
-
-export interface IAnonymous {
+export interface Anonymous {
     id: number;
 }
 
-export class Anonymous2 implements IAnonymous2 {
-    id!: number;
-
-    constructor(data?: IAnonymous2) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-
-    static fromJS(data: any): Anonymous2 {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous2();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        return data;
-    }
-}
-
-export interface IAnonymous2 {
+export interface Anonymous2 {
     id: number;
 }
 
-export class Anonymous3 implements IAnonymous3 {
-    /** Whether user is logged in */
-    active!: boolean;
-
-    constructor(data?: IAnonymous3) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.active = _data["active"];
-        }
-    }
-
-    static fromJS(data: any): Anonymous3 {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous3();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["active"] = this.active;
-        return data;
-    }
-}
-
-export interface IAnonymous3 {
+export interface Anonymous3 {
     /** Whether user is logged in */
     active: boolean;
 }
 
-export class Anonymous4 implements IAnonymous4 {
-    cid!: number;
-    vote!: Vote;
-
-    constructor(data?: IAnonymous4) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.cid = _data["cid"];
-            this.vote = _data["vote"];
-        }
-    }
-
-    static fromJS(data: any): Anonymous4 {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous4();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["cid"] = this.cid;
-        data["vote"] = this.vote;
-        return data;
-    }
-}
-
-export interface IAnonymous4 {
+export interface Anonymous4 {
     cid: number;
     vote: Vote;
 }
 
-export class Anonymous5 extends OK implements IAnonymous5 {
-    token!: string;
-
-    constructor(data?: IAnonymous5) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.token = _data["token"];
-        }
-    }
-
-    static fromJS(data: any): Anonymous5 {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous5();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["token"] = this.token;
-        super.toJSON(data);
-        return data;
-    }
-}
-
-export interface IAnonymous5 extends IOK {
+export interface Anonymous5 extends OK {
     token: string;
 }
 
-export class Anonymous6 extends User implements IAnonymous6 {
-    /** Number of threads created by user */
-    count!: number;
-
-    constructor(data?: IAnonymous6) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.count = _data["count"];
-        }
-    }
-
-    static fromJS(data: any): Anonymous6 {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous6();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["count"] = this.count;
-        super.toJSON(data);
-        return data;
-    }
-}
-
-export interface IAnonymous6 extends IUser {
+export interface Anonymous6 extends User {
     /** Number of threads created by user */
     count: number;
 }
 
-export class Anonymous7 implements IAnonymous7 {
-    name!: string;
-
-    constructor(data?: IAnonymous7) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.name = _data["name"];
-        }
-    }
-
-    static fromJS(data: any): Anonymous7 {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous7();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["name"] = this.name;
-        return data;
-    }
-}
-
-export interface IAnonymous7 {
+export interface Anonymous7 {
     name: string;
 }
 
@@ -4702,94 +3350,15 @@ export enum UserSex {
     F = "F",
 }
 
-export class Quote extends CommentC implements IQuote {
-    constructor(data?: IQuote) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-    }
-
-    static fromJS(data: any): Quote {
-        data = typeof data === "object" ? data : {};
-        let result = new Quote();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        super.toJSON(data);
-        return data;
-    }
-}
-
-export interface IQuote extends ICommentC {}
+export interface Quote extends CommentC {}
 
 /** Comment object with score */
-export class Conversation extends Comment implements IConversation {
-    /** score of the comment (`upvotes - downvotes`) */
-    score?: number;
-
-    constructor(data?: IConversation) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.score = _data["score"];
-        }
-    }
-
-    static fromJS(data: any): Conversation {
-        data = typeof data === "object" ? data : {};
-        let result = new Conversation();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        data["score"] = this.score;
-        super.toJSON(data);
-        return data;
-    }
-}
-
-/** Comment object with score */
-export interface IConversation extends IComment {
+export interface Conversation extends Comment {
     /** score of the comment (`upvotes - downvotes`) */
     score?: number;
 }
 
-export class Name implements IName {
-    constructor(data?: IName) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {}
-
-    static fromJS(data: any): Name {
-        data = typeof data === "object" ? data : {};
-        let result = new Name();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === "object" ? data : {};
-        return data;
-    }
-}
-
-export interface IName {}
+export interface Name {}
 
 export interface FileParameter {
     data: any;
@@ -4842,8 +3411,4 @@ function throwException(
 ): any {
     if (result !== null && result !== undefined) throw result;
     else throw new ApiException(message, status, response, headers, null);
-}
-
-function isAxiosError(obj?: any): obj is AxiosError {
-    return obj && obj.isAxiosError === true;
 }

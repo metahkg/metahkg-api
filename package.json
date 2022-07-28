@@ -1,6 +1,6 @@
 {
   "name": "@metahkg/api",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "access": "public",
   "description": "Access the metahkg api.",
   "main": "dist/index.js",
@@ -11,7 +11,7 @@
     "build": "tsc",
     "generate": "./generate.sh",
     "lint": "prettier --write src",
-    "test": "exit 0",
+    "test": "ts-node test.ts",
     "deploy": "yarn build && yarn publish"
   },
   "dependencies": {
