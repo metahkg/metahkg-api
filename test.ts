@@ -1,6 +1,6 @@
 import { Client } from "./src";
 
-const client = new Client("https://dev.metahkg.org/api");
+const client = new Client("https://metahkg.org/api");
 
 client
     .thread(1)
@@ -13,4 +13,4 @@ client
 
 client.comment(1, 1).then((data) => {
     console.log(data.D);
-})
+}).catch(console.error);

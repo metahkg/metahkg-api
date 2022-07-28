@@ -5,6 +5,7 @@ console.log("applying patch...");
 let file = readFileSync("./src/index.ts", "utf8");
 file = file.replace(/([a-z|A-Z|\d]): ([a-z|A-Z|\d]+) \| undefined/g, "$1?: $2");
 file = file.replace(/Conversation\[\]|RemovedComment\[\]/g, "(Conversation | RemovedComment)[]");
+file = file.replace("axios.create();\n", "axios.create();\n\nthis.instance.defaults.transformResponse = [];\n");
 
 const reqFolOpt =
     /([a-z|A-Z|\d]+)\?: ([a-z|A-Z|\d]+) ?, ?([a-z|A-Z|\d]+): ([a-z|A-Z|\d]+)/g;
