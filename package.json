@@ -1,5 +1,5 @@
 {
-  "name": "@metahkg/api-client",
+  "name": "@metahkg/api",
   "version": "3.3.1-1",
   "access": "public",
   "description": "Access the metahkg api.",

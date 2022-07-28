@@ -6,13 +6,13 @@ Generated with the [openapi spec](https://gitlab.com/metahkg/metahkg-server/-/bl
 ## Install
 
 ```bash
-yarn add @metahkg/api-client
+yarn add @metahkg/api
 ```
 
 ## Usage
 
 ```typescript
-import { Client } from "@metahkg/api-client";
+import { Client } from "@metahkg/api";
 
 const client = new Client("https://metahkg.org/api");
 
