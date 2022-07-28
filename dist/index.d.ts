@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosResponse, CancelToken } from "axios";
+import { AxiosInstance, AxiosResponse, CancelToken } from 'axios';
 export declare class Client {
     private instance;
     private baseUrl;
@@ -14,61 +14,61 @@ export declare class Client {
      * @param end (optional) Ending at comment id. Must be greater or equal to start. If start is specified but end is not, end defaults to `page * limit`
      * @return Success
      */
-    getThread(id: number, page?: number, limit?: number, sort?: Sort, start?: number, end?: number, cancelToken?: CancelToken | undefined): Promise<Thread>;
-    protected processGetThread(response: AxiosResponse): Promise<Thread>;
+    thread(id: number, page?: number, limit?: number, sort?: Sort, start?: number, end?: number, cancelToken?: CancelToken | undefined): Promise<Thread>;
+    protected processThread(response: AxiosResponse): Promise<Thread>;
     /**
      * Check if a thread exists
      * @param id thread id
      * @return OK
      */
-    checkThread(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCheckThread(response: AxiosResponse): Promise<OK>;
+    threadCheck(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processThreadCheck(response: AxiosResponse): Promise<OK>;
     /**
      * Get thread images
      * @param id thread id
      * @return Success
      */
-    getThreadImages(id: number, cancelToken?: CancelToken | undefined): Promise<Image[]>;
-    protected processGetThreadImages(response: AxiosResponse): Promise<Image[]>;
+    threadImages(id: number, cancelToken?: CancelToken | undefined): Promise<Image[]>;
+    protected processThreadImages(response: AxiosResponse): Promise<Image[]>;
     /**
      * Create thread
      * @param body (optional)
      * @return Success
      */
-    createThread(body?: Body, cancelToken?: CancelToken | undefined): Promise<Anonymous>;
-    protected processCreateThread(response: AxiosResponse): Promise<Anonymous>;
+    threadCreate(body?: Body, cancelToken?: CancelToken | undefined): Promise<Anonymous>;
+    protected processThreadCreate(response: AxiosResponse): Promise<Anonymous>;
     /**
      * Get comment
      * @param id thread id
      * @param cid comment id
      * @return Success
      */
-    getComment(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<Comment>;
-    protected processGetComment(response: AxiosResponse): Promise<Comment>;
+    comment(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<Comment>;
+    protected processComment(response: AxiosResponse): Promise<Comment>;
     /**
      * Get replies
      * @param id thread id
      * @param cid comment id
      * @return Success
      */
-    getCommentReplies(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<Comment[]>;
-    protected processGetCommentReplies(response: AxiosResponse): Promise<Comment[]>;
+    commentReplies(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<Comment[]>;
+    protected processCommentReplies(response: AxiosResponse): Promise<Comment[]>;
     /**
      * Get comment images.
      * @param id thread id
      * @param cid comment id
      * @return Success
      */
-    getCommentImages(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<Image[]>;
-    protected processGetCommentImages(response: AxiosResponse): Promise<Image[]>;
+    commentImages(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<Image[]>;
+    protected processCommentImages(response: AxiosResponse): Promise<Image[]>;
     /**
      * Create comment
      * @param id thread id
      * @param body (optional)
      * @return Success
      */
-    createComment(id: number, body?: Body2, cancelToken?: CancelToken | undefined): Promise<Anonymous2>;
-    protected processCreateComment(response: AxiosResponse): Promise<Anonymous2>;
+    commentCreate(id: number, body?: Body2, cancelToken?: CancelToken | undefined): Promise<Anonymous2>;
+    protected processCommentCreate(response: AxiosResponse): Promise<Anonymous2>;
     /**
      * Vote on comment
      * @param body (optional)
@@ -76,139 +76,145 @@ export declare class Client {
      * @param cid comment id
      * @return OK
      */
-    vote(id: number, cid: number, body?: Body3, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processVote(response: AxiosResponse): Promise<OK>;
+    commentVote(id: number, cid: number, body?: Body3, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCommentVote(response: AxiosResponse): Promise<OK>;
     /**
      * Pin comment
      * @param id thread id
      * @param cid comment id
      * @return OK
      */
-    pinComment(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processPinComment(response: AxiosResponse): Promise<OK>;
+    commentPin(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCommentPin(response: AxiosResponse): Promise<OK>;
     /**
      * Unpin comment
      * @param id thread id
      * @param cid comment id
      * @return OK
      */
-    unpinComment(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUnpinComment(response: AxiosResponse): Promise<OK>;
+    commentUnpin(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCommentUnpin(response: AxiosResponse): Promise<OK>;
     /**
      * Get status
      * @return Success
      */
-    getStatus(cancelToken?: CancelToken | undefined): Promise<Anonymous3>;
-    protected processGetStatus(response: AxiosResponse): Promise<Anonymous3>;
+    meStatus(cancelToken?: CancelToken | undefined): Promise<Anonymous3>;
+    protected processMeStatus(response: AxiosResponse): Promise<Anonymous3>;
     /**
      * Get blocked users
      * @return Success
      */
-    getBlockedUsers(cancelToken?: CancelToken | undefined): Promise<User[]>;
-    protected processGetBlockedUsers(response: AxiosResponse): Promise<User[]>;
+    meBlocked(cancelToken?: CancelToken | undefined): Promise<User[]>;
+    protected processMeBlocked(response: AxiosResponse): Promise<User[]>;
     /**
      * Get votes
      * @param id thread id
      * @return Success
      */
-    getVotes(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous4[]>;
-    protected processGetVotes(response: AxiosResponse): Promise<Anonymous4[]>;
+    meVotes(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous4[]>;
+    protected processMeVotes(response: AxiosResponse): Promise<Anonymous4[]>;
     /**
      * Block user
      * @return OK
      */
-    blockUser(cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processBlockUser(response: AxiosResponse): Promise<OK>;
+    meBlock(cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processMeBlock(response: AxiosResponse): Promise<OK>;
     /**
      * Unblock user
      * @return OK
      */
-    unblockUser(cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUnblockUser(response: AxiosResponse): Promise<OK>;
+    meUnblock(cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processMeUnblock(response: AxiosResponse): Promise<OK>;
     /**
      * Set avatar
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
      * @return OK
      */
-    setAvatar(avatar?: FileParameter, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processSetAvatar(response: AxiosResponse): Promise<OK>;
+    meAvatar(avatar?: FileParameter, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processMeAvatar(response: AxiosResponse): Promise<OK>;
     /**
      * Rename
      * @param body (optional)
      * @return Success
      */
-    renameUser(body?: Body4, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
-    protected processRenameUser(response: AxiosResponse): Promise<Anonymous5>;
+    meRename(body?: Body4, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
+    protected processMeRename(response: AxiosResponse): Promise<Anonymous5>;
     /**
      * Get categories
      * @return Success
      */
-    getCategories(cancelToken?: CancelToken | undefined): Promise<Category[]>;
-    protected processGetCategories(response: AxiosResponse): Promise<Category[]>;
+    categories(cancelToken?: CancelToken | undefined): Promise<Category[]>;
+    protected processCategories(response: AxiosResponse): Promise<Category[]>;
     /**
      * Get category
      * @param id category id, or `bytid<thread id>`
      * @return Success
      */
-    getCategory(id: Id, cancelToken?: CancelToken | undefined): Promise<Category>;
-    protected processGetCategory(response: AxiosResponse): Promise<Category>;
+    category(id: Id, cancelToken?: CancelToken | undefined): Promise<Category>;
+    protected processCategory(response: AxiosResponse): Promise<Category>;
     /**
      * Get user profile
      * @param id user id
-     * @param nameonly (optional) return user name only
      * @return Success
      */
-    userProfile(id: number, nameonly?: Nameonly, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
-    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6>;
+    usersProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
+    protected processUsersProfile(response: AxiosResponse): Promise<Anonymous6>;
+    /**
+     * Get user name
+     * @param id user id
+     * @return Success
+     */
+    usersProfileName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
+    protected processUsersProfileName(response: AxiosResponse): Promise<Anonymous7>;
     /**
      * Get user avatar
      * @param id user id
      * @return Success
      */
-    userAvatar(id: number, cancelToken?: CancelToken | undefined): Promise<FileResponse>;
-    protected processUserAvatar(response: AxiosResponse): Promise<FileResponse>;
+    usersProfileAvatar(id: number, cancelToken?: CancelToken | undefined): Promise<FileResponse>;
+    protected processUsersProfileAvatar(response: AxiosResponse): Promise<FileResponse>;
     /**
      * Login
      * @param body (optional)
      * @return Success
      */
-    login(body?: Body5, cancelToken?: CancelToken | undefined): Promise<Token>;
-    protected processLogin(response: AxiosResponse): Promise<Token>;
+    usersLogin(body?: Body5, cancelToken?: CancelToken | undefined): Promise<Token>;
+    protected processUsersLogin(response: AxiosResponse): Promise<Token>;
     /**
      * Register
      * @param body (optional)
      * @return Success, verification email sent.
      */
-    register(body?: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processRegister(response: AxiosResponse): Promise<OK>;
+    usersRegister(body?: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUsersRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
      * @param body (optional)
      * @return Success
      */
-    verify(body?: Body7, cancelToken?: CancelToken | undefined): Promise<Token>;
-    protected processVerify(response: AxiosResponse): Promise<Token>;
+    usersVerify(body?: Body7, cancelToken?: CancelToken | undefined): Promise<Token>;
+    protected processUsersVerify(response: AxiosResponse): Promise<Token>;
     /**
      * Resend verification email
      * @param body (optional)
      * @return Success
      */
-    resend(body?: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processResend(response: AxiosResponse): Promise<OK>;
+    usersResend(body?: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUsersResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
      * @param body (optional)
      * @return Success
      */
-    forgot(body?: Body9, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processForgot(response: AxiosResponse): Promise<OK>;
+    usersForgot(body?: Body9, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUsersForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
      * @param body (optional)
      * @return Success
      */
-    reset(body?: Body10, cancelToken?: CancelToken | undefined): Promise<Token>;
-    protected processReset(response: AxiosResponse): Promise<Token>;
+    usersReset(body?: Body10, cancelToken?: CancelToken | undefined): Promise<Token>;
+    protected processUsersReset(response: AxiosResponse): Promise<Token>;
     /**
      * Get threads in a category
      * @param category category id
@@ -217,8 +223,8 @@ export declare class Client {
      * @param limit (optional) limit per page
      * @return Success
      */
-    getMenu(category: number, sort?: Sort2, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processGetMenu(response: AxiosResponse): Promise<ThreadMeta[]>;
+    menuCategory(category: number, sort?: Sort2, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processMenuCategory(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Search threads
      * @param q Search query
@@ -228,24 +234,24 @@ export declare class Client {
      * @param limit (optional) limit per page
      * @return Success
      */
-    searchMenu(q: string, mode?: Mode, sort?: Sort3, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processSearchMenu(response: AxiosResponse): Promise<ThreadMeta[]>;
+    menuSearch(q: string, mode?: Mode, sort?: Sort3, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processMenuSearch(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
-     * Get threads from a user
+     * Get threads created by a user
      * @param id user id
      * @param page (optional) page number
      * @param limit (optional) limit per page
      * @return Success
      */
-    getHistory(id: number, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processGetHistory(response: AxiosResponse): Promise<ThreadMeta[]>;
+    menuHistory(id: number, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processMenuHistory(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Get threads
      * @param threads Thread ids
      * @return Success
      */
-    getThreads(threads: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processGetThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
+    menuThreads(threads: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processMenuThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
 }
 export declare class OK implements IOK {
     response: OKResponse;
@@ -362,8 +368,7 @@ export declare class CommentC implements ICommentC {
     createdAt: Date;
     /** shortened link to the comment */
     slink: string;
-    /** The whole comment object of the quoted comment. */
-    quote?: CommentC;
+    quote?: Quote;
     constructor(data?: ICommentC);
     init(_data?: any): void;
     static fromJS(data: any): CommentC;
@@ -383,8 +388,7 @@ export interface ICommentC {
     createdAt: Date;
     /** shortened link to the comment */
     slink: string;
-    /** The whole comment object of the quoted comment. */
-    quote?: CommentC;
+    quote?: Quote;
 }
 /** Comment object */
 export declare class Comment extends CommentC implements IComment {
@@ -418,7 +422,7 @@ export declare class Thread implements IThread {
     /** number of comments in the thread (i.e. `conversation.length`) */
     c: number;
     /** An array of comments. Comment ids must not be duplicated. */
-    conversation: Conversation[];
+    conversation: (Conversation | RemovedComment)[];
     /** score of the thread (first comment) (`upvotes - downvotes`) */
     score: number;
     images: Image[];
@@ -445,7 +449,7 @@ export interface IThread {
     /** number of comments in the thread (i.e. `conversation.length`) */
     c: number;
     /** An array of comments. Comment ids must not be duplicated. */
-    conversation: Conversation[];
+    conversation: (Conversation | RemovedComment)[];
     /** score of the thread (first comment) (`upvotes - downvotes`) */
     score: number;
     images: Image[];
@@ -548,10 +552,6 @@ export declare class Id implements IId {
     toJSON(data?: any): any;
 }
 export interface IId {
-}
-export declare enum Nameonly {
-    _0 = 0,
-    _1 = 1
 }
 export declare class Body5 implements IBody5 {
     /** Username or email */
@@ -676,12 +676,16 @@ export interface IAnonymous2 {
     id: number;
 }
 export declare class Anonymous3 implements IAnonymous3 {
+    /** Whether user is logged in */
+    active: boolean;
     constructor(data?: IAnonymous3);
     init(_data?: any): void;
     static fromJS(data: any): Anonymous3;
     toJSON(data?: any): any;
 }
 export interface IAnonymous3 {
+    /** Whether user is logged in */
+    active: boolean;
 }
 export declare class Anonymous4 implements IAnonymous4 {
     cid: number;
@@ -705,13 +709,27 @@ export declare class Anonymous5 extends OK implements IAnonymous5 {
 export interface IAnonymous5 extends IOK {
     token: string;
 }
-export declare class Anonymous6 implements IAnonymous6 {
+export declare class Anonymous6 extends User implements IAnonymous6 {
+    /** Number of threads created by user */
+    count: number;
     constructor(data?: IAnonymous6);
     init(_data?: any): void;
     static fromJS(data: any): Anonymous6;
     toJSON(data?: any): any;
 }
-export interface IAnonymous6 {
+export interface IAnonymous6 extends IUser {
+    /** Number of threads created by user */
+    count: number;
+}
+export declare class Anonymous7 implements IAnonymous7 {
+    name: string;
+    constructor(data?: IAnonymous7);
+    init(_data?: any): void;
+    static fromJS(data: any): Anonymous7;
+    toJSON(data?: any): any;
+}
+export interface IAnonymous7 {
+    name: string;
 }
 export declare enum OKResponse {
     Ok = "ok"
@@ -720,13 +738,27 @@ export declare enum UserSex {
     M = "M",
     F = "F"
 }
-export declare class Conversation implements IConversation {
+export declare class Quote extends CommentC implements IQuote {
+    constructor(data?: IQuote);
+    init(_data?: any): void;
+    static fromJS(data: any): Quote;
+    toJSON(data?: any): any;
+}
+export interface IQuote extends ICommentC {
+}
+/** Comment object with score */
+export declare class Conversation extends Comment implements IConversation {
+    /** score of the comment (`upvotes - downvotes`) */
+    score?: number;
     constructor(data?: IConversation);
     init(_data?: any): void;
     static fromJS(data: any): Conversation;
     toJSON(data?: any): any;
 }
-export interface IConversation {
+/** Comment object with score */
+export interface IConversation extends IComment {
+    /** score of the comment (`upvotes - downvotes`) */
+    score?: number;
 }
 export declare class Name implements IName {
     constructor(data?: IName);

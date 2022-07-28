@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.Name = exports.Conversation = exports.UserSex = exports.OKResponse = exports.Anonymous6 = exports.Anonymous5 = exports.Anonymous4 = exports.Anonymous3 = exports.Anonymous2 = exports.Anonymous = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Body10 = exports.Body9 = exports.Body8 = exports.Body7 = exports.Body6 = exports.Body5 = exports.Nameonly = exports.Id = exports.Body4 = exports.Body3 = exports.Body2 = exports.Body = exports.Sort = exports.ThreadMeta = exports.Thread = exports.Comment = exports.CommentC = exports.RemovedComment = exports.Image = exports.Category = exports.User = exports.Vote = exports.ErrorDto = exports.Token = exports.OK = exports.Client = void 0;
+exports.ApiException = exports.Name = exports.Conversation = exports.Quote = exports.UserSex = exports.OKResponse = exports.Anonymous7 = exports.Anonymous6 = exports.Anonymous5 = exports.Anonymous4 = exports.Anonymous3 = exports.Anonymous2 = exports.Anonymous = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Body10 = exports.Body9 = exports.Body8 = exports.Body7 = exports.Body6 = exports.Body5 = exports.Id = exports.Body4 = exports.Body3 = exports.Body2 = exports.Body = exports.Sort = exports.ThreadMeta = exports.Thread = exports.Comment = exports.CommentC = exports.RemovedComment = exports.Image = exports.Category = exports.User = exports.Vote = exports.ErrorDto = exports.Token = exports.OK = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -16,10 +16,7 @@ class Client {
     constructor(baseUrl, instance) {
         this.jsonParseReviver = undefined;
         this.instance = instance ? instance : axios_1.default.create();
-        this.baseUrl =
-            baseUrl !== undefined && baseUrl !== null
-                ? baseUrl
-                : "https://dev.metahkg.org/api";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://dev.metahkg.org/api";
     }
     /**
      * Get thread
@@ -31,7 +28,7 @@ class Client {
      * @param end (optional) Ending at comment id. Must be greater or equal to start. If start is specified but end is not, end defaults to `page * limit`
      * @return Success
      */
-    getThread(id, page, limit, sort, start, end, cancelToken) {
+    thread(id, page, limit, sort, start, end, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -61,25 +58,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetThread(_response);
+        }).then((_response) => {
+            return this.processThread(_response);
         });
     }
-    processGetThread(response) {
+    processThread(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -128,7 +122,7 @@ class Client {
      * @param id thread id
      * @return OK
      */
-    checkThread(id, cancelToken) {
+    threadCheck(id, cancelToken) {
         let url_ = this.baseUrl + "/thread/check?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
@@ -139,25 +133,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processCheckThread(_response);
+        }).then((_response) => {
+            return this.processThreadCheck(_response);
         });
     }
-    processCheckThread(response) {
+    processThreadCheck(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -192,7 +183,7 @@ class Client {
      * @param id thread id
      * @return Success
      */
-    getThreadImages(id, cancelToken) {
+    threadImages(id, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -202,25 +193,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetThreadImages(_response);
+        }).then((_response) => {
+            return this.processThreadImages(_response);
         });
     }
-    processGetThreadImages(response) {
+    processThreadImages(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -269,7 +257,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    createThread(body, cancelToken) {
+    threadCreate(body, cancelToken) {
         let url_ = this.baseUrl + "/thread/create";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -279,25 +267,22 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processCreateThread(_response);
+        }).then((_response) => {
+            return this.processThreadCreate(_response);
         });
     }
-    processCreateThread(response) {
+    processThreadCreate(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -354,7 +339,7 @@ class Client {
      * @param cid comment id
      * @return Success
      */
-    getComment(id, cid, cancelToken) {
+    comment(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -367,25 +352,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetComment(_response);
+        }).then((_response) => {
+            return this.processComment(_response);
         });
     }
-    processGetComment(response) {
+    processComment(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -428,7 +410,7 @@ class Client {
      * @param cid comment id
      * @return Success
      */
-    getCommentReplies(id, cid, cancelToken) {
+    commentReplies(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/replies";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -441,25 +423,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetCommentReplies(_response);
+        }).then((_response) => {
+            return this.processCommentReplies(_response);
         });
     }
-    processGetCommentReplies(response) {
+    processCommentReplies(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -516,7 +495,7 @@ class Client {
      * @param cid comment id
      * @return Success
      */
-    getCommentImages(id, cid, cancelToken) {
+    commentImages(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -529,25 +508,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetCommentImages(_response);
+        }).then((_response) => {
+            return this.processCommentImages(_response);
         });
     }
-    processGetCommentImages(response) {
+    processCommentImages(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -604,7 +580,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    createComment(id, body, cancelToken) {
+    commentCreate(id, body, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/create";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -617,25 +593,22 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processCreateComment(_response);
+        }).then((_response) => {
+            return this.processCommentCreate(_response);
         });
     }
-    processCreateComment(response) {
+    processCommentCreate(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -693,7 +666,7 @@ class Client {
      * @param cid comment id
      * @return OK
      */
-    vote(id, cid, body, cancelToken) {
+    commentVote(id, cid, body, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/vote";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -709,25 +682,22 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processVote(_response);
+        }).then((_response) => {
+            return this.processCommentVote(_response);
         });
     }
-    processVote(response) {
+    processCommentVote(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -784,7 +754,7 @@ class Client {
      * @param cid comment id
      * @return OK
      */
-    pinComment(id, cid, cancelToken) {
+    commentPin(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/pin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -797,25 +767,22 @@ class Client {
             method: "PUT",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processPinComment(_response);
+        }).then((_response) => {
+            return this.processCommentPin(_response);
         });
     }
-    processPinComment(response) {
+    processCommentPin(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -872,7 +839,7 @@ class Client {
      * @param cid comment id
      * @return OK
      */
-    unpinComment(id, cid, cancelToken) {
+    commentUnpin(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/unpin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -885,25 +852,22 @@ class Client {
             method: "PUT",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processUnpinComment(_response);
+        }).then((_response) => {
+            return this.processCommentUnpin(_response);
         });
     }
-    processUnpinComment(response) {
+    processCommentUnpin(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -958,32 +922,29 @@ class Client {
      * Get status
      * @return Success
      */
-    getStatus(cancelToken) {
+    meStatus(cancelToken) {
         let url_ = this.baseUrl + "/me/status";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetStatus(_response);
+        }).then((_response) => {
+            return this.processMeStatus(_response);
         });
     }
-    processGetStatus(response) {
+    processMeStatus(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -997,7 +958,7 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = resultData200 !== undefined ? resultData200 : null;
+            result200 = Anonymous3.fromJS(resultData200);
             return Promise.resolve(result200);
         }
         else if (status !== 200 && status !== 204) {
@@ -1010,32 +971,29 @@ class Client {
      * Get blocked users
      * @return Success
      */
-    getBlockedUsers(cancelToken) {
+    meBlocked(cancelToken) {
         let url_ = this.baseUrl + "/me/blocked";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetBlockedUsers(_response);
+        }).then((_response) => {
+            return this.processMeBlocked(_response);
         });
     }
-    processGetBlockedUsers(response) {
+    processMeBlocked(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1077,7 +1035,7 @@ class Client {
      * @param id thread id
      * @return Success
      */
-    getVotes(id, cancelToken) {
+    meVotes(id, cancelToken) {
         let url_ = this.baseUrl + "/me/votes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1087,25 +1045,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetVotes(_response);
+        }).then((_response) => {
+            return this.processMeVotes(_response);
         });
     }
-    processGetVotes(response) {
+    processMeVotes(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1153,32 +1108,29 @@ class Client {
      * Block user
      * @return OK
      */
-    blockUser(cancelToken) {
+    meBlock(cancelToken) {
         let url_ = this.baseUrl + "/me/block";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "POST",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processBlockUser(_response);
+        }).then((_response) => {
+            return this.processMeBlock(_response);
         });
     }
-    processBlockUser(response) {
+    processMeBlock(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1233,32 +1185,29 @@ class Client {
      * Unblock user
      * @return OK
      */
-    unblockUser(cancelToken) {
+    meUnblock(cancelToken) {
         let url_ = this.baseUrl + "/me/unblock";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "POST",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processUnblockUser(_response);
+        }).then((_response) => {
+            return this.processMeUnblock(_response);
         });
     }
-    processUnblockUser(response) {
+    processMeUnblock(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1307,7 +1256,7 @@ class Client {
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
      * @return OK
      */
-    setAvatar(avatar, cancelToken) {
+    meAvatar(avatar, cancelToken) {
         let url_ = this.baseUrl + "/me/avatar";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = new FormData();
@@ -1320,25 +1269,22 @@ class Client {
             method: "POST",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processSetAvatar(_response);
+        }).then((_response) => {
+            return this.processMeAvatar(_response);
         });
     }
-    processSetAvatar(response) {
+    processMeAvatar(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1408,7 +1354,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    renameUser(body, cancelToken) {
+    meRename(body, cancelToken) {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1418,25 +1364,22 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processRenameUser(_response);
+        }).then((_response) => {
+            return this.processMeRename(_response);
         });
     }
-    processRenameUser(response) {
+    processMeRename(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1484,32 +1427,29 @@ class Client {
      * Get categories
      * @return Success
      */
-    getCategories(cancelToken) {
+    categories(cancelToken) {
         let url_ = this.baseUrl + "/categories";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetCategories(_response);
+        }).then((_response) => {
+            return this.processCategories(_response);
         });
     }
-    processGetCategories(response) {
+    processCategories(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1544,7 +1484,7 @@ class Client {
      * @param id category id, or `bytid<thread id>`
      * @return Success
      */
-    getCategory(id, cancelToken) {
+    category(id, cancelToken) {
         let url_ = this.baseUrl + "/category/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1554,25 +1494,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetCategory(_response);
+        }).then((_response) => {
+            return this.processCategory(_response);
         });
     }
-    processGetCategory(response) {
+    processCategory(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1612,42 +1549,34 @@ class Client {
     /**
      * Get user profile
      * @param id user id
-     * @param nameonly (optional) return user name only
      * @return Success
      */
-    userProfile(id, nameonly, cancelToken) {
-        let url_ = this.baseUrl + "/users/profile/{id}?";
+    usersProfile(id, cancelToken) {
+        let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (nameonly === null)
-            throw new Error("The parameter 'nameonly' cannot be null.");
-        else if (nameonly !== undefined)
-            url_ += "nameonly=" + encodeURIComponent("" + nameonly) + "&";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processUserProfile(_response);
+        }).then((_response) => {
+            return this.processUsersProfile(_response);
         });
     }
-    processUserProfile(response) {
+    processUsersProfile(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1685,12 +1614,79 @@ class Client {
         return Promise.resolve(null);
     }
     /**
+     * Get user name
+     * @param id user id
+     * @return Success
+     */
+    usersProfileName(id, cancelToken) {
+        let url_ = this.baseUrl + "/users/{id}/name";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+        return this.instance.request(options_).catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        }).then((_response) => {
+            return this.processUsersProfileName(_response);
+        });
+    }
+    processUsersProfileName(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = Anonymous7.fromJS(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("User not found", status, _responseText, _headers, result404);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
      * Get user avatar
      * @param id user id
      * @return Success
      */
-    userAvatar(id, cancelToken) {
-        let url_ = this.baseUrl + "/users/avatars/{id}";
+    usersProfileAvatar(id, cancelToken) {
+        let url_ = this.baseUrl + "/users/{id}/avatar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1700,25 +1696,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "image/png",
+                "Accept": "image/png"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processUserAvatar(_response);
+        }).then((_response) => {
+            return this.processUsersProfileAvatar(_response);
         });
     }
-    processUserAvatar(response) {
+    processUsersProfileAvatar(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1729,21 +1722,10 @@ class Client {
             }
         }
         if (status === 200 || status === 206) {
-            const contentDisposition = response.headers
-                ? response.headers["content-disposition"]
-                : undefined;
-            const fileNameMatch = contentDisposition
-                ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition)
-                : undefined;
+            const contentDisposition = response.headers ? response.headers["content-disposition"] : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
             const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Promise.resolve({
-                fileName: fileName,
-                status: status,
-                data: new Blob([response.data], {
-                    type: response.headers["content-type"],
-                }),
-                headers: _headers,
-            });
+            return Promise.resolve({ fileName: fileName, status: status, data: new Blob([response.data], { type: response.headers["content-type"] }), headers: _headers });
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -1763,7 +1745,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    login(body, cancelToken) {
+    usersLogin(body, cancelToken) {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1773,25 +1755,22 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processLogin(_response);
+        }).then((_response) => {
+            return this.processUsersLogin(_response);
         });
     }
-    processLogin(response) {
+    processUsersLogin(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1840,7 +1819,7 @@ class Client {
      * @param body (optional)
      * @return Success, verification email sent.
      */
-    register(body, cancelToken) {
+    usersRegister(body, cancelToken) {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1850,25 +1829,22 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processRegister(_response);
+        }).then((_response) => {
+            return this.processUsersRegister(_response);
         });
     }
-    processRegister(response) {
+    processUsersRegister(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1907,7 +1883,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    verify(body, cancelToken) {
+    usersVerify(body, cancelToken) {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1917,25 +1893,22 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processVerify(_response);
+        }).then((_response) => {
+            return this.processUsersVerify(_response);
         });
     }
-    processVerify(response) {
+    processUsersVerify(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1977,7 +1950,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    resend(body, cancelToken) {
+    usersResend(body, cancelToken) {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1987,25 +1960,22 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processResend(_response);
+        }).then((_response) => {
+            return this.processUsersResend(_response);
         });
     }
-    processResend(response) {
+    processUsersResend(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2054,7 +2024,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    forgot(body, cancelToken) {
+    usersForgot(body, cancelToken) {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -2064,25 +2034,22 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processForgot(_response);
+        }).then((_response) => {
+            return this.processUsersForgot(_response);
         });
     }
-    processForgot(response) {
+    processUsersForgot(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2131,7 +2098,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    reset(body, cancelToken) {
+    usersReset(body, cancelToken) {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -2141,25 +2108,22 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processReset(_response);
+        }).then((_response) => {
+            return this.processUsersReset(_response);
         });
     }
-    processReset(response) {
+    processUsersReset(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2211,7 +2175,7 @@ class Client {
      * @param limit (optional) limit per page
      * @return Success
      */
-    getMenu(category, sort, page, limit, cancelToken) {
+    menuCategory(category, sort, page, limit, cancelToken) {
         let url_ = this.baseUrl + "/menu/{category}?";
         if (category === undefined || category === null)
             throw new Error("The parameter 'category' must be defined.");
@@ -2233,25 +2197,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetMenu(_response);
+        }).then((_response) => {
+            return this.processMenuCategory(_response);
         });
     }
-    processGetMenu(response) {
+    processMenuCategory(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2304,7 +2265,7 @@ class Client {
      * @param limit (optional) limit per page
      * @return Success
      */
-    searchMenu(q, mode, sort, page, limit, cancelToken) {
+    menuSearch(q, mode, sort, page, limit, cancelToken) {
         let url_ = this.baseUrl + "/menu/search?";
         if (q === undefined || q === null)
             throw new Error("The parameter 'q' must be defined and cannot be null.");
@@ -2331,25 +2292,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processSearchMenu(_response);
+        }).then((_response) => {
+            return this.processMenuSearch(_response);
         });
     }
-    processSearchMenu(response) {
+    processMenuSearch(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2387,13 +2345,13 @@ class Client {
         return Promise.resolve(null);
     }
     /**
-     * Get threads from a user
+     * Get threads created by a user
      * @param id user id
      * @param page (optional) page number
      * @param limit (optional) limit per page
      * @return Success
      */
-    getHistory(id, page, limit, cancelToken) {
+    menuHistory(id, page, limit, cancelToken) {
         let url_ = this.baseUrl + "/menu/history/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2411,25 +2369,22 @@ class Client {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetHistory(_response);
+        }).then((_response) => {
+            return this.processMenuHistory(_response);
         });
     }
-    processGetHistory(response) {
+    processMenuHistory(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2478,39 +2433,33 @@ class Client {
      * @param threads Thread ids
      * @return Success
      */
-    getThreads(threads, cancelToken) {
+    menuThreads(threads, cancelToken) {
         let url_ = this.baseUrl + "/menu/threads?";
         if (threads === undefined || threads === null)
             throw new Error("The parameter 'threads' must be defined and cannot be null.");
         else
-            threads &&
-                threads.forEach((item) => {
-                    url_ += "threads=" + encodeURIComponent("" + item) + "&";
-                });
+            threads && threads.forEach(item => { url_ += "threads=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
             url: url_,
             headers: {
-                Accept: "application/json",
+                "Accept": "application/json"
             },
-            cancelToken,
+            cancelToken
         };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
+        return this.instance.request(options_).catch((_error) => {
             if (isAxiosError(_error) && _error.response) {
                 return _error.response;
             }
             else {
                 throw _error;
             }
-        })
-            .then((_response) => {
-            return this.processGetThreads(_response);
+        }).then((_response) => {
+            return this.processMenuThreads(_response);
         });
     }
-    processGetThreads(response) {
+    processMenuThreads(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2564,13 +2513,13 @@ class OK {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new OK();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["response"] = this.response;
         return data;
     }
@@ -2591,13 +2540,13 @@ class Token {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Token();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["token"] = this.token;
         return data;
     }
@@ -2618,13 +2567,13 @@ class ErrorDto {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new ErrorDto();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["error"] = this.error;
         return data;
     }
@@ -2650,25 +2599,21 @@ class User {
             this.id = _data["id"];
             this.name = _data["name"];
             this.sex = _data["sex"];
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : undefined;
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new User();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
         data["sex"] = this.sex;
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : undefined;
         return data;
     }
 }
@@ -2689,13 +2634,13 @@ class Category {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Category();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
         return data;
@@ -2718,13 +2663,13 @@ class Image {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Image();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["cid"] = this.cid;
         data["src"] = this.src;
         return data;
@@ -2747,13 +2692,13 @@ class RemovedComment {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new RemovedComment();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["removed"] = this.removed;
         return data;
@@ -2785,23 +2730,19 @@ class CommentC {
                 for (let item of _data["images"])
                     this.images.push(item);
             }
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : undefined;
             this.slink = _data["slink"];
-            this.quote = _data["quote"]
-                ? CommentC.fromJS(_data["quote"])
-                : undefined;
+            this.quote = _data["quote"];
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new CommentC();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["user"] = this.user ? this.user.toJSON() : undefined;
         data["comment"] = this.comment;
@@ -2811,11 +2752,9 @@ class CommentC {
             for (let item of this.images)
                 data["images"].push(item);
         }
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : undefined;
         data["slink"] = this.slink;
-        data["quote"] = this.quote ? this.quote.toJSON() : undefined;
+        data["quote"] = this.quote;
         return data;
     }
 }
@@ -2838,13 +2777,13 @@ class Comment extends CommentC {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Comment();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["D"] = this.d;
         data["U"] = this.u;
         if (Array.isArray(this.replies)) {
@@ -2889,24 +2828,20 @@ class Thread {
                 for (let item of _data["images"])
                     this.images.push(Image.fromJS(item));
             }
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : undefined;
-            this.lastModified = _data["lastModified"]
-                ? new Date(_data["lastModified"].toString())
-                : undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : undefined;
+            this.lastModified = _data["lastModified"] ? new Date(_data["lastModified"].toString()) : undefined;
             this.slink = _data["slink"];
             this.pin = _data["pin"] ? CommentC.fromJS(_data["pin"]) : undefined;
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Thread();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["title"] = this.title;
         data["category"] = this.category;
@@ -2923,12 +2858,8 @@ class Thread {
             for (let item of this.images)
                 data["images"].push(item.toJSON());
         }
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : undefined;
-        data["lastModified"] = this.lastModified
-            ? this.lastModified.toISOString()
-            : undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : undefined;
+        data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : undefined;
         data["slink"] = this.slink;
         data["pin"] = this.pin ? this.pin.toJSON() : undefined;
         return data;
@@ -2956,35 +2887,27 @@ class ThreadMeta {
             this.op = _data["op"] ? User.fromJS(_data["op"]) : new User();
             this.c = _data["c"];
             this.score = _data["score"];
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : undefined;
-            this.lastModified = _data["lastModified"]
-                ? new Date(_data["lastModified"].toString())
-                : undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : undefined;
+            this.lastModified = _data["lastModified"] ? new Date(_data["lastModified"].toString()) : undefined;
             this.slink = _data["slink"];
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new ThreadMeta();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["title"] = this.title;
         data["category"] = this.category;
         data["op"] = this.op ? this.op.toJSON() : undefined;
         data["c"] = this.c;
         data["score"] = this.score;
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : undefined;
-        data["lastModified"] = this.lastModified
-            ? this.lastModified.toISOString()
-            : undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : undefined;
+        data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : undefined;
         data["slink"] = this.slink;
         return data;
     }
@@ -3014,13 +2937,13 @@ class Body {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Body();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["title"] = this.title;
         data["comment"] = this.comment;
         data["rtoken"] = this.rtoken;
@@ -3046,13 +2969,13 @@ class Body2 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Body2();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["comment"] = this.comment;
         data["rtoken"] = this.rtoken;
         data["quote"] = this.quote;
@@ -3075,13 +2998,13 @@ class Body3 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Body3();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["vote"] = this.vote;
         return data;
     }
@@ -3102,13 +3025,13 @@ class Body4 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Body4();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         return data;
     }
@@ -3123,24 +3046,20 @@ class Id {
             }
         }
     }
-    init(_data) { }
+    init(_data) {
+    }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Id();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         return data;
     }
 }
 exports.Id = Id;
-var Nameonly;
-(function (Nameonly) {
-    Nameonly[Nameonly["_0"] = 0] = "_0";
-    Nameonly[Nameonly["_1"] = 1] = "_1";
-})(Nameonly = exports.Nameonly || (exports.Nameonly = {}));
 class Body5 {
     constructor(data) {
         if (data) {
@@ -3157,13 +3076,13 @@ class Body5 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Body5();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["pwd"] = this.pwd;
         return data;
@@ -3190,13 +3109,13 @@ class Body6 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Body6();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["email"] = this.email;
         data["pwd"] = this.pwd;
@@ -3223,13 +3142,13 @@ class Body7 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Body7();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["email"] = this.email;
         data["code"] = this.code;
         return data;
@@ -3252,13 +3171,13 @@ class Body8 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Body8();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["email"] = this.email;
         data["rtoken"] = this.rtoken;
         return data;
@@ -3281,13 +3200,13 @@ class Body9 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Body9();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["email"] = this.email;
         data["rtoken"] = this.rtoken;
         return data;
@@ -3311,13 +3230,13 @@ class Body10 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Body10();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["email"] = this.email;
         data["code"] = this.code;
         data["pwd"] = this.pwd;
@@ -3355,13 +3274,13 @@ class Anonymous {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Anonymous();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         return data;
     }
@@ -3382,13 +3301,13 @@ class Anonymous2 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Anonymous2();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         return data;
     }
@@ -3403,15 +3322,20 @@ class Anonymous3 {
             }
         }
     }
-    init(_data) { }
+    init(_data) {
+        if (_data) {
+            this.active = _data["active"];
+        }
+    }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Anonymous3();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
+        data["active"] = this.active;
         return data;
     }
 }
@@ -3432,13 +3356,13 @@ class Anonymous4 {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Anonymous4();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["cid"] = this.cid;
         data["vote"] = this.vote;
         return data;
@@ -3456,20 +3380,44 @@ class Anonymous5 extends OK {
         }
     }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Anonymous5();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         data["token"] = this.token;
         super.toJSON(data);
         return data;
     }
 }
 exports.Anonymous5 = Anonymous5;
-class Anonymous6 {
+class Anonymous6 extends User {
+    constructor(data) {
+        super(data);
+    }
+    init(_data) {
+        super.init(_data);
+        if (_data) {
+            this.count = _data["count"];
+        }
+    }
+    static fromJS(data) {
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous6();
+        result.init(data);
+        return result;
+    }
+    toJSON(data) {
+        data = typeof data === 'object' ? data : {};
+        data["count"] = this.count;
+        super.toJSON(data);
+        return data;
+    }
+}
+exports.Anonymous6 = Anonymous6;
+class Anonymous7 {
     constructor(data) {
         if (data) {
             for (var property in data) {
@@ -3478,19 +3426,24 @@ class Anonymous6 {
             }
         }
     }
-    init(_data) { }
+    init(_data) {
+        if (_data) {
+            this.name = _data["name"];
+        }
+    }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous6();
+        data = typeof data === 'object' ? data : {};
+        let result = new Anonymous7();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
         return data;
     }
 }
-exports.Anonymous6 = Anonymous6;
+exports.Anonymous7 = Anonymous7;
 var OKResponse;
 (function (OKResponse) {
     OKResponse["Ok"] = "ok";
@@ -3500,24 +3453,47 @@ var UserSex;
     UserSex["M"] = "M";
     UserSex["F"] = "F";
 })(UserSex = exports.UserSex || (exports.UserSex = {}));
-class Conversation {
+class Quote extends CommentC {
     constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
+        super(data);
+    }
+    init(_data) {
+        super.init(_data);
+    }
+    static fromJS(data) {
+        data = typeof data === 'object' ? data : {};
+        let result = new Quote();
+        result.init(data);
+        return result;
+    }
+    toJSON(data) {
+        data = typeof data === 'object' ? data : {};
+        super.toJSON(data);
+        return data;
+    }
+}
+exports.Quote = Quote;
+/** Comment object with score */
+class Conversation extends Comment {
+    constructor(data) {
+        super(data);
+    }
+    init(_data) {
+        super.init(_data);
+        if (_data) {
+            this.score = _data["score"];
         }
     }
-    init(_data) { }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Conversation();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
+        data["score"] = this.score;
+        super.toJSON(data);
         return data;
     }
 }
@@ -3531,15 +3507,16 @@ class Name {
             }
         }
     }
-    init(_data) { }
+    init(_data) {
+    }
     static fromJS(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         let result = new Name();
         result.init(data);
         return result;
     }
     toJSON(data) {
-        data = typeof data === "object" ? data : {};
+        data = typeof data === 'object' ? data : {};
         return data;
     }
 }
