@@ -260,7 +260,6 @@ class Client {
     }
     /**
      * Create thread
-     * @param body (optional)
      * @return Success
      */
     threadCreate(body, cancelToken) {
@@ -581,7 +580,6 @@ class Client {
     /**
      * Create comment
      * @param id thread id
-     * @param body (optional)
      * @return Success
      */
     commentCreate(id, body, cancelToken) {
@@ -668,12 +666,11 @@ class Client {
     }
     /**
      * Vote on comment
-     * @param body (optional)
      * @param id thread id
      * @param cid comment id
      * @return OK
      */
-    commentVote(id, cid, body, cancelToken) {
+    commentVote(body, id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/vote";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1371,7 +1368,6 @@ class Client {
     }
     /**
      * Rename
-     * @param body (optional)
      * @return Success
      */
     meRename(body, cancelToken) {
@@ -1784,7 +1780,6 @@ class Client {
     }
     /**
      * Login
-     * @param body (optional)
      * @return Success
      */
     usersLogin(body, cancelToken) {
@@ -1861,7 +1856,6 @@ class Client {
     }
     /**
      * Register
-     * @param body (optional)
      * @return Success, verification email sent.
      */
     usersRegister(body, cancelToken) {
@@ -1928,7 +1922,6 @@ class Client {
     }
     /**
      * Verify email
-     * @param body (optional)
      * @return Success
      */
     usersVerify(body, cancelToken) {
@@ -1998,7 +1991,6 @@ class Client {
     }
     /**
      * Resend verification email
-     * @param body (optional)
      * @return Success
      */
     usersResend(body, cancelToken) {
@@ -2075,7 +2067,6 @@ class Client {
     }
     /**
      * Forgot password
-     * @param body (optional)
      * @return Success
      */
     usersForgot(body, cancelToken) {
@@ -2152,7 +2143,6 @@ class Client {
     }
     /**
      * Reset password
-     * @param body (optional)
      * @return Success
      */
     usersReset(body, cancelToken) {

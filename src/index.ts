@@ -323,10 +323,9 @@ export class Client {
 
     /**
      * Create thread
-     * @param body (optional)
      * @return Success
      */
-    threadCreate(body?: Body, cancelToken?: CancelToken | undefined): Promise<Anonymous> {
+    threadCreate(body: Body, cancelToken?: CancelToken | undefined): Promise<Anonymous> {
         let url_ = this.baseUrl + "/thread/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -745,12 +744,11 @@ export class Client {
     /**
      * Create comment
      * @param id thread id
-     * @param body (optional)
      * @return Success
      */
     commentCreate(
         id: number,
-        body?: Body2,
+        body: Body2,
         cancelToken?: CancelToken | undefined
     ): Promise<Anonymous2> {
         let url_ = this.baseUrl + "/thread/{id}/comment/create";
@@ -864,15 +862,14 @@ export class Client {
 
     /**
      * Vote on comment
-     * @param body (optional)
      * @param id thread id
      * @param cid comment id
      * @return OK
      */
     commentVote(
+        body: Body3,
         id: number,
         cid: number,
-        body?: Body3,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/vote";
@@ -1789,10 +1786,9 @@ export class Client {
 
     /**
      * Rename
-     * @param body (optional)
      * @return Success
      */
-    meRename(body?: Body4, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
+    meRename(body: Body4, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2302,10 +2298,9 @@ export class Client {
 
     /**
      * Login
-     * @param body (optional)
      * @return Success
      */
-    usersLogin(body?: Body5, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body: Body5, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2402,10 +2397,9 @@ export class Client {
 
     /**
      * Register
-     * @param body (optional)
      * @return Success, verification email sent.
      */
-    usersRegister(body?: Body6, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2486,10 +2480,9 @@ export class Client {
 
     /**
      * Verify email
-     * @param body (optional)
      * @return Success
      */
-    usersVerify(body?: Body7, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2574,10 +2567,9 @@ export class Client {
 
     /**
      * Resend verification email
-     * @param body (optional)
      * @return Success
      */
-    usersResend(body?: Body8, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2674,10 +2666,9 @@ export class Client {
 
     /**
      * Forgot password
-     * @param body (optional)
      * @return Success
      */
-    usersForgot(body?: Body9, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2774,10 +2765,9 @@ export class Client {
 
     /**
      * Reset password
-     * @param body (optional)
      * @return Success
      */
-    usersReset(body?: Body10, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 

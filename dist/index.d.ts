@@ -32,10 +32,9 @@ export declare class Client {
     protected processThreadImages(response: AxiosResponse): Promise<Image[]>;
     /**
      * Create thread
-     * @param body (optional)
      * @return Success
      */
-    threadCreate(body?: Body, cancelToken?: CancelToken | undefined): Promise<Anonymous>;
+    threadCreate(body: Body, cancelToken?: CancelToken | undefined): Promise<Anonymous>;
     protected processThreadCreate(response: AxiosResponse): Promise<Anonymous>;
     /**
      * Get comment
@@ -64,19 +63,17 @@ export declare class Client {
     /**
      * Create comment
      * @param id thread id
-     * @param body (optional)
      * @return Success
      */
-    commentCreate(id: number, body?: Body2, cancelToken?: CancelToken | undefined): Promise<Anonymous2>;
+    commentCreate(id: number, body: Body2, cancelToken?: CancelToken | undefined): Promise<Anonymous2>;
     protected processCommentCreate(response: AxiosResponse): Promise<Anonymous2>;
     /**
      * Vote on comment
-     * @param body (optional)
      * @param id thread id
      * @param cid comment id
      * @return OK
      */
-    commentVote(id: number, cid: number, body?: Body3, cancelToken?: CancelToken | undefined): Promise<OK>;
+    commentVote(body: Body3, id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCommentVote(response: AxiosResponse): Promise<OK>;
     /**
      * Pin comment
@@ -134,10 +131,9 @@ export declare class Client {
     protected processMeAvatar(response: AxiosResponse): Promise<OK>;
     /**
      * Rename
-     * @param body (optional)
      * @return Success
      */
-    meRename(body?: Body4, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
+    meRename(body: Body4, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
     protected processMeRename(response: AxiosResponse): Promise<Anonymous5>;
     /**
      * Get categories
@@ -175,45 +171,39 @@ export declare class Client {
     protected processUsersProfileAvatar(response: AxiosResponse): Promise<FileResponse>;
     /**
      * Login
-     * @param body (optional)
      * @return Success
      */
-    usersLogin(body?: Body5, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersLogin(body: Body5, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersLogin(response: AxiosResponse): Promise<Token>;
     /**
      * Register
-     * @param body (optional)
      * @return Success, verification email sent.
      */
-    usersRegister(body?: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersRegister(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
-     * @param body (optional)
      * @return Success
      */
-    usersVerify(body?: Body7, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersVerify(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersVerify(response: AxiosResponse): Promise<Token>;
     /**
      * Resend verification email
-     * @param body (optional)
      * @return Success
      */
-    usersResend(body?: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersResend(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
-     * @param body (optional)
      * @return Success
      */
-    usersForgot(body?: Body9, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersForgot(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
-     * @param body (optional)
      * @return Success
      */
-    usersReset(body?: Body10, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersReset(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
     /**
      * Get threads in a category
