@@ -1,6 +1,6 @@
 import { Client } from "./src";
 
-const client = new Client("https://dev.metahkg.org/api");
+const client = new Client("https://metahkg.org/api");
 
 client
     .getThread(1)
