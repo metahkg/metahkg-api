@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.Name = exports.Conversation = exports.UserSex = exports.OKResponse = exports.Anonymous6 = exports.Anonymous5 = exports.Anonymous4 = exports.Anonymous3 = exports.Anonymous2 = exports.Anonymous = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Body10 = exports.Body9 = exports.Body8 = exports.Body7 = exports.Body6 = exports.Body5 = exports.Nameonly = exports.Id = exports.Body4 = exports.Body3 = exports.Body2 = exports.Body = exports.Sort = exports.ThreadMeta = exports.Thread = exports.Comment = exports.CommentC = exports.RemovedComment = exports.Image = exports.Category = exports.User = exports.Vote = exports.ErrorDto = exports.Token = exports.OK = exports.Client = void 0;
+exports.ApiException = exports.Name = exports.Conversation = exports.Quote = exports.UserSex = exports.OKResponse = exports.Anonymous7 = exports.Anonymous6 = exports.Anonymous5 = exports.Anonymous4 = exports.Anonymous3 = exports.Anonymous2 = exports.Anonymous = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Body10 = exports.Body9 = exports.Body8 = exports.Body7 = exports.Body6 = exports.Body5 = exports.Id = exports.Body4 = exports.Body3 = exports.Body2 = exports.Body = exports.Sort = exports.ThreadMeta = exports.Thread = exports.Comment = exports.CommentC = exports.RemovedComment = exports.Image = exports.Category = exports.User = exports.Vote = exports.ErrorDto = exports.Token = exports.OK = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -31,7 +31,7 @@ class Client {
      * @param end (optional) Ending at comment id. Must be greater or equal to start. If start is specified but end is not, end defaults to `page * limit`
      * @return Success
      */
-    getThread(id, page, limit, sort, start, end, cancelToken) {
+    thread(id, page, limit, sort, start, end, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -76,10 +76,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetThread(_response);
+            return this.processThread(_response);
         });
     }
-    processGetThread(response) {
+    processThread(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -128,7 +128,7 @@ class Client {
      * @param id thread id
      * @return OK
      */
-    checkThread(id, cancelToken) {
+    threadCheck(id, cancelToken) {
         let url_ = this.baseUrl + "/thread/check?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
@@ -154,10 +154,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processCheckThread(_response);
+            return this.processThreadCheck(_response);
         });
     }
-    processCheckThread(response) {
+    processThreadCheck(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -192,7 +192,7 @@ class Client {
      * @param id thread id
      * @return Success
      */
-    getThreadImages(id, cancelToken) {
+    threadImages(id, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -217,10 +217,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetThreadImages(_response);
+            return this.processThreadImages(_response);
         });
     }
-    processGetThreadImages(response) {
+    processThreadImages(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -269,7 +269,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    createThread(body, cancelToken) {
+    threadCreate(body, cancelToken) {
         let url_ = this.baseUrl + "/thread/create";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -294,10 +294,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processCreateThread(_response);
+            return this.processThreadCreate(_response);
         });
     }
-    processCreateThread(response) {
+    processThreadCreate(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -354,7 +354,7 @@ class Client {
      * @param cid comment id
      * @return Success
      */
-    getComment(id, cid, cancelToken) {
+    comment(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -382,10 +382,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetComment(_response);
+            return this.processComment(_response);
         });
     }
-    processGetComment(response) {
+    processComment(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -428,7 +428,7 @@ class Client {
      * @param cid comment id
      * @return Success
      */
-    getCommentReplies(id, cid, cancelToken) {
+    commentReplies(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/replies";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -456,10 +456,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetCommentReplies(_response);
+            return this.processCommentReplies(_response);
         });
     }
-    processGetCommentReplies(response) {
+    processCommentReplies(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -516,7 +516,7 @@ class Client {
      * @param cid comment id
      * @return Success
      */
-    getCommentImages(id, cid, cancelToken) {
+    commentImages(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -544,10 +544,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetCommentImages(_response);
+            return this.processCommentImages(_response);
         });
     }
-    processGetCommentImages(response) {
+    processCommentImages(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -604,7 +604,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    createComment(id, body, cancelToken) {
+    commentCreate(id, body, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/create";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -632,10 +632,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processCreateComment(_response);
+            return this.processCommentCreate(_response);
         });
     }
-    processCreateComment(response) {
+    processCommentCreate(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -693,7 +693,7 @@ class Client {
      * @param cid comment id
      * @return OK
      */
-    vote(id, cid, body, cancelToken) {
+    commentVote(body, id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/vote";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -724,10 +724,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processVote(_response);
+            return this.processCommentVote(_response);
         });
     }
-    processVote(response) {
+    processCommentVote(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -784,7 +784,7 @@ class Client {
      * @param cid comment id
      * @return OK
      */
-    pinComment(id, cid, cancelToken) {
+    commentPin(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/pin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -812,10 +812,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processPinComment(_response);
+            return this.processCommentPin(_response);
         });
     }
-    processPinComment(response) {
+    processCommentPin(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -872,7 +872,7 @@ class Client {
      * @param cid comment id
      * @return OK
      */
-    unpinComment(id, cid, cancelToken) {
+    commentUnpin(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/unpin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -900,10 +900,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUnpinComment(_response);
+            return this.processCommentUnpin(_response);
         });
     }
-    processUnpinComment(response) {
+    processCommentUnpin(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -958,7 +958,7 @@ class Client {
      * Get status
      * @return Success
      */
-    getStatus(cancelToken) {
+    meStatus(cancelToken) {
         let url_ = this.baseUrl + "/me/status";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -980,10 +980,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetStatus(_response);
+            return this.processMeStatus(_response);
         });
     }
-    processGetStatus(response) {
+    processMeStatus(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -997,7 +997,7 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = resultData200 !== undefined ? resultData200 : null;
+            result200 = Anonymous3.fromJS(resultData200);
             return Promise.resolve(result200);
         }
         else if (status !== 200 && status !== 204) {
@@ -1010,7 +1010,7 @@ class Client {
      * Get blocked users
      * @return Success
      */
-    getBlockedUsers(cancelToken) {
+    meBlocked(cancelToken) {
         let url_ = this.baseUrl + "/me/blocked";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -1032,10 +1032,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetBlockedUsers(_response);
+            return this.processMeBlocked(_response);
         });
     }
-    processGetBlockedUsers(response) {
+    processMeBlocked(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1077,7 +1077,7 @@ class Client {
      * @param id thread id
      * @return Success
      */
-    getVotes(id, cancelToken) {
+    meVotes(id, cancelToken) {
         let url_ = this.baseUrl + "/me/votes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1102,10 +1102,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetVotes(_response);
+            return this.processMeVotes(_response);
         });
     }
-    processGetVotes(response) {
+    processMeVotes(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1153,7 +1153,7 @@ class Client {
      * Block user
      * @return OK
      */
-    blockUser(cancelToken) {
+    meBlock(cancelToken) {
         let url_ = this.baseUrl + "/me/block";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -1175,10 +1175,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processBlockUser(_response);
+            return this.processMeBlock(_response);
         });
     }
-    processBlockUser(response) {
+    processMeBlock(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1233,7 +1233,7 @@ class Client {
      * Unblock user
      * @return OK
      */
-    unblockUser(cancelToken) {
+    meUnblock(cancelToken) {
         let url_ = this.baseUrl + "/me/unblock";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -1255,10 +1255,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUnblockUser(_response);
+            return this.processMeUnblock(_response);
         });
     }
-    processUnblockUser(response) {
+    processMeUnblock(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1307,7 +1307,7 @@ class Client {
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
      * @return OK
      */
-    setAvatar(avatar, cancelToken) {
+    meAvatar(avatar, cancelToken) {
         let url_ = this.baseUrl + "/me/avatar";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = new FormData();
@@ -1335,10 +1335,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processSetAvatar(_response);
+            return this.processMeAvatar(_response);
         });
     }
-    processSetAvatar(response) {
+    processMeAvatar(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1408,7 +1408,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    renameUser(body, cancelToken) {
+    meRename(body, cancelToken) {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1433,10 +1433,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processRenameUser(_response);
+            return this.processMeRename(_response);
         });
     }
-    processRenameUser(response) {
+    processMeRename(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1484,7 +1484,7 @@ class Client {
      * Get categories
      * @return Success
      */
-    getCategories(cancelToken) {
+    categories(cancelToken) {
         let url_ = this.baseUrl + "/categories";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -1506,10 +1506,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetCategories(_response);
+            return this.processCategories(_response);
         });
     }
-    processGetCategories(response) {
+    processCategories(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1544,7 +1544,7 @@ class Client {
      * @param id category id, or `bytid<thread id>`
      * @return Success
      */
-    getCategory(id, cancelToken) {
+    category(id, cancelToken) {
         let url_ = this.baseUrl + "/category/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1569,10 +1569,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetCategory(_response);
+            return this.processCategory(_response);
         });
     }
-    processGetCategory(response) {
+    processCategory(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1612,18 +1612,13 @@ class Client {
     /**
      * Get user profile
      * @param id user id
-     * @param nameonly (optional) return user name only
      * @return Success
      */
-    userProfile(id, nameonly, cancelToken) {
-        let url_ = this.baseUrl + "/users/profile/{id}?";
+    usersProfile(id, cancelToken) {
+        let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (nameonly === null)
-            throw new Error("The parameter 'nameonly' cannot be null.");
-        else if (nameonly !== undefined)
-            url_ += "nameonly=" + encodeURIComponent("" + nameonly) + "&";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
@@ -1644,10 +1639,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUserProfile(_response);
+            return this.processUsersProfile(_response);
         });
     }
-    processUserProfile(response) {
+    processUsersProfile(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1685,12 +1680,82 @@ class Client {
         return Promise.resolve(null);
     }
     /**
+     * Get user name
+     * @param id user id
+     * @return Success
+     */
+    usersProfileName(id, cancelToken) {
+        let url_ = this.baseUrl + "/users/{id}/name";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processUsersProfileName(_response);
+        });
+    }
+    processUsersProfileName(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = Anonymous7.fromJS(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = ErrorDto.fromJS(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = ErrorDto.fromJS(resultData404);
+            return throwException("User not found", status, _responseText, _headers, result404);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
      * Get user avatar
      * @param id user id
      * @return Success
      */
-    userAvatar(id, cancelToken) {
-        let url_ = this.baseUrl + "/users/avatars/{id}";
+    usersProfileAvatar(id, cancelToken) {
+        let url_ = this.baseUrl + "/users/{id}/avatar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1715,10 +1780,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUserAvatar(_response);
+            return this.processUsersProfileAvatar(_response);
         });
     }
-    processUserAvatar(response) {
+    processUsersProfileAvatar(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1763,7 +1828,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    login(body, cancelToken) {
+    usersLogin(body, cancelToken) {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1788,10 +1853,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processLogin(_response);
+            return this.processUsersLogin(_response);
         });
     }
-    processLogin(response) {
+    processUsersLogin(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1840,7 +1905,7 @@ class Client {
      * @param body (optional)
      * @return Success, verification email sent.
      */
-    register(body, cancelToken) {
+    usersRegister(body, cancelToken) {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1865,10 +1930,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processRegister(_response);
+            return this.processUsersRegister(_response);
         });
     }
-    processRegister(response) {
+    processUsersRegister(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1907,7 +1972,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    verify(body, cancelToken) {
+    usersVerify(body, cancelToken) {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1932,10 +1997,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processVerify(_response);
+            return this.processUsersVerify(_response);
         });
     }
-    processVerify(response) {
+    processUsersVerify(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1977,7 +2042,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    resend(body, cancelToken) {
+    usersResend(body, cancelToken) {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -2002,10 +2067,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processResend(_response);
+            return this.processUsersResend(_response);
         });
     }
-    processResend(response) {
+    processUsersResend(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2054,7 +2119,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    forgot(body, cancelToken) {
+    usersForgot(body, cancelToken) {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -2079,10 +2144,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processForgot(_response);
+            return this.processUsersForgot(_response);
         });
     }
-    processForgot(response) {
+    processUsersForgot(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2131,7 +2196,7 @@ class Client {
      * @param body (optional)
      * @return Success
      */
-    reset(body, cancelToken) {
+    usersReset(body, cancelToken) {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -2156,10 +2221,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processReset(_response);
+            return this.processUsersReset(_response);
         });
     }
-    processReset(response) {
+    processUsersReset(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2211,7 +2276,7 @@ class Client {
      * @param limit (optional) limit per page
      * @return Success
      */
-    getMenu(category, sort, page, limit, cancelToken) {
+    menuCategory(category, sort, page, limit, cancelToken) {
         let url_ = this.baseUrl + "/menu/{category}?";
         if (category === undefined || category === null)
             throw new Error("The parameter 'category' must be defined.");
@@ -2248,10 +2313,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetMenu(_response);
+            return this.processMenuCategory(_response);
         });
     }
-    processGetMenu(response) {
+    processMenuCategory(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2304,7 +2369,7 @@ class Client {
      * @param limit (optional) limit per page
      * @return Success
      */
-    searchMenu(q, mode, sort, page, limit, cancelToken) {
+    menuSearch(q, mode, sort, page, limit, cancelToken) {
         let url_ = this.baseUrl + "/menu/search?";
         if (q === undefined || q === null)
             throw new Error("The parameter 'q' must be defined and cannot be null.");
@@ -2346,10 +2411,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processSearchMenu(_response);
+            return this.processMenuSearch(_response);
         });
     }
-    processSearchMenu(response) {
+    processMenuSearch(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2387,13 +2452,13 @@ class Client {
         return Promise.resolve(null);
     }
     /**
-     * Get threads from a user
+     * Get threads created by a user
      * @param id user id
      * @param page (optional) page number
      * @param limit (optional) limit per page
      * @return Success
      */
-    getHistory(id, page, limit, cancelToken) {
+    menuHistory(id, page, limit, cancelToken) {
         let url_ = this.baseUrl + "/menu/history/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2426,10 +2491,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetHistory(_response);
+            return this.processMenuHistory(_response);
         });
     }
-    processGetHistory(response) {
+    processMenuHistory(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2478,7 +2543,7 @@ class Client {
      * @param threads Thread ids
      * @return Success
      */
-    getThreads(threads, cancelToken) {
+    menuThreads(threads, cancelToken) {
         let url_ = this.baseUrl + "/menu/threads?";
         if (threads === undefined || threads === null)
             throw new Error("The parameter 'threads' must be defined and cannot be null.");
@@ -2507,10 +2572,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetThreads(_response);
+            return this.processMenuThreads(_response);
         });
     }
-    processGetThreads(response) {
+    processMenuThreads(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2789,9 +2854,7 @@ class CommentC {
                 ? new Date(_data["createdAt"].toString())
                 : undefined;
             this.slink = _data["slink"];
-            this.quote = _data["quote"]
-                ? CommentC.fromJS(_data["quote"])
-                : undefined;
+            this.quote = _data["quote"];
         }
     }
     static fromJS(data) {
@@ -2815,7 +2878,7 @@ class CommentC {
             ? this.createdAt.toISOString()
             : undefined;
         data["slink"] = this.slink;
-        data["quote"] = this.quote ? this.quote.toJSON() : undefined;
+        data["quote"] = this.quote;
         return data;
     }
 }
@@ -3136,11 +3199,6 @@ class Id {
     }
 }
 exports.Id = Id;
-var Nameonly;
-(function (Nameonly) {
-    Nameonly[Nameonly["_0"] = 0] = "_0";
-    Nameonly[Nameonly["_1"] = 1] = "_1";
-})(Nameonly = exports.Nameonly || (exports.Nameonly = {}));
 class Body5 {
     constructor(data) {
         if (data) {
@@ -3403,7 +3461,11 @@ class Anonymous3 {
             }
         }
     }
-    init(_data) { }
+    init(_data) {
+        if (_data) {
+            this.active = _data["active"];
+        }
+    }
     static fromJS(data) {
         data = typeof data === "object" ? data : {};
         let result = new Anonymous3();
@@ -3412,6 +3474,7 @@ class Anonymous3 {
     }
     toJSON(data) {
         data = typeof data === "object" ? data : {};
+        data["active"] = this.active;
         return data;
     }
 }
@@ -3469,16 +3532,16 @@ class Anonymous5 extends OK {
     }
 }
 exports.Anonymous5 = Anonymous5;
-class Anonymous6 {
+class Anonymous6 extends User {
     constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
+        super(data);
+    }
+    init(_data) {
+        super.init(_data);
+        if (_data) {
+            this.count = _data["count"];
         }
     }
-    init(_data) { }
     static fromJS(data) {
         data = typeof data === "object" ? data : {};
         let result = new Anonymous6();
@@ -3487,10 +3550,39 @@ class Anonymous6 {
     }
     toJSON(data) {
         data = typeof data === "object" ? data : {};
+        data["count"] = this.count;
+        super.toJSON(data);
         return data;
     }
 }
 exports.Anonymous6 = Anonymous6;
+class Anonymous7 {
+    constructor(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    init(_data) {
+        if (_data) {
+            this.name = _data["name"];
+        }
+    }
+    static fromJS(data) {
+        data = typeof data === "object" ? data : {};
+        let result = new Anonymous7();
+        result.init(data);
+        return result;
+    }
+    toJSON(data) {
+        data = typeof data === "object" ? data : {};
+        data["name"] = this.name;
+        return data;
+    }
+}
+exports.Anonymous7 = Anonymous7;
 var OKResponse;
 (function (OKResponse) {
     OKResponse["Ok"] = "ok";
@@ -3500,6 +3592,26 @@ var UserSex;
     UserSex["M"] = "M";
     UserSex["F"] = "F";
 })(UserSex = exports.UserSex || (exports.UserSex = {}));
+class Quote extends CommentC {
+    constructor(data) {
+        super(data);
+    }
+    init(_data) {
+        super.init(_data);
+    }
+    static fromJS(data) {
+        data = typeof data === "object" ? data : {};
+        let result = new Quote();
+        result.init(data);
+        return result;
+    }
+    toJSON(data) {
+        data = typeof data === "object" ? data : {};
+        super.toJSON(data);
+        return data;
+    }
+}
+exports.Quote = Quote;
 class Conversation {
     constructor(data) {
         if (data) {

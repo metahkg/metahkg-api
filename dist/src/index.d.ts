@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { AxiosInstance, AxiosResponse, CancelToken } from "axios";
 export declare class Client {
     private instance;
@@ -449,7 +450,7 @@ export interface IThread {
     /** number of comments in the thread (i.e. `conversation.length`) */
     c: number;
     /** An array of comments. Comment ids must not be duplicated. */
-    conversation: (Conversation | RemovedComment)[];
+    conversation: Conversation[];
     /** score of the thread (first comment) (`upvotes - downvotes`) */
     score: number;
     images: Image[];
@@ -746,13 +747,19 @@ export declare class Quote extends CommentC implements IQuote {
 }
 export interface IQuote extends ICommentC {
 }
-export declare class Conversation implements IConversation {
+/** Comment object with score */
+export declare class Conversation extends Comment implements IConversation {
+    /** score of the comment (`upvotes - downvotes`) */
+    score?: number;
     constructor(data?: IConversation);
     init(_data?: any): void;
     static fromJS(data: any): Conversation;
     toJSON(data?: any): any;
 }
-export interface IConversation {
+/** Comment object with score */
+export interface IConversation extends IComment {
+    /** score of the comment (`upvotes - downvotes`) */
+    score?: number;
 }
 export declare class Name implements IName {
     constructor(data?: IName);
