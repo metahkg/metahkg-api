@@ -275,8 +275,7 @@ export interface User {
     /** User name */
     name: string;
     sex: UserSex;
-    /** date when user was created */
-    createdAt: Date;
+    role: UserRole;
 }
 export interface Category {
     /** category id */
@@ -450,6 +449,8 @@ export declare function isAnonymous5(object: any): object is Anonymous5;
 export interface Anonymous6 extends User {
     /** Number of threads created by user */
     count: number;
+    /** Date and time when user was created */
+    createdAt?: Date;
 }
 export declare function isAnonymous6(object: any): object is Anonymous6;
 export interface Anonymous7 {
@@ -461,6 +462,10 @@ export declare enum OKResponse {
 export declare enum UserSex {
     M = "M",
     F = "F"
+}
+export declare enum UserRole {
+    Admin = "admin",
+    User = "user"
 }
 export interface Quote extends CommentC {
 }

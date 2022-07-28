@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.isConversation = exports.isQuote = exports.UserSex = exports.OKResponse = exports.isAnonymous6 = exports.isAnonymous5 = exports.Sort4 = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Sort = exports.isComment = exports.Vote = exports.Client = void 0;
+exports.ApiException = exports.isConversation = exports.isQuote = exports.UserRole = exports.UserSex = exports.OKResponse = exports.isAnonymous6 = exports.isAnonymous5 = exports.Sort4 = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Sort = exports.isComment = exports.Vote = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -2603,6 +2603,11 @@ var UserSex;
     UserSex["M"] = "M";
     UserSex["F"] = "F";
 })(UserSex = exports.UserSex || (exports.UserSex = {}));
+var UserRole;
+(function (UserRole) {
+    UserRole["Admin"] = "admin";
+    UserRole["User"] = "user";
+})(UserRole = exports.UserRole || (exports.UserRole = {}));
 function isQuote(object) {
     return object && object[""] === "Quote";
 }
