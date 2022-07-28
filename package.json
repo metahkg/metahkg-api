@@ -1,13 +1,15 @@
 {
-  "name": "metahkg-api",
-  "version": "3.3.1",
+  "name": "@metahkg/api-client",
+  "version": "3.3.1-1",
+  "access": "public",
   "description": "Access the metahkg api.",
   "main": "dist/index.js",
   "repository": "https://gitlab.com/metahkg/metahkg-api.git",
   "author": "wcyat <wcyat@wcyat.me>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --declaration",
+    "build": "tsc",
+    "generate": "./generate.sh",
     "lint": "prettier --write src",
     "test": "exit 0",
     "deploy": "yarn build && yarn publish"
@@ -16,7 +18,9 @@
     "axios": "^0.27.2"
   },
   "devDependencies": {
+    "nswag": "^13.16.1",
     "prettier": "^2.7.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
   }
 }

@@ -1,1 +1,0 @@
-{"version":3,"file":"forgot.js","sourceRoot":"","sources":["../../src/users/forgot.ts"],"names":[],"mappings":";AAGA,0FAA0F;AAC1F,SAAwB,KAAK,CAAC,KAAY;IACtC,OAAO,CAAC,OAA0B,EAAE,EAAE;QAClC,MAAM,EAAE,KAAK,EAAE,GAAG,OAAO,CAAC;QAC1B,OAAO,KAAK,CAAC,IAAI,CAAK,eAAe,EAAE,EAAE,KAAK,EAAE,CAAC,CAAC;IACtD,CAAC,CAAC;AACN,CAAC;AALD,wBAKC"}
