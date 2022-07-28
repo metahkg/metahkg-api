@@ -2473,7 +2473,7 @@ class Client {
     }
     /**
      * Get threads
-     * @param threads Thread ids
+     * @param threads array of thread ids
      * @return Success
      */
     menuThreads(threads, cancelToken) {

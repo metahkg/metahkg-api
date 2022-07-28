@@ -3172,7 +3172,7 @@ export class Client {
 
     /**
      * Get threads
-     * @param threads Thread ids
+     * @param threads array of thread ids
      * @return Success
      */
     menuThreads(
@@ -3284,6 +3284,8 @@ export interface Category {
     id: number;
     /** category name */
     name: string;
+    /** category is hidden */
+    hidden?: boolean;
 }
 
 export interface Image {

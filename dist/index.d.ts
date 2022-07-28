@@ -238,7 +238,7 @@ export declare class Client {
     protected processMenuHistory(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Get threads
-     * @param threads Thread ids
+     * @param threads array of thread ids
      * @return Success
      */
     menuThreads(threads: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
@@ -272,6 +272,8 @@ export interface Category {
     id: number;
     /** category name */
     name: string;
+    /** category is hidden */
+    hidden?: boolean;
 }
 export interface Image {
     cid: number;
