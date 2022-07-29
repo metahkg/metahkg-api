@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.Name = exports.Conversation = exports.UserSex = exports.OKResponse = exports.Anonymous6 = exports.Anonymous5 = exports.Anonymous4 = exports.Anonymous3 = exports.Anonymous2 = exports.Anonymous = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Body10 = exports.Body9 = exports.Body8 = exports.Body7 = exports.Body6 = exports.Body5 = exports.Nameonly = exports.Id = exports.Body4 = exports.Body3 = exports.Body2 = exports.Body = exports.Sort = exports.ThreadMeta = exports.Thread = exports.Comment = exports.CommentC = exports.RemovedComment = exports.Image = exports.Category = exports.User = exports.Vote = exports.ErrorDto = exports.Token = exports.OK = exports.Client = void 0;
+exports.ApiException = exports.isConversation = exports.isQuote = exports.UserRole = exports.UserSex = exports.OKResponse = exports.isAnonymous6 = exports.isAnonymous5 = exports.Sort4 = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Sort = exports.isComment = exports.Vote = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -16,10 +16,11 @@ class Client {
     constructor(baseUrl, instance) {
         this.jsonParseReviver = undefined;
         this.instance = instance ? instance : axios_1.default.create();
+        this.instance.defaults.transformResponse = [];
         this.baseUrl =
             baseUrl !== undefined && baseUrl !== null
                 ? baseUrl
-                : "https://metahkg.org/api";
+                : "https://dev.metahkg.org/api";
     }
     /**
      * Get thread
@@ -31,7 +32,7 @@ class Client {
      * @param end (optional) Ending at comment id. Must be greater or equal to start. If start is specified but end is not, end defaults to `page * limit`
      * @return Success
      */
-    getThread(id, page, limit, sort, start, end, cancelToken) {
+    thread(id, page, limit, sort, start, end, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -76,10 +77,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetThread(_response);
+            return this.processThread(_response);
         });
     }
-    processGetThread(response) {
+    processThread(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -93,28 +94,28 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = Thread.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
             let resultData403 = _responseText;
-            result403 = ErrorDto.fromJS(resultData403);
+            result403 = JSON.parse(resultData403);
             return throwException("Forbidden", status, _responseText, _headers, result403);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
@@ -128,7 +129,7 @@ class Client {
      * @param id thread id
      * @return OK
      */
-    checkThread(id, cancelToken) {
+    threadCheck(id, cancelToken) {
         let url_ = this.baseUrl + "/thread/check?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined and cannot be null.");
@@ -154,10 +155,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processCheckThread(_response);
+            return this.processThreadCheck(_response);
         });
     }
-    processCheckThread(response) {
+    processThreadCheck(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -171,14 +172,14 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
@@ -192,7 +193,7 @@ class Client {
      * @param id thread id
      * @return Success
      */
-    getThreadImages(id, cancelToken) {
+    threadImages(id, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -217,10 +218,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetThreadImages(_response);
+            return this.processThreadImages(_response);
         });
     }
-    processGetThreadImages(response) {
+    processThreadImages(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -234,28 +235,21 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(Image.fromJS(item));
-            }
-            else {
-                result200 = null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
@@ -266,10 +260,9 @@ class Client {
     }
     /**
      * Create thread
-     * @param body (optional)
      * @return Success
      */
-    createThread(body, cancelToken) {
+    threadCreate(body, cancelToken) {
         let url_ = this.baseUrl + "/thread/create";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -294,10 +287,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processCreateThread(_response);
+            return this.processThreadCreate(_response);
         });
     }
-    processCreateThread(response) {
+    processThreadCreate(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -311,35 +304,35 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = Anonymous.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Category not found", status, _responseText, _headers, result404);
         }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
             let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
+            result429 = JSON.parse(resultData429);
             return throwException("Recaptcha token invalid", status, _responseText, _headers, result429);
         }
         else if (status !== 200 && status !== 204) {
@@ -354,7 +347,7 @@ class Client {
      * @param cid comment id
      * @return Success
      */
-    getComment(id, cid, cancelToken) {
+    comment(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -382,10 +375,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetComment(_response);
+            return this.processComment(_response);
         });
     }
-    processGetComment(response) {
+    processComment(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -399,21 +392,21 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = Comment.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread or comment not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
@@ -428,7 +421,7 @@ class Client {
      * @param cid comment id
      * @return Success
      */
-    getCommentReplies(id, cid, cancelToken) {
+    commentReplies(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/replies";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -456,10 +449,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetCommentReplies(_response);
+            return this.processCommentReplies(_response);
         });
     }
-    processGetCommentReplies(response) {
+    processCommentReplies(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -473,35 +466,28 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(Comment.fromJS(item));
-            }
-            else {
-                result200 = null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread or comment not found", status, _responseText, _headers, result404);
         }
         else if (status === 410) {
             const _responseText = response.data;
             let result410 = null;
             let resultData410 = _responseText;
-            result410 = ErrorDto.fromJS(resultData410);
+            result410 = JSON.parse(resultData410);
             return throwException("Comment removed", status, _responseText, _headers, result410);
         }
         else if (status !== 200 && status !== 204) {
@@ -516,7 +502,7 @@ class Client {
      * @param cid comment id
      * @return Success
      */
-    getCommentImages(id, cid, cancelToken) {
+    commentImages(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -544,10 +530,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetCommentImages(_response);
+            return this.processCommentImages(_response);
         });
     }
-    processGetCommentImages(response) {
+    processCommentImages(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -561,35 +547,28 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(Image.fromJS(item));
-            }
-            else {
-                result200 = null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread or comment not found", status, _responseText, _headers, result404);
         }
         else if (status === 410) {
             const _responseText = response.data;
             let result410 = null;
             let resultData410 = _responseText;
-            result410 = ErrorDto.fromJS(resultData410);
+            result410 = JSON.parse(resultData410);
             return throwException("Comment removed", status, _responseText, _headers, result410);
         }
         else if (status !== 200 && status !== 204) {
@@ -601,10 +580,9 @@ class Client {
     /**
      * Create comment
      * @param id thread id
-     * @param body (optional)
      * @return Success
      */
-    createComment(id, body, cancelToken) {
+    commentCreate(id, body, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/create";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -632,10 +610,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processCreateComment(_response);
+            return this.processCommentCreate(_response);
         });
     }
-    processCreateComment(response) {
+    processCommentCreate(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -649,35 +627,35 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = Anonymous2.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread not found", status, _responseText, _headers, result404);
         }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
             let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
+            result429 = JSON.parse(resultData429);
             return throwException("Recaptcha token invalid", status, _responseText, _headers, result429);
         }
         else if (status !== 200 && status !== 204) {
@@ -688,12 +666,11 @@ class Client {
     }
     /**
      * Vote on comment
-     * @param body (optional)
      * @param id thread id
      * @param cid comment id
      * @return OK
      */
-    vote(id, cid, body, cancelToken) {
+    commentVote(body, id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/vote";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -724,10 +701,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processVote(_response);
+            return this.processCommentVote(_response);
         });
     }
-    processVote(response) {
+    processCommentVote(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -741,35 +718,35 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread or comment not found", status, _responseText, _headers, result404);
         }
         else if (status === 410) {
             const _responseText = response.data;
             let result410 = null;
             let resultData410 = _responseText;
-            result410 = ErrorDto.fromJS(resultData410);
+            result410 = JSON.parse(resultData410);
             return throwException("Comment removed", status, _responseText, _headers, result410);
         }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
             let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
+            result429 = JSON.parse(resultData429);
             return throwException("User has already voted", status, _responseText, _headers, result429);
         }
         else if (status !== 200 && status !== 204) {
@@ -784,7 +761,7 @@ class Client {
      * @param cid comment id
      * @return OK
      */
-    pinComment(id, cid, cancelToken) {
+    commentPin(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/pin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -812,10 +789,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processPinComment(_response);
+            return this.processCommentPin(_response);
         });
     }
-    processPinComment(response) {
+    processCommentPin(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -829,35 +806,35 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread or comment not found", status, _responseText, _headers, result404);
         }
         else if (status === 410) {
             const _responseText = response.data;
             let result410 = null;
             let resultData410 = _responseText;
-            result410 = ErrorDto.fromJS(resultData410);
+            result410 = JSON.parse(resultData410);
             return throwException("Comment removed", status, _responseText, _headers, result410);
         }
         else if (status !== 200 && status !== 204) {
@@ -872,7 +849,7 @@ class Client {
      * @param cid comment id
      * @return OK
      */
-    unpinComment(id, cid, cancelToken) {
+    commentUnpin(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/unpin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -900,10 +877,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUnpinComment(_response);
+            return this.processCommentUnpin(_response);
         });
     }
-    processUnpinComment(response) {
+    processCommentUnpin(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -917,35 +894,35 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread or comment not found", status, _responseText, _headers, result404);
         }
         else if (status === 409) {
             const _responseText = response.data;
             let result409 = null;
             let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
+            result409 = JSON.parse(resultData409);
             return throwException("Comment not pinned", status, _responseText, _headers, result409);
         }
         else if (status !== 200 && status !== 204) {
@@ -958,7 +935,7 @@ class Client {
      * Get status
      * @return Success
      */
-    getStatus(cancelToken) {
+    meStatus(cancelToken) {
         let url_ = this.baseUrl + "/me/status";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -980,10 +957,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetStatus(_response);
+            return this.processMeStatus(_response);
         });
     }
-    processGetStatus(response) {
+    processMeStatus(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -997,7 +974,7 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = resultData200 !== undefined ? resultData200 : null;
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status !== 200 && status !== 204) {
@@ -1010,7 +987,7 @@ class Client {
      * Get blocked users
      * @return Success
      */
-    getBlockedUsers(cancelToken) {
+    meBlocked(cancelToken) {
         let url_ = this.baseUrl + "/me/blocked";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -1032,10 +1009,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetBlockedUsers(_response);
+            return this.processMeBlocked(_response);
         });
     }
-    processGetBlockedUsers(response) {
+    processMeBlocked(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1049,21 +1026,14 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(User.fromJS(item));
-            }
-            else {
-                result200 = null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status !== 200 && status !== 204) {
@@ -1077,7 +1047,7 @@ class Client {
      * @param id thread id
      * @return Success
      */
-    getVotes(id, cancelToken) {
+    meVotes(id, cancelToken) {
         let url_ = this.baseUrl + "/me/votes/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1102,10 +1072,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetVotes(_response);
+            return this.processMeVotes(_response);
         });
     }
-    processGetVotes(response) {
+    processMeVotes(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1119,28 +1089,21 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(Anonymous4.fromJS(item));
-            }
-            else {
-                result200 = null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Thread not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
@@ -1153,7 +1116,7 @@ class Client {
      * Block user
      * @return OK
      */
-    blockUser(cancelToken) {
+    meBlock(cancelToken) {
         let url_ = this.baseUrl + "/me/block";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -1175,10 +1138,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processBlockUser(_response);
+            return this.processMeBlock(_response);
         });
     }
-    processBlockUser(response) {
+    processMeBlock(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1192,35 +1155,35 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("User not found", status, _responseText, _headers, result404);
         }
         else if (status === 409) {
             const _responseText = response.data;
             let result409 = null;
             let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
+            result409 = JSON.parse(resultData409);
             return throwException("User already blocked", status, _responseText, _headers, result409);
         }
         else if (status !== 200 && status !== 204) {
@@ -1233,7 +1196,7 @@ class Client {
      * Unblock user
      * @return OK
      */
-    unblockUser(cancelToken) {
+    meUnblock(cancelToken) {
         let url_ = this.baseUrl + "/me/unblock";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -1255,10 +1218,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUnblockUser(_response);
+            return this.processMeUnblock(_response);
         });
     }
-    processUnblockUser(response) {
+    processMeUnblock(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1272,28 +1235,28 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 409) {
             const _responseText = response.data;
             let result409 = null;
             let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
+            result409 = JSON.parse(resultData409);
             return throwException("User not blocked", status, _responseText, _headers, result409);
         }
         else if (status !== 200 && status !== 204) {
@@ -1307,7 +1270,7 @@ class Client {
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
      * @return OK
      */
-    setAvatar(avatar, cancelToken) {
+    meAvatar(avatar, cancelToken) {
         let url_ = this.baseUrl + "/me/avatar";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = new FormData();
@@ -1335,10 +1298,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processSetAvatar(_response);
+            return this.processMeAvatar(_response);
         });
     }
-    processSetAvatar(response) {
+    processMeAvatar(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1352,49 +1315,49 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 413) {
             const _responseText = response.data;
             let result413 = null;
             let resultData413 = _responseText;
-            result413 = ErrorDto.fromJS(resultData413);
+            result413 = JSON.parse(resultData413);
             return throwException("File too large", status, _responseText, _headers, result413);
         }
         else if (status === 415) {
             const _responseText = response.data;
             let result415 = null;
             let resultData415 = _responseText;
-            result415 = ErrorDto.fromJS(resultData415);
+            result415 = JSON.parse(resultData415);
             return throwException("File type not supported", status, _responseText, _headers, result415);
         }
         else if (status === 422) {
             const _responseText = response.data;
             let result422 = null;
             let resultData422 = _responseText;
-            result422 = ErrorDto.fromJS(resultData422);
+            result422 = JSON.parse(resultData422);
             return throwException("File unprocessable", status, _responseText, _headers, result422);
         }
         else if (status === 500) {
             const _responseText = response.data;
             let result500 = null;
             let resultData500 = _responseText;
-            result500 = ErrorDto.fromJS(resultData500);
+            result500 = JSON.parse(resultData500);
             return throwException("Internal server error", status, _responseText, _headers, result500);
         }
         else if (status !== 200 && status !== 204) {
@@ -1405,10 +1368,9 @@ class Client {
     }
     /**
      * Rename
-     * @param body (optional)
      * @return Success
      */
-    renameUser(body, cancelToken) {
+    meRename(body, cancelToken) {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1433,10 +1395,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processRenameUser(_response);
+            return this.processMeRename(_response);
         });
     }
-    processRenameUser(response) {
+    processMeRename(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1450,28 +1412,28 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = resultData200 !== undefined ? resultData200 : null;
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 409) {
             const _responseText = response.data;
             let result409 = null;
             let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
+            result409 = JSON.parse(resultData409);
             return throwException("Name already taken", status, _responseText, _headers, result409);
         }
         else if (status !== 200 && status !== 204) {
@@ -1484,7 +1446,7 @@ class Client {
      * Get categories
      * @return Success
      */
-    getCategories(cancelToken) {
+    categories(cancelToken) {
         let url_ = this.baseUrl + "/categories";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -1506,10 +1468,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetCategories(_response);
+            return this.processCategories(_response);
         });
     }
-    processGetCategories(response) {
+    processCategories(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1523,14 +1485,7 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(Category.fromJS(item));
-            }
-            else {
-                result200 = null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status !== 200 && status !== 204) {
@@ -1544,7 +1499,7 @@ class Client {
      * @param id category id, or `bytid<thread id>`
      * @return Success
      */
-    getCategory(id, cancelToken) {
+    category(id, cancelToken) {
         let url_ = this.baseUrl + "/category/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1569,10 +1524,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetCategory(_response);
+            return this.processCategory(_response);
         });
     }
-    processGetCategory(response) {
+    processCategory(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1586,21 +1541,21 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = Category.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Category not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
@@ -1612,18 +1567,13 @@ class Client {
     /**
      * Get user profile
      * @param id user id
-     * @param nameonly (optional) return user name only
      * @return Success
      */
-    userProfile(id, nameonly, cancelToken) {
-        let url_ = this.baseUrl + "/users/profile/{id}?";
+    usersProfile(id, cancelToken) {
+        let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (nameonly === null)
-            throw new Error("The parameter 'nameonly' cannot be null.");
-        else if (nameonly !== undefined)
-            url_ += "nameonly=" + encodeURIComponent("" + nameonly) + "&";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
@@ -1644,10 +1594,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUserProfile(_response);
+            return this.processUsersProfile(_response);
         });
     }
-    processUserProfile(response) {
+    processUsersProfile(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1661,21 +1611,91 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = resultData200 !== undefined ? resultData200 : null;
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
+            return throwException("User not found", status, _responseText, _headers, result404);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Get user name
+     * @param id user id
+     * @return Success
+     */
+    usersProfileName(id, cancelToken) {
+        let url_ = this.baseUrl + "/users/{id}/name";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processUsersProfileName(_response);
+        });
+    }
+    processUsersProfileName(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
             return throwException("User not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
@@ -1689,8 +1709,8 @@ class Client {
      * @param id user id
      * @return Success
      */
-    userAvatar(id, cancelToken) {
-        let url_ = this.baseUrl + "/users/avatars/{id}";
+    usersProfileAvatar(id, cancelToken) {
+        let url_ = this.baseUrl + "/users/{id}/avatar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1715,10 +1735,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUserAvatar(_response);
+            return this.processUsersProfileAvatar(_response);
         });
     }
-    processUserAvatar(response) {
+    processUsersProfileAvatar(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1749,7 +1769,7 @@ class Client {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status !== 200 && status !== 204) {
@@ -1760,10 +1780,9 @@ class Client {
     }
     /**
      * Login
-     * @param body (optional)
      * @return Success
      */
-    login(body, cancelToken) {
+    usersLogin(body, cancelToken) {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1788,10 +1807,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processLogin(_response);
+            return this.processUsersLogin(_response);
         });
     }
-    processLogin(response) {
+    processUsersLogin(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1805,28 +1824,28 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = Token.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Login failed", status, _responseText, _headers, result401);
         }
         else if (status === 409) {
             const _responseText = response.data;
             let result409 = null;
             let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
+            result409 = JSON.parse(resultData409);
             return throwException("Email verification needed", status, _responseText, _headers, result409);
         }
         else if (status !== 200 && status !== 204) {
@@ -1837,10 +1856,9 @@ class Client {
     }
     /**
      * Register
-     * @param body (optional)
      * @return Success, verification email sent.
      */
-    register(body, cancelToken) {
+    usersRegister(body, cancelToken) {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1865,10 +1883,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processRegister(_response);
+            return this.processUsersRegister(_response);
         });
     }
-    processRegister(response) {
+    processUsersRegister(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1882,7 +1900,7 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
@@ -1893,7 +1911,7 @@ class Client {
             const _responseText = response.data;
             let result409 = null;
             let resultData409 = _responseText;
-            result409 = ErrorDto.fromJS(resultData409);
+            result409 = JSON.parse(resultData409);
             return throwException("Email or username already in use", status, _responseText, _headers, result409);
         }
         else if (status !== 200 && status !== 204) {
@@ -1904,10 +1922,9 @@ class Client {
     }
     /**
      * Verify email
-     * @param body (optional)
      * @return Success
      */
-    verify(body, cancelToken) {
+    usersVerify(body, cancelToken) {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -1932,10 +1949,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processVerify(_response);
+            return this.processUsersVerify(_response);
         });
     }
-    processVerify(response) {
+    processUsersVerify(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1949,21 +1966,21 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = Token.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
             let result401 = null;
             let resultData401 = _responseText;
-            result401 = ErrorDto.fromJS(resultData401);
+            result401 = JSON.parse(resultData401);
             return throwException("Code incorrect or expired / email not found", status, _responseText, _headers, result401);
         }
         else if (status !== 200 && status !== 204) {
@@ -1974,10 +1991,9 @@ class Client {
     }
     /**
      * Resend verification email
-     * @param body (optional)
      * @return Success
      */
-    resend(body, cancelToken) {
+    usersResend(body, cancelToken) {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -2002,10 +2018,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processResend(_response);
+            return this.processUsersResend(_response);
         });
     }
-    processResend(response) {
+    processUsersResend(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2019,28 +2035,28 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Email not found", status, _responseText, _headers, result404);
         }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
             let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
+            result429 = JSON.parse(resultData429);
             return throwException("Too many requests / ReCAPTCHA token invalid", status, _responseText, _headers, result429);
         }
         else if (status !== 200 && status !== 204) {
@@ -2051,10 +2067,9 @@ class Client {
     }
     /**
      * Forgot password
-     * @param body (optional)
      * @return Success
      */
-    forgot(body, cancelToken) {
+    usersForgot(body, cancelToken) {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -2079,10 +2094,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processForgot(_response);
+            return this.processUsersForgot(_response);
         });
     }
-    processForgot(response) {
+    processUsersForgot(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2096,28 +2111,28 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = OK.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("User not found", status, _responseText, _headers, result404);
         }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
             let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
+            result429 = JSON.parse(resultData429);
             return throwException("Too many requests / ReCAPTCHA token invalid", status, _responseText, _headers, result429);
         }
         else if (status !== 200 && status !== 204) {
@@ -2128,10 +2143,9 @@ class Client {
     }
     /**
      * Reset password
-     * @param body (optional)
      * @return Success
      */
-    reset(body, cancelToken) {
+    usersReset(body, cancelToken) {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -2156,10 +2170,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processReset(_response);
+            return this.processUsersReset(_response);
         });
     }
-    processReset(response) {
+    processUsersReset(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2173,28 +2187,28 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            result200 = Token.fromJS(resultData200);
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("User not found", status, _responseText, _headers, result404);
         }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
             let resultData429 = _responseText;
-            result429 = ErrorDto.fromJS(resultData429);
+            result429 = JSON.parse(resultData429);
             return throwException("Too many requests", status, _responseText, _headers, result429);
         }
         else if (status !== 200 && status !== 204) {
@@ -2205,13 +2219,13 @@ class Client {
     }
     /**
      * Get threads in a category
-     * @param category category id
+     * @param category category id, or bytid<thread id>
      * @param sort (optional) Sort threads by `0: latest` or `1: viral`
      * @param page (optional) page number
      * @param limit (optional) limit per page
      * @return Success
      */
-    getMenu(category, sort, page, limit, cancelToken) {
+    menuCategory(category, sort, page, limit, cancelToken) {
         let url_ = this.baseUrl + "/menu/{category}?";
         if (category === undefined || category === null)
             throw new Error("The parameter 'category' must be defined.");
@@ -2248,10 +2262,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetMenu(_response);
+            return this.processMenuCategory(_response);
         });
     }
-    processGetMenu(response) {
+    processMenuCategory(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2265,28 +2279,21 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(ThreadMeta.fromJS(item));
-            }
-            else {
-                result200 = null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("Category not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
@@ -2304,7 +2311,7 @@ class Client {
      * @param limit (optional) limit per page
      * @return Success
      */
-    searchMenu(q, mode, sort, page, limit, cancelToken) {
+    menuSearch(q, mode, sort, page, limit, cancelToken) {
         let url_ = this.baseUrl + "/menu/search?";
         if (q === undefined || q === null)
             throw new Error("The parameter 'q' must be defined and cannot be null.");
@@ -2346,10 +2353,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processSearchMenu(_response);
+            return this.processMenuSearch(_response);
         });
     }
-    processSearchMenu(response) {
+    processMenuSearch(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2363,21 +2370,14 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(ThreadMeta.fromJS(item));
-            }
-            else {
-                result200 = null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status !== 200 && status !== 204) {
@@ -2387,17 +2387,22 @@ class Client {
         return Promise.resolve(null);
     }
     /**
-     * Get threads from a user
+     * Get threads created by a user
      * @param id user id
+     * @param sort (optional) Sort threads by `0: Created time` or `1: Last comment time`
      * @param page (optional) page number
      * @param limit (optional) limit per page
      * @return Success
      */
-    getHistory(id, page, limit, cancelToken) {
+    menuHistory(id, sort, page, limit, cancelToken) {
         let url_ = this.baseUrl + "/menu/history/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (sort === null)
+            throw new Error("The parameter 'sort' cannot be null.");
+        else if (sort !== undefined)
+            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
         else if (page !== undefined)
@@ -2426,10 +2431,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetHistory(_response);
+            return this.processMenuHistory(_response);
         });
     }
-    processGetHistory(response) {
+    processMenuHistory(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2443,28 +2448,21 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(ThreadMeta.fromJS(item));
-            }
-            else {
-                result200 = null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
             let resultData404 = _responseText;
-            result404 = ErrorDto.fromJS(resultData404);
+            result404 = JSON.parse(resultData404);
             return throwException("User not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
@@ -2475,18 +2473,15 @@ class Client {
     }
     /**
      * Get threads
-     * @param threads Thread ids
+     * @param threads array of thread ids
      * @return Success
      */
-    getThreads(threads, cancelToken) {
+    menuThreads(threads, cancelToken) {
         let url_ = this.baseUrl + "/menu/threads?";
         if (threads === undefined || threads === null)
             throw new Error("The parameter 'threads' must be defined and cannot be null.");
         else
-            threads &&
-                threads.forEach((item) => {
-                    url_ += "threads=" + encodeURIComponent("" + item) + "&";
-                });
+            url_ += "threads=" + JSON.stringify(threads) + "&";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
@@ -2507,10 +2502,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processGetThreads(_response);
+            return this.processMenuThreads(_response);
         });
     }
-    processGetThreads(response) {
+    processMenuThreads(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2524,21 +2519,14 @@ class Client {
             const _responseText = response.data;
             let result200 = null;
             let resultData200 = _responseText;
-            if (Array.isArray(resultData200)) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(ThreadMeta.fromJS(item));
-            }
-            else {
-                result200 = null;
-            }
+            result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
         else if (status === 400) {
             const _responseText = response.data;
             let result400 = null;
             let resultData400 = _responseText;
-            result400 = ErrorDto.fromJS(resultData400);
+            result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status !== 200 && status !== 204) {
@@ -2549,782 +2537,22 @@ class Client {
     }
 }
 exports.Client = Client;
-class OK {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.response = _data["response"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new OK();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["response"] = this.response;
-        return data;
-    }
-}
-exports.OK = OK;
-class Token {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.token = _data["token"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Token();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["token"] = this.token;
-        return data;
-    }
-}
-exports.Token = Token;
-class ErrorDto {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.error = _data["error"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new ErrorDto();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["error"] = this.error;
-        return data;
-    }
-}
-exports.ErrorDto = ErrorDto;
 /** Vote. "U" means upvote. "D" means downvote. */
 var Vote;
 (function (Vote) {
     Vote["U"] = "U";
     Vote["D"] = "D";
 })(Vote = exports.Vote || (exports.Vote = {}));
-class User {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.sex = _data["sex"];
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : undefined;
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new User();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["sex"] = this.sex;
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : undefined;
-        return data;
-    }
+function isComment(object) {
+    return object && object[""] === "Comment";
 }
-exports.User = User;
-class Category {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Category();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        return data;
-    }
-}
-exports.Category = Category;
-class Image {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.cid = _data["cid"];
-            this.src = _data["src"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Image();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["cid"] = this.cid;
-        data["src"] = this.src;
-        return data;
-    }
-}
-exports.Image = Image;
-class RemovedComment {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.id = _data["id"];
-            this.removed = _data["removed"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new RemovedComment();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["removed"] = this.removed;
-        return data;
-    }
-}
-exports.RemovedComment = RemovedComment;
-/** Comment object with constants only (without upvotes, downvotes and replies) */
-class CommentC {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-        if (!data) {
-            this.user = new User();
-            this.images = [];
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.id = _data["id"];
-            this.user = _data["user"] ? User.fromJS(_data["user"]) : new User();
-            this.comment = _data["comment"];
-            this.text = _data["text"];
-            if (Array.isArray(_data["images"])) {
-                this.images = [];
-                for (let item of _data["images"])
-                    this.images.push(item);
-            }
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : undefined;
-            this.slink = _data["slink"];
-            this.quote = _data["quote"]
-                ? CommentC.fromJS(_data["quote"])
-                : undefined;
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new CommentC();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["user"] = this.user ? this.user.toJSON() : undefined;
-        data["comment"] = this.comment;
-        data["text"] = this.text;
-        if (Array.isArray(this.images)) {
-            data["images"] = [];
-            for (let item of this.images)
-                data["images"].push(item);
-        }
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : undefined;
-        data["slink"] = this.slink;
-        data["quote"] = this.quote ? this.quote.toJSON() : undefined;
-        return data;
-    }
-}
-exports.CommentC = CommentC;
-/** Comment object */
-class Comment extends CommentC {
-    constructor(data) {
-        super(data);
-    }
-    init(_data) {
-        super.init(_data);
-        if (_data) {
-            this.d = _data["D"];
-            this.u = _data["U"];
-            if (Array.isArray(_data["replies"])) {
-                this.replies = [];
-                for (let item of _data["replies"])
-                    this.replies.push(item);
-            }
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Comment();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["D"] = this.d;
-        data["U"] = this.u;
-        if (Array.isArray(this.replies)) {
-            data["replies"] = [];
-            for (let item of this.replies)
-                data["replies"].push(item);
-        }
-        super.toJSON(data);
-        return data;
-    }
-}
-exports.Comment = Comment;
-class Thread {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-        if (!data) {
-            this.op = new User();
-            this.conversation = [];
-            this.images = [];
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.id = _data["id"];
-            this.title = _data["title"];
-            this.category = _data["category"];
-            this.op = _data["op"] ? User.fromJS(_data["op"]) : new User();
-            this.c = _data["c"];
-            if (Array.isArray(_data["conversation"])) {
-                this.conversation = [];
-                for (let item of _data["conversation"])
-                    this.conversation.push(item);
-            }
-            this.score = _data["score"];
-            if (Array.isArray(_data["images"])) {
-                this.images = [];
-                for (let item of _data["images"])
-                    this.images.push(Image.fromJS(item));
-            }
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : undefined;
-            this.lastModified = _data["lastModified"]
-                ? new Date(_data["lastModified"].toString())
-                : undefined;
-            this.slink = _data["slink"];
-            this.pin = _data["pin"] ? CommentC.fromJS(_data["pin"]) : undefined;
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Thread();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["title"] = this.title;
-        data["category"] = this.category;
-        data["op"] = this.op ? this.op.toJSON() : undefined;
-        data["c"] = this.c;
-        if (Array.isArray(this.conversation)) {
-            data["conversation"] = [];
-            for (let item of this.conversation)
-                data["conversation"].push(item);
-        }
-        data["score"] = this.score;
-        if (Array.isArray(this.images)) {
-            data["images"] = [];
-            for (let item of this.images)
-                data["images"].push(item.toJSON());
-        }
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : undefined;
-        data["lastModified"] = this.lastModified
-            ? this.lastModified.toISOString()
-            : undefined;
-        data["slink"] = this.slink;
-        data["pin"] = this.pin ? this.pin.toJSON() : undefined;
-        return data;
-    }
-}
-exports.Thread = Thread;
-/** Thread metadata (no comments, images and pinned comment) */
-class ThreadMeta {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-        if (!data) {
-            this.op = new User();
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.id = _data["id"];
-            this.title = _data["title"];
-            this.category = _data["category"];
-            this.op = _data["op"] ? User.fromJS(_data["op"]) : new User();
-            this.c = _data["c"];
-            this.score = _data["score"];
-            this.createdAt = _data["createdAt"]
-                ? new Date(_data["createdAt"].toString())
-                : undefined;
-            this.lastModified = _data["lastModified"]
-                ? new Date(_data["lastModified"].toString())
-                : undefined;
-            this.slink = _data["slink"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new ThreadMeta();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        data["title"] = this.title;
-        data["category"] = this.category;
-        data["op"] = this.op ? this.op.toJSON() : undefined;
-        data["c"] = this.c;
-        data["score"] = this.score;
-        data["createdAt"] = this.createdAt
-            ? this.createdAt.toISOString()
-            : undefined;
-        data["lastModified"] = this.lastModified
-            ? this.lastModified.toISOString()
-            : undefined;
-        data["slink"] = this.slink;
-        return data;
-    }
-}
-exports.ThreadMeta = ThreadMeta;
+exports.isComment = isComment;
 var Sort;
 (function (Sort) {
     Sort["Score"] = "score";
     Sort["Time"] = "time";
     Sort["Latest"] = "latest";
 })(Sort = exports.Sort || (exports.Sort = {}));
-class Body {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.title = _data["title"];
-            this.comment = _data["comment"];
-            this.rtoken = _data["rtoken"];
-            this.category = _data["category"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Body();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["title"] = this.title;
-        data["comment"] = this.comment;
-        data["rtoken"] = this.rtoken;
-        data["category"] = this.category;
-        return data;
-    }
-}
-exports.Body = Body;
-class Body2 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.comment = _data["comment"];
-            this.rtoken = _data["rtoken"];
-            this.quote = _data["quote"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Body2();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["comment"] = this.comment;
-        data["rtoken"] = this.rtoken;
-        data["quote"] = this.quote;
-        return data;
-    }
-}
-exports.Body2 = Body2;
-class Body3 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.vote = _data["vote"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Body3();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["vote"] = this.vote;
-        return data;
-    }
-}
-exports.Body3 = Body3;
-class Body4 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.name = _data["name"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Body4();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["name"] = this.name;
-        return data;
-    }
-}
-exports.Body4 = Body4;
-class Id {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) { }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Id();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        return data;
-    }
-}
-exports.Id = Id;
-var Nameonly;
-(function (Nameonly) {
-    Nameonly[Nameonly["_0"] = 0] = "_0";
-    Nameonly[Nameonly["_1"] = 1] = "_1";
-})(Nameonly = exports.Nameonly || (exports.Nameonly = {}));
-class Body5 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.name = _data["name"];
-            this.pwd = _data["pwd"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Body5();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["name"] = this.name;
-        data["pwd"] = this.pwd;
-        return data;
-    }
-}
-exports.Body5 = Body5;
-class Body6 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.name = _data["name"];
-            this.email = _data["email"];
-            this.pwd = _data["pwd"];
-            this.sex = _data["sex"];
-            this.rtoken = _data["rtoken"];
-            this.inviteCode = _data["inviteCode"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Body6();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["name"] = this.name;
-        data["email"] = this.email;
-        data["pwd"] = this.pwd;
-        data["sex"] = this.sex;
-        data["rtoken"] = this.rtoken;
-        data["inviteCode"] = this.inviteCode;
-        return data;
-    }
-}
-exports.Body6 = Body6;
-class Body7 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.email = _data["email"];
-            this.code = _data["code"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Body7();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["email"] = this.email;
-        data["code"] = this.code;
-        return data;
-    }
-}
-exports.Body7 = Body7;
-class Body8 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.email = _data["email"];
-            this.rtoken = _data["rtoken"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Body8();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["email"] = this.email;
-        data["rtoken"] = this.rtoken;
-        return data;
-    }
-}
-exports.Body8 = Body8;
-class Body9 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.email = _data["email"];
-            this.rtoken = _data["rtoken"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Body9();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["email"] = this.email;
-        data["rtoken"] = this.rtoken;
-        return data;
-    }
-}
-exports.Body9 = Body9;
-class Body10 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.email = _data["email"];
-            this.code = _data["code"];
-            this.pwd = _data["pwd"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Body10();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["email"] = this.email;
-        data["code"] = this.code;
-        data["pwd"] = this.pwd;
-        return data;
-    }
-}
-exports.Body10 = Body10;
 var Sort2;
 (function (Sort2) {
     Sort2[Sort2["_0"] = 0] = "_0";
@@ -3340,157 +2568,19 @@ var Sort3;
     Sort3[Sort3["_0"] = 0] = "_0";
     Sort3[Sort3["_1"] = 1] = "_1";
 })(Sort3 = exports.Sort3 || (exports.Sort3 = {}));
-class Anonymous {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        return data;
-    }
+var Sort4;
+(function (Sort4) {
+    Sort4[Sort4["_0"] = 0] = "_0";
+    Sort4[Sort4["_1"] = 1] = "_1";
+})(Sort4 = exports.Sort4 || (exports.Sort4 = {}));
+function isAnonymous5(object) {
+    return object && object[""] === "Anonymous5";
 }
-exports.Anonymous = Anonymous;
-class Anonymous2 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.id = _data["id"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous2();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["id"] = this.id;
-        return data;
-    }
+exports.isAnonymous5 = isAnonymous5;
+function isAnonymous6(object) {
+    return object && object[""] === "Anonymous6";
 }
-exports.Anonymous2 = Anonymous2;
-class Anonymous3 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) { }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous3();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        return data;
-    }
-}
-exports.Anonymous3 = Anonymous3;
-class Anonymous4 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) {
-        if (_data) {
-            this.cid = _data["cid"];
-            this.vote = _data["vote"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous4();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["cid"] = this.cid;
-        data["vote"] = this.vote;
-        return data;
-    }
-}
-exports.Anonymous4 = Anonymous4;
-class Anonymous5 extends OK {
-    constructor(data) {
-        super(data);
-    }
-    init(_data) {
-        super.init(_data);
-        if (_data) {
-            this.token = _data["token"];
-        }
-    }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous5();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        data["token"] = this.token;
-        super.toJSON(data);
-        return data;
-    }
-}
-exports.Anonymous5 = Anonymous5;
-class Anonymous6 {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) { }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Anonymous6();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        return data;
-    }
-}
-exports.Anonymous6 = Anonymous6;
+exports.isAnonymous6 = isAnonymous6;
 var OKResponse;
 (function (OKResponse) {
     OKResponse["Ok"] = "ok";
@@ -3500,50 +2590,19 @@ var UserSex;
     UserSex["M"] = "M";
     UserSex["F"] = "F";
 })(UserSex = exports.UserSex || (exports.UserSex = {}));
-class Conversation {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) { }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Conversation();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        return data;
-    }
+var UserRole;
+(function (UserRole) {
+    UserRole["Admin"] = "admin";
+    UserRole["User"] = "user";
+})(UserRole = exports.UserRole || (exports.UserRole = {}));
+function isQuote(object) {
+    return object && object[""] === "Quote";
 }
-exports.Conversation = Conversation;
-class Name {
-    constructor(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    init(_data) { }
-    static fromJS(data) {
-        data = typeof data === "object" ? data : {};
-        let result = new Name();
-        result.init(data);
-        return result;
-    }
-    toJSON(data) {
-        data = typeof data === "object" ? data : {};
-        return data;
-    }
+exports.isQuote = isQuote;
+function isConversation(object) {
+    return object && object[""] === "Conversation";
 }
-exports.Name = Name;
+exports.isConversation = isConversation;
 class ApiException extends Error {
     constructor(message, status, response, headers, result) {
         super();
