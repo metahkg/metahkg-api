@@ -114,13 +114,13 @@ export declare class Client {
      * Block user
      * @return OK
      */
-    meBlock(cancelToken?: CancelToken | undefined): Promise<OK>;
+    meBlock(body: Body4, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processMeBlock(response: AxiosResponse): Promise<OK>;
     /**
      * Unblock user
      * @return OK
      */
-    meUnblock(cancelToken?: CancelToken | undefined): Promise<OK>;
+    meUnblock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processMeUnblock(response: AxiosResponse): Promise<OK>;
     /**
      * Set avatar
@@ -133,7 +133,7 @@ export declare class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body4, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
+    meRename(body: Body6, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
     protected processMeRename(response: AxiosResponse): Promise<Anonymous5>;
     /**
      * Get categories
@@ -173,37 +173,37 @@ export declare class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body5, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersLogin(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersLogin(response: AxiosResponse): Promise<Token>;
     /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersRegister(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersVerify(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersVerify(response: AxiosResponse): Promise<Token>;
     /**
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersResend(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersForgot(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
      * @return Success
      */
-    usersReset(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersReset(body: Body12, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
     /**
      * Get threads in a category
@@ -365,16 +365,22 @@ export interface Body3 {
     vote: Vote;
 }
 export interface Body4 {
+    id?: number;
+}
+export interface Body5 {
+    id?: number;
+}
+export interface Body6 {
     name: string;
 }
 export interface Id {
 }
-export interface Body5 {
+export interface Body7 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
-export interface Body6 {
+export interface Body8 {
     name: string;
     email: string;
     pwd: string;
@@ -383,20 +389,20 @@ export interface Body6 {
     /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
     inviteCode?: string;
 }
-export interface Body7 {
+export interface Body9 {
     email: string;
     /** Verification code sent to email */
     code: string;
 }
-export interface Body8 {
-    email: string;
-    rtoken: string;
-}
-export interface Body9 {
-    email: string;
-    rtoken: string;
-}
 export interface Body10 {
+    email: string;
+    rtoken: string;
+}
+export interface Body11 {
+    email: string;
+    rtoken: string;
+}
+export interface Body12 {
     email: string;
     /** Verification code sent to email */
     code: string;

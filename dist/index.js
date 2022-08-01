@@ -1116,13 +1116,16 @@ class Client {
      * Block user
      * @return OK
      */
-    meBlock(cancelToken) {
+    meBlock(body, cancelToken) {
         let url_ = this.baseUrl + "/me/block";
         url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
         let options_ = {
+            data: content_,
             method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
@@ -1196,13 +1199,16 @@ class Client {
      * Unblock user
      * @return OK
      */
-    meUnblock(cancelToken) {
+    meUnblock(body, cancelToken) {
         let url_ = this.baseUrl + "/me/unblock";
         url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
         let options_ = {
+            data: content_,
             method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
