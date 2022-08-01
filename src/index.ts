@@ -30,7 +30,7 @@ export class Client {
         this.baseUrl =
             baseUrl !== undefined && baseUrl !== null
                 ? baseUrl
-                : "https://dev.metahkg.org/api";
+                : "https://metahkg.org/api";
     }
 
     /**
@@ -1443,14 +1443,18 @@ export class Client {
      * Block user
      * @return OK
      */
-    meBlock(cancelToken?: CancelToken | undefined): Promise<OK> {
+    meBlock(body: Body4, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/me/block";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
+            data: content_,
             method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
@@ -1550,14 +1554,18 @@ export class Client {
      * Unblock user
      * @return OK
      */
-    meUnblock(cancelToken?: CancelToken | undefined): Promise<OK> {
+    meUnblock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/me/unblock";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
+            data: content_,
             method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
@@ -1788,7 +1796,7 @@ export class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body4, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
+    meRename(body: Body6, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2300,7 +2308,7 @@ export class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body5, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2399,7 +2407,7 @@ export class Client {
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2482,7 +2490,7 @@ export class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2569,7 +2577,7 @@ export class Client {
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2668,7 +2676,7 @@ export class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2767,7 +2775,7 @@ export class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body: Body12, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3391,18 +3399,26 @@ export interface Body3 {
 }
 
 export interface Body4 {
+    id?: number;
+}
+
+export interface Body5 {
+    id?: number;
+}
+
+export interface Body6 {
     name: string;
 }
 
 export interface Id {}
 
-export interface Body5 {
+export interface Body7 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
 
-export interface Body6 {
+export interface Body8 {
     name: string;
     email: string;
     pwd: string;
@@ -3412,23 +3428,23 @@ export interface Body6 {
     inviteCode?: string;
 }
 
-export interface Body7 {
+export interface Body9 {
     email: string;
     /** Verification code sent to email */
     code: string;
 }
 
-export interface Body8 {
-    email: string;
-    rtoken: string;
-}
-
-export interface Body9 {
-    email: string;
-    rtoken: string;
-}
-
 export interface Body10 {
+    email: string;
+    rtoken: string;
+}
+
+export interface Body11 {
+    email: string;
+    rtoken: string;
+}
+
+export interface Body12 {
     email: string;
     /** Verification code sent to email */
     code: string;
