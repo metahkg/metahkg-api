@@ -985,6 +985,118 @@ export class Client {
     }
 
     /**
+     * Emotion on comment
+     * @param id thread id
+     * @param cid comment id
+     * @return OK
+     */
+    commentEmotion(
+        id: number,
+        cid: number,
+        body: Body4,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
+        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotion";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processCommentEmotion(_response);
+            });
+    }
+
+    protected processCommentEmotion(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread or comment not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
      * Pin comment
      * @param id thread id
      * @param cid comment id
@@ -1443,7 +1555,7 @@ export class Client {
      * Block user
      * @return OK
      */
-    meBlock(body: Body4, cancelToken?: CancelToken | undefined): Promise<OK> {
+    meBlock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/me/block";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1554,7 +1666,7 @@ export class Client {
      * Unblock user
      * @return OK
      */
-    meUnblock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK> {
+    meUnblock(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/me/unblock";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1796,7 +1908,7 @@ export class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body6, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
+    meRename(body: Body7, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2308,7 +2420,7 @@ export class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body: Body8, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2407,7 +2519,7 @@ export class Client {
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2490,7 +2602,7 @@ export class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2577,7 +2689,7 @@ export class Client {
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2676,7 +2788,7 @@ export class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2775,7 +2887,7 @@ export class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body: Body12, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body: Body13, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3259,8 +3371,20 @@ export class Client {
     }
 }
 
+export enum Emotion {
+    Sob = "sob",
+    Joy = "joy",
+    Smile = "smile",
+    Sad = "sad",
+    Sweatsmile = "sweatsmile",
+    Heart = "heart",
+    Grin = "grin",
+    Good = "good",
+    Bad = "bad",
+}
+
 export interface OK {
-    response: OKResponse;
+    success: boolean;
 }
 
 export interface Token {
@@ -3332,6 +3456,8 @@ export interface Comment extends CommentC {
     U?: number;
     /** list of comment ids that are replies to this comment */
     replies?: number[];
+    /** list of emotions users have expressed */
+    emotions?: Emotions[];
 }
 
 export function isComment(object: any): object is Comment {
@@ -3399,7 +3525,7 @@ export interface Body3 {
 }
 
 export interface Body4 {
-    id?: number;
+    emotion?: Emotion;
 }
 
 export interface Body5 {
@@ -3407,18 +3533,22 @@ export interface Body5 {
 }
 
 export interface Body6 {
+    id?: number;
+}
+
+export interface Body7 {
     name: string;
 }
 
 export interface Id {}
 
-export interface Body7 {
+export interface Body8 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
 
-export interface Body8 {
+export interface Body9 {
     name: string;
     email: string;
     pwd: string;
@@ -3428,15 +3558,10 @@ export interface Body8 {
     inviteCode?: string;
 }
 
-export interface Body9 {
+export interface Body10 {
     email: string;
     /** Verification code sent to email */
     code: string;
-}
-
-export interface Body10 {
-    email: string;
-    rtoken: string;
 }
 
 export interface Body11 {
@@ -3445,6 +3570,11 @@ export interface Body11 {
 }
 
 export interface Body12 {
+    email: string;
+    rtoken: string;
+}
+
+export interface Body13 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -3514,10 +3644,6 @@ export interface Anonymous7 {
     name: string;
 }
 
-export enum OKResponse {
-    Ok = "ok",
-}
-
 export enum UserSex {
     M = "M",
     F = "F",
@@ -3532,6 +3658,11 @@ export interface Quote extends CommentC {}
 
 export function isQuote(object: any): object is Quote {
     return object && object[""] === "Quote";
+}
+
+export interface Emotions {
+    user: number;
+    emotion: Emotion;
 }
 
 /** Comment object with score */

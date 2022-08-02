@@ -76,6 +76,14 @@ export declare class Client {
     commentVote(body: Body3, id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCommentVote(response: AxiosResponse): Promise<OK>;
     /**
+     * Emotion on comment
+     * @param id thread id
+     * @param cid comment id
+     * @return OK
+     */
+    commentEmotion(id: number, cid: number, body: Body4, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCommentEmotion(response: AxiosResponse): Promise<OK>;
+    /**
      * Pin comment
      * @param id thread id
      * @param cid comment id
@@ -114,13 +122,13 @@ export declare class Client {
      * Block user
      * @return OK
      */
-    meBlock(body: Body4, cancelToken?: CancelToken | undefined): Promise<OK>;
+    meBlock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processMeBlock(response: AxiosResponse): Promise<OK>;
     /**
      * Unblock user
      * @return OK
      */
-    meUnblock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK>;
+    meUnblock(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processMeUnblock(response: AxiosResponse): Promise<OK>;
     /**
      * Set avatar
@@ -133,7 +141,7 @@ export declare class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body6, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
+    meRename(body: Body7, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
     protected processMeRename(response: AxiosResponse): Promise<Anonymous5>;
     /**
      * Get categories
@@ -173,37 +181,37 @@ export declare class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersLogin(body: Body8, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersLogin(response: AxiosResponse): Promise<Token>;
     /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersRegister(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersVerify(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersVerify(response: AxiosResponse): Promise<Token>;
     /**
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersResend(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersForgot(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
      * @return Success
      */
-    usersReset(body: Body12, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersReset(body: Body13, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
     /**
      * Get threads in a category
@@ -244,8 +252,19 @@ export declare class Client {
     menuThreads(threads: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
     protected processMenuThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
 }
+export declare enum Emotion {
+    Sob = "sob",
+    Joy = "joy",
+    Smile = "smile",
+    Sad = "sad",
+    Sweatsmile = "sweatsmile",
+    Heart = "heart",
+    Grin = "grin",
+    Good = "good",
+    Bad = "bad"
+}
 export interface OK {
-    response: OKResponse;
+    success: boolean;
 }
 export interface Token {
     token: string;
@@ -308,6 +327,8 @@ export interface Comment extends CommentC {
     U?: number;
     /** list of comment ids that are replies to this comment */
     replies?: number[];
+    /** list of emotions users have expressed */
+    emotions?: Emotions[];
 }
 export declare function isComment(object: any): object is Comment;
 export interface Thread {
@@ -365,22 +386,25 @@ export interface Body3 {
     vote: Vote;
 }
 export interface Body4 {
-    id?: number;
+    emotion?: Emotion;
 }
 export interface Body5 {
     id?: number;
 }
 export interface Body6 {
+    id?: number;
+}
+export interface Body7 {
     name: string;
 }
 export interface Id {
 }
-export interface Body7 {
+export interface Body8 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
-export interface Body8 {
+export interface Body9 {
     name: string;
     email: string;
     pwd: string;
@@ -389,20 +413,20 @@ export interface Body8 {
     /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
     inviteCode?: string;
 }
-export interface Body9 {
+export interface Body10 {
     email: string;
     /** Verification code sent to email */
     code: string;
-}
-export interface Body10 {
-    email: string;
-    rtoken: string;
 }
 export interface Body11 {
     email: string;
     rtoken: string;
 }
 export interface Body12 {
+    email: string;
+    rtoken: string;
+}
+export interface Body13 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -454,9 +478,6 @@ export declare function isAnonymous6(object: any): object is Anonymous6;
 export interface Anonymous7 {
     name: string;
 }
-export declare enum OKResponse {
-    Ok = "ok"
-}
 export declare enum UserSex {
     M = "M",
     F = "F"
@@ -468,6 +489,10 @@ export declare enum UserRole {
 export interface Quote extends CommentC {
 }
 export declare function isQuote(object: any): object is Quote;
+export interface Emotions {
+    user: number;
+    emotion: Emotion;
+}
 /** Comment object with score */
 export interface Conversation extends Comment {
     /** score of the comment (`upvotes - downvotes`) */

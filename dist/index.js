@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.isConversation = exports.isQuote = exports.UserRole = exports.UserSex = exports.OKResponse = exports.isAnonymous6 = exports.isAnonymous5 = exports.Sort4 = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Sort = exports.isComment = exports.Vote = exports.Client = void 0;
+exports.ApiException = exports.isConversation = exports.isQuote = exports.UserRole = exports.UserSex = exports.isAnonymous6 = exports.isAnonymous5 = exports.Sort4 = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Sort = exports.isComment = exports.Vote = exports.Emotion = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -748,6 +748,90 @@ class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException("User has already voted", status, _responseText, _headers, result429);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Emotion on comment
+     * @param id thread id
+     * @param cid comment id
+     * @return OK
+     */
+    commentEmotion(id, cid, body, cancelToken) {
+        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotion";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processCommentEmotion(_response);
+        });
+    }
+    processCommentEmotion(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("Thread or comment not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2543,6 +2627,18 @@ class Client {
     }
 }
 exports.Client = Client;
+var Emotion;
+(function (Emotion) {
+    Emotion["Sob"] = "sob";
+    Emotion["Joy"] = "joy";
+    Emotion["Smile"] = "smile";
+    Emotion["Sad"] = "sad";
+    Emotion["Sweatsmile"] = "sweatsmile";
+    Emotion["Heart"] = "heart";
+    Emotion["Grin"] = "grin";
+    Emotion["Good"] = "good";
+    Emotion["Bad"] = "bad";
+})(Emotion = exports.Emotion || (exports.Emotion = {}));
 /** Vote. "U" means upvote. "D" means downvote. */
 var Vote;
 (function (Vote) {
@@ -2587,10 +2683,6 @@ function isAnonymous6(object) {
     return object && object[""] === "Anonymous6";
 }
 exports.isAnonymous6 = isAnonymous6;
-var OKResponse;
-(function (OKResponse) {
-    OKResponse["Ok"] = "ok";
-})(OKResponse = exports.OKResponse || (exports.OKResponse = {}));
 var UserSex;
 (function (UserSex) {
     UserSex["M"] = "M";
