@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.isConversation = exports.isQuote = exports.UserRole = exports.UserSex = exports.isAnonymous6 = exports.isAnonymous5 = exports.Sort4 = exports.Mode = exports.Sort3 = exports.Sort2 = exports.Sort = exports.isComment = exports.Vote = exports.Emotion = exports.Client = void 0;
+exports.ApiException = exports.isConversation = exports.isQuote = exports.isAnonymous6 = exports.isAnonymous5 = exports.isComment = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -2770,54 +2770,10 @@ class Client {
     }
 }
 exports.Client = Client;
-var Emotion;
-(function (Emotion) {
-    Emotion["Sob"] = "sob";
-    Emotion["Joy"] = "joy";
-    Emotion["Smile"] = "smile";
-    Emotion["Sad"] = "sad";
-    Emotion["Sweatsmile"] = "sweatsmile";
-    Emotion["Heart"] = "heart";
-    Emotion["Grin"] = "grin";
-    Emotion["Good"] = "good";
-    Emotion["Bad"] = "bad";
-})(Emotion = exports.Emotion || (exports.Emotion = {}));
-/** Vote. "U" means upvote. "D" means downvote. */
-var Vote;
-(function (Vote) {
-    Vote["U"] = "U";
-    Vote["D"] = "D";
-})(Vote = exports.Vote || (exports.Vote = {}));
 function isComment(object) {
     return object && object[""] === "Comment";
 }
 exports.isComment = isComment;
-var Sort;
-(function (Sort) {
-    Sort["Score"] = "score";
-    Sort["Time"] = "time";
-    Sort["Latest"] = "latest";
-})(Sort = exports.Sort || (exports.Sort = {}));
-var Sort2;
-(function (Sort2) {
-    Sort2["Latest"] = "latest";
-    Sort2["Viral"] = "viral";
-})(Sort2 = exports.Sort2 || (exports.Sort2 = {}));
-var Sort3;
-(function (Sort3) {
-    Sort3["Created"] = "created";
-    Sort3["Lastcomment"] = "lastcomment";
-})(Sort3 = exports.Sort3 || (exports.Sort3 = {}));
-var Mode;
-(function (Mode) {
-    Mode["Title"] = "title";
-    Mode["Op"] = "op";
-})(Mode = exports.Mode || (exports.Mode = {}));
-var Sort4;
-(function (Sort4) {
-    Sort4["Latest"] = "latest";
-    Sort4["Viral"] = "viral";
-})(Sort4 = exports.Sort4 || (exports.Sort4 = {}));
 function isAnonymous5(object) {
     return object && object[""] === "Anonymous5";
 }
@@ -2826,16 +2782,6 @@ function isAnonymous6(object) {
     return object && object[""] === "Anonymous6";
 }
 exports.isAnonymous6 = isAnonymous6;
-var UserSex;
-(function (UserSex) {
-    UserSex["M"] = "M";
-    UserSex["F"] = "F";
-})(UserSex = exports.UserSex || (exports.UserSex = {}));
-var UserRole;
-(function (UserRole) {
-    UserRole["Admin"] = "admin";
-    UserRole["User"] = "user";
-})(UserRole = exports.UserRole || (exports.UserRole = {}));
 function isQuote(object) {
     return object && object[""] === "Quote";
 }

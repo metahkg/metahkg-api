@@ -3571,17 +3571,16 @@ export class Client {
     }
 }
 
-export enum Emotion {
-    Sob = "sob",
-    Joy = "joy",
-    Smile = "smile",
-    Sad = "sad",
-    Sweatsmile = "sweatsmile",
-    Heart = "heart",
-    Grin = "grin",
-    Good = "good",
-    Bad = "bad",
-}
+export type Emotion =
+    | "sob"
+    | "joy"
+    | "smile"
+    | "sad"
+    | "sweatsmile"
+    | "heart"
+    | "grin"
+    | "good"
+    | "bad";
 
 export interface OK {
     success: boolean;
@@ -3597,10 +3596,7 @@ export interface ErrorDto {
 }
 
 /** Vote. "U" means upvote. "D" means downvote. */
-export enum Vote {
-    U = "U",
-    D = "D",
-}
+export type Vote = "U" | "D";
 
 export interface User {
     /** user id */
@@ -3701,11 +3697,7 @@ export interface ThreadMeta {
     slink: string;
 }
 
-export enum Sort {
-    Score = "score",
-    Time = "time",
-    Latest = "latest",
-}
+export type Sort = "score" | "time" | "latest";
 
 export interface Body {
     title: string;
@@ -3740,15 +3732,9 @@ export interface Body7 {
     name: string;
 }
 
-export enum Sort2 {
-    Latest = "latest",
-    Viral = "viral",
-}
+export type Sort2 = "latest" | "viral";
 
-export enum Sort3 {
-    Created = "created",
-    Lastcomment = "lastcomment",
-}
+export type Sort3 = "created" | "lastcomment";
 
 export interface Body8 {
     /** Username or email */
@@ -3789,15 +3775,9 @@ export interface Body13 {
     pwd: string;
 }
 
-export enum Mode {
-    Title = "title",
-    Op = "op",
-}
+export type Mode = "title" | "op";
 
-export enum Sort4 {
-    Latest = "latest",
-    Viral = "viral",
-}
+export type Sort4 = "latest" | "viral";
 
 export interface Anonymous {
     id: number;
@@ -3840,15 +3820,9 @@ export interface Anonymous7 {
     name: string;
 }
 
-export enum UserSex {
-    M = "M",
-    F = "F",
-}
+export type UserSex = "M" | "F";
 
-export enum UserRole {
-    Admin = "admin",
-    User = "user",
-}
+export type UserRole = "admin" | "user";
 
 export interface Quote extends CommentC {}
 

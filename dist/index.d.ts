@@ -259,17 +259,7 @@ export declare class Client {
     threads(id: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
     protected processThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
 }
-export declare enum Emotion {
-    Sob = "sob",
-    Joy = "joy",
-    Smile = "smile",
-    Sad = "sad",
-    Sweatsmile = "sweatsmile",
-    Heart = "heart",
-    Grin = "grin",
-    Good = "good",
-    Bad = "bad"
-}
+export declare type Emotion = "sob" | "joy" | "smile" | "sad" | "sweatsmile" | "heart" | "grin" | "good" | "bad";
 export interface OK {
     success: boolean;
 }
@@ -281,10 +271,7 @@ export interface ErrorDto {
     error: string;
 }
 /** Vote. "U" means upvote. "D" means downvote. */
-export declare enum Vote {
-    U = "U",
-    D = "D"
-}
+export declare type Vote = "U" | "D";
 export interface User {
     /** user id */
     id: number;
@@ -373,11 +360,7 @@ export interface ThreadMeta {
     lastModified: Date;
     slink: string;
 }
-export declare enum Sort {
-    Score = "score",
-    Time = "time",
-    Latest = "latest"
-}
+export declare type Sort = "score" | "time" | "latest";
 export interface Body {
     title: string;
     comment: string;
@@ -404,14 +387,8 @@ export interface Body6 {
 export interface Body7 {
     name: string;
 }
-export declare enum Sort2 {
-    Latest = "latest",
-    Viral = "viral"
-}
-export declare enum Sort3 {
-    Created = "created",
-    Lastcomment = "lastcomment"
-}
+export declare type Sort2 = "latest" | "viral";
+export declare type Sort3 = "created" | "lastcomment";
 export interface Body8 {
     /** Username or email */
     name: Name;
@@ -445,14 +422,8 @@ export interface Body13 {
     code: string;
     pwd: string;
 }
-export declare enum Mode {
-    Title = "title",
-    Op = "op"
-}
-export declare enum Sort4 {
-    Latest = "latest",
-    Viral = "viral"
-}
+export declare type Mode = "title" | "op";
+export declare type Sort4 = "latest" | "viral";
 export interface Anonymous {
     id: number;
 }
@@ -481,14 +452,8 @@ export declare function isAnonymous6(object: any): object is Anonymous6;
 export interface Anonymous7 {
     name: string;
 }
-export declare enum UserSex {
-    M = "M",
-    F = "F"
-}
-export declare enum UserRole {
-    Admin = "admin",
-    User = "user"
-}
+export declare type UserSex = "M" | "F";
+export declare type UserRole = "admin" | "user";
 export interface Quote extends CommentC {
 }
 export declare function isQuote(object: any): object is Quote;
