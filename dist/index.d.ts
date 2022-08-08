@@ -31,6 +31,13 @@ export declare class Client {
     threadImages(id: number, cancelToken?: CancelToken | undefined): Promise<Image[]>;
     protected processThreadImages(response: AxiosResponse): Promise<Image[]>;
     /**
+     * get thread category
+     * @param id thread id
+     * @return Success
+     */
+    threadCategory(id: number, cancelToken?: CancelToken | undefined): Promise<Category>;
+    protected processThreadCategory(response: AxiosResponse): Promise<Category>;
+    /**
      * Create thread
      * @return Success
      */
@@ -151,32 +158,52 @@ export declare class Client {
     protected processCategories(response: AxiosResponse): Promise<Category[]>;
     /**
      * Get category
-     * @param id category id, or `bytid<thread id>`
+     * @param id category id
      * @return Success
      */
-    category(id: Id, cancelToken?: CancelToken | undefined): Promise<Category>;
+    category(id: number, cancelToken?: CancelToken | undefined): Promise<Category>;
     protected processCategory(response: AxiosResponse): Promise<Category>;
+    /**
+     * Get threads in a category
+     * @param id category id
+     * @param sort (optional) Sort threads by latest or viral
+     * @param page (optional) page number
+     * @param limit (optional) number of threads per page
+     * @return Success
+     */
+    categoryThreads(id: number, sort?: Sort2, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processCategoryThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Get user profile
      * @param id user id
      * @return Success
      */
-    usersProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
-    protected processUsersProfile(response: AxiosResponse): Promise<Anonymous6>;
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6>;
     /**
      * Get user name
      * @param id user id
      * @return Success
      */
-    usersProfileName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
-    protected processUsersProfileName(response: AxiosResponse): Promise<Anonymous7>;
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
+    protected processUserName(response: AxiosResponse): Promise<Anonymous7>;
     /**
      * Get user avatar
      * @param id user id
      * @return Success
      */
-    usersProfileAvatar(id: number, cancelToken?: CancelToken | undefined): Promise<FileResponse>;
-    protected processUsersProfileAvatar(response: AxiosResponse): Promise<FileResponse>;
+    userAvatar(id: number, cancelToken?: CancelToken | undefined): Promise<FileResponse>;
+    protected processUserAvatar(response: AxiosResponse): Promise<FileResponse>;
+    /**
+     * Get threads created by a user
+     * @param id user id
+     * @param sort (optional) Sort threads by created or lastcomment
+     * @param page (optional) page number
+     * @param limit (optional) number of threads per page
+     * @return Success
+     */
+    userThreads(id: number, sort?: Sort3, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processUserThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Login
      * @return Success
@@ -214,43 +241,23 @@ export declare class Client {
     usersReset(body: Body13, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
     /**
-     * Get threads in a category
-     * @param category category id, or bytid<thread id>
-     * @param sort (optional) Sort threads by `0: latest` or `1: viral`
-     * @param page (optional) page number
-     * @param limit (optional) limit per page
-     * @return Success
-     */
-    menuCategory(category: Category2, sort?: Sort2, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processMenuCategory(response: AxiosResponse): Promise<ThreadMeta[]>;
-    /**
      * Search threads
      * @param q Search query
-     * @param mode (optional) Search mode. `0: title` or `1: op`
-     * @param sort (optional) Sort threads by `0: latest` or `1: viral`
+     * @param mode (optional) Search mode. title or op
+     * @param sort (optional) Sort threads by latest or viral
      * @param page (optional) page number
-     * @param limit (optional) limit per page
+     * @param limit (optional) number of threads per page
      * @return Success
      */
-    menuSearch(q: string, mode?: Mode, sort?: Sort3, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processMenuSearch(response: AxiosResponse): Promise<ThreadMeta[]>;
-    /**
-     * Get threads created by a user
-     * @param id user id
-     * @param sort (optional) Sort threads by `0: Created time` or `1: Last comment time`
-     * @param page (optional) page number
-     * @param limit (optional) limit per page
-     * @return Success
-     */
-    menuHistory(id: number, sort?: Sort4, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processMenuHistory(response: AxiosResponse): Promise<ThreadMeta[]>;
+    threadsSearch(q: string, mode?: Mode, sort?: Sort4, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processThreadsSearch(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Get threads
-     * @param threads array of thread ids
+     * @param id array of thread ids
      * @return Success
      */
-    menuThreads(threads: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processMenuThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
+    threads(id: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
 }
 export declare enum Emotion {
     Sob = "sob",
@@ -397,7 +404,13 @@ export interface Body6 {
 export interface Body7 {
     name: string;
 }
-export interface Id {
+export declare enum Sort2 {
+    Latest = "latest",
+    Viral = "viral"
+}
+export declare enum Sort3 {
+    Created = "created",
+    Lastcomment = "lastcomment"
 }
 export interface Body8 {
     /** Username or email */
@@ -432,23 +445,13 @@ export interface Body13 {
     code: string;
     pwd: string;
 }
-export interface Category2 {
-}
-export declare enum Sort2 {
-    _0 = 0,
-    _1 = 1
-}
 export declare enum Mode {
-    _0 = 0,
-    _1 = 1
-}
-export declare enum Sort3 {
-    _0 = 0,
-    _1 = 1
+    Title = "title",
+    Op = "op"
 }
 export declare enum Sort4 {
-    _0 = 0,
-    _1 = 1
+    Latest = "latest",
+    Viral = "viral"
 }
 export interface Anonymous {
     id: number;
