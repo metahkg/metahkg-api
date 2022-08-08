@@ -244,7 +244,7 @@ export declare class Client {
      * Search threads
      * @param q Search query
      * @param mode (optional) Search mode. title or op
-     * @param sort (optional) Sort threads by latest or viral
+     * @param sort (optional) Sort threads by relevance, created or lastcomment
      * @param page (optional) page number
      * @param limit (optional) number of threads per page
      * @return Success
@@ -423,7 +423,7 @@ export interface Body13 {
     pwd: string;
 }
 export declare type Mode = "title" | "op";
-export declare type Sort4 = "latest" | "viral";
+export declare type Sort4 = "relevance" | "created" | "lastcomment";
 export interface Anonymous {
     id: number;
 }
