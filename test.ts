@@ -1,6 +1,6 @@
 import { Client } from "./src";
 
-const client = new Client("https://metahkg.org/api");
+const client = new Client();
 
 client
     .thread(1)
@@ -17,8 +17,8 @@ client.comment(1, 100).then((data) => {
     console.error(err);
 });
 
-client.category("bytid17").then(console.log).catch(console.error);
+client.category(1).then(console.log).catch(console.error);
 
-client.menuThreads([1,2]).then((data) => {
+client.threads([1,2]).then((data) => {
     console.log(data.map(d => d.id))
 }).catch(console.error);
