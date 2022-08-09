@@ -14,10 +14,10 @@ yarn add @metahkg/api
 ```typescript
 import { Client } from "@metahkg/api";
 
-const client = new Client("https://metahkg.org/api");
+const client = new Client();
 
 client
-    .getThread(1)
+    .thread(1)
     .then(console.log)
     .catch(console.error);
 ```
