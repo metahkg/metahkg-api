@@ -1,0 +1,14 @@
+/.lh/
+/.vscode/
+*.log
+/node_modules/
+/.idea/
+/cyclonedx-npm-yarn.json
+/gl-sbom-npm-yarn.cdx.json
+/src/
+/yarn.lock
+/Dockerfile
+/patch.ts
+/test.ts
+/nswag.json
+/generate.sh
