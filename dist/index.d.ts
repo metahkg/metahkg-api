@@ -307,7 +307,7 @@ export interface CommentC {
     comment: string;
     /** comment converted to plain text */
     text: string;
-    images: string[];
+    images?: string[];
     createdAt: Date;
     /** shortened link to the comment */
     slink: string;
