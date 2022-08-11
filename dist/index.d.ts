@@ -31,6 +31,13 @@ export declare class Client {
     threadImages(id: number, cancelToken?: CancelToken | undefined): Promise<Image[]>;
     protected processThreadImages(response: AxiosResponse): Promise<Image[]>;
     /**
+     * get thread category
+     * @param id thread id
+     * @return Success
+     */
+    threadCategory(id: number, cancelToken?: CancelToken | undefined): Promise<Category>;
+    protected processThreadCategory(response: AxiosResponse): Promise<Category>;
+    /**
      * Create thread
      * @return Success
      */
@@ -76,6 +83,14 @@ export declare class Client {
     commentVote(body: Body3, id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCommentVote(response: AxiosResponse): Promise<OK>;
     /**
+     * Emotion on comment
+     * @param id thread id
+     * @param cid comment id
+     * @return OK
+     */
+    commentEmotion(id: number, cid: number, body: Body4, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCommentEmotion(response: AxiosResponse): Promise<OK>;
+    /**
      * Pin comment
      * @param id thread id
      * @param cid comment id
@@ -114,13 +129,13 @@ export declare class Client {
      * Block user
      * @return OK
      */
-    meBlock(body: Body4, cancelToken?: CancelToken | undefined): Promise<OK>;
+    meBlock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processMeBlock(response: AxiosResponse): Promise<OK>;
     /**
      * Unblock user
      * @return OK
      */
-    meUnblock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK>;
+    meUnblock(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processMeUnblock(response: AxiosResponse): Promise<OK>;
     /**
      * Set avatar
@@ -133,7 +148,7 @@ export declare class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body6, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
+    meRename(body: Body7, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
     protected processMeRename(response: AxiosResponse): Promise<Anonymous5>;
     /**
      * Get categories
@@ -143,109 +158,110 @@ export declare class Client {
     protected processCategories(response: AxiosResponse): Promise<Category[]>;
     /**
      * Get category
-     * @param id category id, or `bytid<thread id>`
+     * @param id category id
      * @return Success
      */
-    category(id: Id, cancelToken?: CancelToken | undefined): Promise<Category>;
+    category(id: number, cancelToken?: CancelToken | undefined): Promise<Category>;
     protected processCategory(response: AxiosResponse): Promise<Category>;
+    /**
+     * Get threads in a category
+     * @param id category id
+     * @param sort (optional) Sort threads by latest or viral
+     * @param page (optional) page number
+     * @param limit (optional) number of threads per page
+     * @return Success
+     */
+    categoryThreads(id: number, sort?: Sort2, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processCategoryThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Get user profile
      * @param id user id
      * @return Success
      */
-    usersProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
-    protected processUsersProfile(response: AxiosResponse): Promise<Anonymous6>;
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6>;
     /**
      * Get user name
      * @param id user id
      * @return Success
      */
-    usersProfileName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
-    protected processUsersProfileName(response: AxiosResponse): Promise<Anonymous7>;
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
+    protected processUserName(response: AxiosResponse): Promise<Anonymous7>;
     /**
      * Get user avatar
      * @param id user id
      * @return Success
      */
-    usersProfileAvatar(id: number, cancelToken?: CancelToken | undefined): Promise<FileResponse>;
-    protected processUsersProfileAvatar(response: AxiosResponse): Promise<FileResponse>;
+    userAvatar(id: number, cancelToken?: CancelToken | undefined): Promise<FileResponse>;
+    protected processUserAvatar(response: AxiosResponse): Promise<FileResponse>;
+    /**
+     * Get threads created by a user
+     * @param id user id
+     * @param sort (optional) Sort threads by created or lastcomment
+     * @param page (optional) page number
+     * @param limit (optional) number of threads per page
+     * @return Success
+     */
+    userThreads(id: number, sort?: Sort3, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processUserThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Login
      * @return Success
      */
-    usersLogin(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersLogin(body: Body8, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersLogin(response: AxiosResponse): Promise<Token>;
     /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersRegister(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersVerify(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersVerify(response: AxiosResponse): Promise<Token>;
     /**
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersResend(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersForgot(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
      * @return Success
      */
-    usersReset(body: Body12, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersReset(body: Body13, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
-    /**
-     * Get threads in a category
-     * @param category category id, or bytid<thread id>
-     * @param sort (optional) Sort threads by `0: latest` or `1: viral`
-     * @param page (optional) page number
-     * @param limit (optional) limit per page
-     * @return Success
-     */
-    menuCategory(category: Category2, sort?: Sort2, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processMenuCategory(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Search threads
      * @param q Search query
-     * @param mode (optional) Search mode. `0: title` or `1: op`
-     * @param sort (optional) Sort threads by `0: latest` or `1: viral`
+     * @param mode (optional) Search mode. title or op
+     * @param sort (optional) Sort threads by relevance, created or lastcomment
      * @param page (optional) page number
-     * @param limit (optional) limit per page
+     * @param limit (optional) number of threads per page
      * @return Success
      */
-    menuSearch(q: string, mode?: Mode, sort?: Sort3, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processMenuSearch(response: AxiosResponse): Promise<ThreadMeta[]>;
-    /**
-     * Get threads created by a user
-     * @param id user id
-     * @param sort (optional) Sort threads by `0: Created time` or `1: Last comment time`
-     * @param page (optional) page number
-     * @param limit (optional) limit per page
-     * @return Success
-     */
-    menuHistory(id: number, sort?: Sort4, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processMenuHistory(response: AxiosResponse): Promise<ThreadMeta[]>;
+    threadsSearch(q: string, mode?: Mode, sort?: Sort4, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processThreadsSearch(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Get threads
-     * @param threads array of thread ids
+     * @param id array of thread ids
      * @return Success
      */
-    menuThreads(threads: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processMenuThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
+    threads(id: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
 }
+export declare type Emotion = "sob" | "joy" | "smile" | "sad" | "sweatsmile" | "heart" | "grin" | "good" | "bad";
 export interface OK {
-    response: OKResponse;
+    success: boolean;
 }
 export interface Token {
     token: string;
@@ -255,10 +271,7 @@ export interface ErrorDto {
     error: string;
 }
 /** Vote. "U" means upvote. "D" means downvote. */
-export declare enum Vote {
-    U = "U",
-    D = "D"
-}
+export declare type Vote = "U" | "D";
 export interface User {
     /** user id */
     id: number;
@@ -308,6 +321,8 @@ export interface Comment extends CommentC {
     U?: number;
     /** list of comment ids that are replies to this comment */
     replies?: number[];
+    /** list of emotions users have expressed */
+    emotions?: Emotions[];
 }
 export declare function isComment(object: any): object is Comment;
 export interface Thread {
@@ -345,11 +360,7 @@ export interface ThreadMeta {
     lastModified: Date;
     slink: string;
 }
-export declare enum Sort {
-    Score = "score",
-    Time = "time",
-    Latest = "latest"
-}
+export declare type Sort = "score" | "time" | "latest";
 export interface Body {
     title: string;
     comment: string;
@@ -365,22 +376,25 @@ export interface Body3 {
     vote: Vote;
 }
 export interface Body4 {
-    id?: number;
+    emotion?: Emotion;
 }
 export interface Body5 {
     id?: number;
 }
 export interface Body6 {
-    name: string;
-}
-export interface Id {
+    id?: number;
 }
 export interface Body7 {
+    name: string;
+}
+export declare type Sort2 = "latest" | "viral";
+export declare type Sort3 = "created" | "lastcomment";
+export interface Body8 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
-export interface Body8 {
+export interface Body9 {
     name: string;
     email: string;
     pwd: string;
@@ -389,14 +403,10 @@ export interface Body8 {
     /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
     inviteCode?: string;
 }
-export interface Body9 {
+export interface Body10 {
     email: string;
     /** Verification code sent to email */
     code: string;
-}
-export interface Body10 {
-    email: string;
-    rtoken: string;
 }
 export interface Body11 {
     email: string;
@@ -404,28 +414,16 @@ export interface Body11 {
 }
 export interface Body12 {
     email: string;
+    rtoken: string;
+}
+export interface Body13 {
+    email: string;
     /** Verification code sent to email */
     code: string;
     pwd: string;
 }
-export interface Category2 {
-}
-export declare enum Sort2 {
-    _0 = 0,
-    _1 = 1
-}
-export declare enum Mode {
-    _0 = 0,
-    _1 = 1
-}
-export declare enum Sort3 {
-    _0 = 0,
-    _1 = 1
-}
-export declare enum Sort4 {
-    _0 = 0,
-    _1 = 1
-}
+export declare type Mode = "title" | "op";
+export declare type Sort4 = "relevance" | "created" | "lastcomment";
 export interface Anonymous {
     id: number;
 }
@@ -454,20 +452,15 @@ export declare function isAnonymous6(object: any): object is Anonymous6;
 export interface Anonymous7 {
     name: string;
 }
-export declare enum OKResponse {
-    Ok = "ok"
-}
-export declare enum UserSex {
-    M = "M",
-    F = "F"
-}
-export declare enum UserRole {
-    Admin = "admin",
-    User = "user"
-}
+export declare type UserSex = "M" | "F";
+export declare type UserRole = "admin" | "user";
 export interface Quote extends CommentC {
 }
 export declare function isQuote(object: any): object is Quote;
+export interface Emotions {
+    user: number;
+    emotion: Emotion;
+}
 /** Comment object with score */
 export interface Conversation extends Comment {
     /** score of the comment (`upvotes - downvotes`) */

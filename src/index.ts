@@ -30,7 +30,7 @@ export class Client {
         this.baseUrl =
             baseUrl !== undefined && baseUrl !== null
                 ? baseUrl
-                : "https://metahkg.org/api";
+                : "https://dev.metahkg.org/api";
     }
 
     /**
@@ -297,6 +297,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
@@ -319,6 +331,105 @@ export class Client {
             );
         }
         return Promise.resolve<Image[]>(null as any);
+    }
+
+    /**
+     * get thread category
+     * @param id thread id
+     * @return Success
+     */
+    threadCategory(id: number, cancelToken?: CancelToken | undefined): Promise<Category> {
+        let url_ = this.baseUrl + "/thread/{id}/category";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processThreadCategory(_response);
+            });
+    }
+
+    protected processThreadCategory(response: AxiosResponse): Promise<Category> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Category>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Category>(null as any);
     }
 
     /**
@@ -503,6 +614,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
@@ -597,6 +720,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
             );
         } else if (status === 404) {
             const _responseText = response.data;
@@ -704,6 +839,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
             );
         } else if (status === 404) {
             const _responseText = response.data;
@@ -824,6 +971,18 @@ export class Client {
                 _headers,
                 result401
             );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
@@ -936,6 +1095,18 @@ export class Client {
                 _headers,
                 result401
             );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
@@ -971,6 +1142,130 @@ export class Client {
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Emotion on comment
+     * @param id thread id
+     * @param cid comment id
+     * @return OK
+     */
+    commentEmotion(
+        id: number,
+        cid: number,
+        body: Body4,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
+        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotion";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processCommentEmotion(_response);
+            });
+    }
+
+    protected processCommentEmotion(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread or comment not found",
+                status,
+                _responseText,
+                _headers,
+                result404
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1066,6 +1361,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
             );
         } else if (status === 404) {
             const _responseText = response.data;
@@ -1185,6 +1492,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
             );
         } else if (status === 404) {
             const _responseText = response.data;
@@ -1443,7 +1762,7 @@ export class Client {
      * Block user
      * @return OK
      */
-    meBlock(body: Body4, cancelToken?: CancelToken | undefined): Promise<OK> {
+    meBlock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/me/block";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1554,7 +1873,7 @@ export class Client {
      * Unblock user
      * @return OK
      */
-    meUnblock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK> {
+    meUnblock(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/me/unblock";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1796,7 +2115,7 @@ export class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body6, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
+    meRename(body: Body7, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1952,10 +2271,10 @@ export class Client {
 
     /**
      * Get category
-     * @param id category id, or `bytid<thread id>`
+     * @param id category id
      * @return Success
      */
-    category(id: Id, cancelToken?: CancelToken | undefined): Promise<Category> {
+    category(id: number, cancelToken?: CancelToken | undefined): Promise<Category> {
         let url_ = this.baseUrl + "/category/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2038,12 +2357,117 @@ export class Client {
     }
 
     /**
+     * Get threads in a category
+     * @param id category id
+     * @param sort (optional) Sort threads by latest or viral
+     * @param page (optional) page number
+     * @param limit (optional) number of threads per page
+     * @return Success
+     */
+    categoryThreads(
+        id: number,
+        sort?: Sort2,
+        page?: number,
+        limit?: number,
+        cancelToken?: CancelToken | undefined
+    ): Promise<ThreadMeta[]> {
+        let url_ = this.baseUrl + "/category/{id}/threads?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (sort === null) throw new Error("The parameter 'sort' cannot be null.");
+        else if (sort !== undefined)
+            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
+        if (page === null) throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (limit === null) throw new Error("The parameter 'limit' cannot be null.");
+        else if (limit !== undefined)
+            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processCategoryThreads(_response);
+            });
+    }
+
+    protected processCategoryThreads(response: AxiosResponse): Promise<ThreadMeta[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<ThreadMeta[]>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Category not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<ThreadMeta[]>(null as any);
+    }
+
+    /**
      * Get user profile
      * @param id user id
      * @return Success
      */
-    usersProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6> {
-        let url_ = this.baseUrl + "/users/{id}";
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6> {
+        let url_ = this.baseUrl + "/user/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2068,11 +2492,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processUsersProfile(_response);
+                return this.processUserProfile(_response);
             });
     }
 
-    protected processUsersProfile(response: AxiosResponse): Promise<Anonymous6> {
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2129,11 +2553,8 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    usersProfileName(
-        id: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous7> {
-        let url_ = this.baseUrl + "/users/{id}/name";
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
+        let url_ = this.baseUrl + "/user/{id}/name";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2158,11 +2579,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processUsersProfileName(_response);
+                return this.processUserName(_response);
             });
     }
 
-    protected processUsersProfileName(response: AxiosResponse): Promise<Anonymous7> {
+    protected processUserName(response: AxiosResponse): Promise<Anonymous7> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2219,11 +2640,8 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    usersProfileAvatar(
-        id: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/users/{id}/avatar";
+    userAvatar(id: number, cancelToken?: CancelToken | undefined): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/user/{id}/avatar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2249,11 +2667,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processUsersProfileAvatar(_response);
+                return this.processUserAvatar(_response);
             });
     }
 
-    protected processUsersProfileAvatar(response: AxiosResponse): Promise<FileResponse> {
+    protected processUserAvatar(response: AxiosResponse): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2305,10 +2723,115 @@ export class Client {
     }
 
     /**
+     * Get threads created by a user
+     * @param id user id
+     * @param sort (optional) Sort threads by created or lastcomment
+     * @param page (optional) page number
+     * @param limit (optional) number of threads per page
+     * @return Success
+     */
+    userThreads(
+        id: number,
+        sort?: Sort3,
+        page?: number,
+        limit?: number,
+        cancelToken?: CancelToken | undefined
+    ): Promise<ThreadMeta[]> {
+        let url_ = this.baseUrl + "/user/{id}/threads?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (sort === null) throw new Error("The parameter 'sort' cannot be null.");
+        else if (sort !== undefined)
+            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
+        if (page === null) throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (limit === null) throw new Error("The parameter 'limit' cannot be null.");
+        else if (limit !== undefined)
+            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processUserThreads(_response);
+            });
+    }
+
+    protected processUserThreads(response: AxiosResponse): Promise<ThreadMeta[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<ThreadMeta[]>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "User not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<ThreadMeta[]>(null as any);
+    }
+
+    /**
      * Login
      * @return Success
      */
-    usersLogin(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body: Body8, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2407,7 +2930,7 @@ export class Client {
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2490,7 +3013,7 @@ export class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2577,7 +3100,7 @@ export class Client {
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2676,7 +3199,7 @@ export class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2775,7 +3298,7 @@ export class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body: Body12, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body: Body13, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2871,128 +3394,23 @@ export class Client {
     }
 
     /**
-     * Get threads in a category
-     * @param category category id, or bytid<thread id>
-     * @param sort (optional) Sort threads by `0: latest` or `1: viral`
-     * @param page (optional) page number
-     * @param limit (optional) limit per page
-     * @return Success
-     */
-    menuCategory(
-        category: Category2,
-        sort?: Sort2,
-        page?: number,
-        limit?: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<ThreadMeta[]> {
-        let url_ = this.baseUrl + "/menu/{category}?";
-        if (category === undefined || category === null)
-            throw new Error("The parameter 'category' must be defined.");
-        url_ = url_.replace("{category}", encodeURIComponent("" + category));
-        if (sort === null) throw new Error("The parameter 'sort' cannot be null.");
-        else if (sort !== undefined)
-            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
-        if (page === null) throw new Error("The parameter 'page' cannot be null.");
-        else if (page !== undefined)
-            url_ += "page=" + encodeURIComponent("" + page) + "&";
-        if (limit === null) throw new Error("The parameter 'limit' cannot be null.");
-        else if (limit !== undefined)
-            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMenuCategory(_response);
-            });
-    }
-
-    protected processMenuCategory(response: AxiosResponse): Promise<ThreadMeta[]> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<ThreadMeta[]>(result200);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException(
-                "Category not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<ThreadMeta[]>(null as any);
-    }
-
-    /**
      * Search threads
      * @param q Search query
-     * @param mode (optional) Search mode. `0: title` or `1: op`
-     * @param sort (optional) Sort threads by `0: latest` or `1: viral`
+     * @param mode (optional) Search mode. title or op
+     * @param sort (optional) Sort threads by relevance, created or lastcomment
      * @param page (optional) page number
-     * @param limit (optional) limit per page
+     * @param limit (optional) number of threads per page
      * @return Success
      */
-    menuSearch(
+    threadsSearch(
         q: string,
         mode?: Mode,
-        sort?: Sort3,
+        sort?: Sort4,
         page?: number,
         limit?: number,
         cancelToken?: CancelToken | undefined
     ): Promise<ThreadMeta[]> {
-        let url_ = this.baseUrl + "/menu/search?";
+        let url_ = this.baseUrl + "/threads/search?";
         if (q === undefined || q === null)
             throw new Error("The parameter 'q' must be defined and cannot be null.");
         else url_ += "q=" + encodeURIComponent("" + q) + "&";
@@ -3029,11 +3447,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processMenuSearch(_response);
+                return this.processThreadsSearch(_response);
             });
     }
 
-    protected processMenuSearch(response: AxiosResponse): Promise<ThreadMeta[]> {
+    protected processThreadsSearch(response: AxiosResponse): Promise<ThreadMeta[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3060,111 +3478,6 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<ThreadMeta[]>(null as any);
-    }
-
-    /**
-     * Get threads created by a user
-     * @param id user id
-     * @param sort (optional) Sort threads by `0: Created time` or `1: Last comment time`
-     * @param page (optional) page number
-     * @param limit (optional) limit per page
-     * @return Success
-     */
-    menuHistory(
-        id: number,
-        sort?: Sort4,
-        page?: number,
-        limit?: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<ThreadMeta[]> {
-        let url_ = this.baseUrl + "/menu/history/{id}?";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (sort === null) throw new Error("The parameter 'sort' cannot be null.");
-        else if (sort !== undefined)
-            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
-        if (page === null) throw new Error("The parameter 'page' cannot be null.");
-        else if (page !== undefined)
-            url_ += "page=" + encodeURIComponent("" + page) + "&";
-        if (limit === null) throw new Error("The parameter 'limit' cannot be null.");
-        else if (limit !== undefined)
-            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMenuHistory(_response);
-            });
-    }
-
-    protected processMenuHistory(response: AxiosResponse): Promise<ThreadMeta[]> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<ThreadMeta[]>(result200);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException(
-                "User not found",
-                status,
-                _responseText,
-                _headers,
-                result404
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -3180,19 +3493,18 @@ export class Client {
 
     /**
      * Get threads
-     * @param threads array of thread ids
+     * @param id array of thread ids
      * @return Success
      */
-    menuThreads(
-        threads: number[],
-        cancelToken?: CancelToken | undefined
-    ): Promise<ThreadMeta[]> {
-        let url_ = this.baseUrl + "/menu/threads?";
-        if (threads === undefined || threads === null)
-            throw new Error(
-                "The parameter 'threads' must be defined and cannot be null."
-            );
-        else url_ += "threads=" + JSON.stringify(threads) + "&";
+    threads(id: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]> {
+        let url_ = this.baseUrl + "/threads?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            id &&
+                id.forEach((item) => {
+                    url_ += "id=" + encodeURIComponent("" + item) + "&";
+                });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -3214,11 +3526,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processMenuThreads(_response);
+                return this.processThreads(_response);
             });
     }
 
-    protected processMenuThreads(response: AxiosResponse): Promise<ThreadMeta[]> {
+    protected processThreads(response: AxiosResponse): Promise<ThreadMeta[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3259,8 +3571,19 @@ export class Client {
     }
 }
 
+export type Emotion =
+    | "sob"
+    | "joy"
+    | "smile"
+    | "sad"
+    | "sweatsmile"
+    | "heart"
+    | "grin"
+    | "good"
+    | "bad";
+
 export interface OK {
-    response: OKResponse;
+    success: boolean;
 }
 
 export interface Token {
@@ -3273,10 +3596,7 @@ export interface ErrorDto {
 }
 
 /** Vote. "U" means upvote. "D" means downvote. */
-export enum Vote {
-    U = "U",
-    D = "D",
-}
+export type Vote = "U" | "D";
 
 export interface User {
     /** user id */
@@ -3332,6 +3652,8 @@ export interface Comment extends CommentC {
     U?: number;
     /** list of comment ids that are replies to this comment */
     replies?: number[];
+    /** list of emotions users have expressed */
+    emotions?: Emotions[];
 }
 
 export function isComment(object: any): object is Comment {
@@ -3375,11 +3697,7 @@ export interface ThreadMeta {
     slink: string;
 }
 
-export enum Sort {
-    Score = "score",
-    Time = "time",
-    Latest = "latest",
-}
+export type Sort = "score" | "time" | "latest";
 
 export interface Body {
     title: string;
@@ -3399,7 +3717,7 @@ export interface Body3 {
 }
 
 export interface Body4 {
-    id?: number;
+    emotion?: Emotion;
 }
 
 export interface Body5 {
@@ -3407,18 +3725,24 @@ export interface Body5 {
 }
 
 export interface Body6 {
+    id?: number;
+}
+
+export interface Body7 {
     name: string;
 }
 
-export interface Id {}
+export type Sort2 = "latest" | "viral";
 
-export interface Body7 {
+export type Sort3 = "created" | "lastcomment";
+
+export interface Body8 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
 
-export interface Body8 {
+export interface Body9 {
     name: string;
     email: string;
     pwd: string;
@@ -3428,15 +3752,10 @@ export interface Body8 {
     inviteCode?: string;
 }
 
-export interface Body9 {
+export interface Body10 {
     email: string;
     /** Verification code sent to email */
     code: string;
-}
-
-export interface Body10 {
-    email: string;
-    rtoken: string;
 }
 
 export interface Body11 {
@@ -3446,32 +3765,19 @@ export interface Body11 {
 
 export interface Body12 {
     email: string;
+    rtoken: string;
+}
+
+export interface Body13 {
+    email: string;
     /** Verification code sent to email */
     code: string;
     pwd: string;
 }
 
-export interface Category2 {}
+export type Mode = "title" | "op";
 
-export enum Sort2 {
-    _0 = 0,
-    _1 = 1,
-}
-
-export enum Mode {
-    _0 = 0,
-    _1 = 1,
-}
-
-export enum Sort3 {
-    _0 = 0,
-    _1 = 1,
-}
-
-export enum Sort4 {
-    _0 = 0,
-    _1 = 1,
-}
+export type Sort4 = "relevance" | "created" | "lastcomment";
 
 export interface Anonymous {
     id: number;
@@ -3514,24 +3820,19 @@ export interface Anonymous7 {
     name: string;
 }
 
-export enum OKResponse {
-    Ok = "ok",
-}
+export type UserSex = "M" | "F";
 
-export enum UserSex {
-    M = "M",
-    F = "F",
-}
-
-export enum UserRole {
-    Admin = "admin",
-    User = "user",
-}
+export type UserRole = "admin" | "user";
 
 export interface Quote extends CommentC {}
 
 export function isQuote(object: any): object is Quote {
     return object && object[""] === "Quote";
+}
+
+export interface Emotions {
+    user: number;
+    emotion: Emotion;
 }
 
 /** Comment object with score */

@@ -14,10 +14,23 @@ yarn add @metahkg/api
 ```typescript
 import { Client } from "@metahkg/api";
 
-const client = new Client("https://metahkg.org/api");
+const axios = Axios.create();
+
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token && config.headers) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+});
+
+axios.interceptors.response.use((response) => {
+    if (response.headers.token) localStorage.setItem("token", response.headers.token);
+    return response;
+});
+
+const client = new Client("https://dev.metahkg.org/api", axios);
 
 client
-    .getThread(1)
+    .thread(1)
     .then(console.log)
     .catch(console.error);
 ```

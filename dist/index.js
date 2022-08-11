@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.isConversation = exports.isQuote = exports.UserRole = exports.UserSex = exports.OKResponse = exports.isAnonymous6 = exports.isAnonymous5 = exports.Sort4 = exports.Sort3 = exports.Mode = exports.Sort2 = exports.Sort = exports.isComment = exports.Vote = exports.Client = void 0;
+exports.ApiException = exports.isConversation = exports.isQuote = exports.isAnonymous6 = exports.isAnonymous5 = exports.isComment = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -20,7 +20,7 @@ class Client {
         this.baseUrl =
             baseUrl !== undefined && baseUrl !== null
                 ? baseUrl
-                : "https://metahkg.org/api";
+                : "https://dev.metahkg.org/api";
     }
     /**
      * Get thread
@@ -245,6 +245,90 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("Thread not found", status, _responseText, _headers, result404);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * get thread category
+     * @param id thread id
+     * @return Success
+     */
+    threadCategory(id, cancelToken) {
+        let url_ = this.baseUrl + "/thread/{id}/category";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processThreadCategory(_response);
+        });
+    }
+    processThreadCategory(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+        }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
@@ -402,6 +486,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+        }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
@@ -475,6 +566,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
         }
         else if (status === 404) {
             const _responseText = response.data;
@@ -556,6 +654,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
         }
         else if (status === 404) {
             const _responseText = response.data;
@@ -644,6 +749,13 @@ class Client {
             result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+        }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
@@ -728,6 +840,13 @@ class Client {
             result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+        }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
@@ -748,6 +867,97 @@ class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException("User has already voted", status, _responseText, _headers, result429);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Emotion on comment
+     * @param id thread id
+     * @param cid comment id
+     * @return OK
+     */
+    commentEmotion(id, cid, body, cancelToken) {
+        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotion";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processCommentEmotion(_response);
+        });
+    }
+    processCommentEmotion(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("Thread or comment not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -822,6 +1032,13 @@ class Client {
             let resultData401 = _responseText;
             result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
         }
         else if (status === 404) {
             const _responseText = response.data;
@@ -910,6 +1127,13 @@ class Client {
             let resultData401 = _responseText;
             result401 = JSON.parse(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
         }
         else if (status === 404) {
             const _responseText = response.data;
@@ -1502,7 +1726,7 @@ class Client {
     }
     /**
      * Get category
-     * @param id category id, or `bytid<thread id>`
+     * @param id category id
      * @return Success
      */
     category(id, cancelToken) {
@@ -1571,12 +1795,97 @@ class Client {
         return Promise.resolve(null);
     }
     /**
+     * Get threads in a category
+     * @param id category id
+     * @param sort (optional) Sort threads by latest or viral
+     * @param page (optional) page number
+     * @param limit (optional) number of threads per page
+     * @return Success
+     */
+    categoryThreads(id, sort, page, limit, cancelToken) {
+        let url_ = this.baseUrl + "/category/{id}/threads?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (sort === null)
+            throw new Error("The parameter 'sort' cannot be null.");
+        else if (sort !== undefined)
+            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (limit === null)
+            throw new Error("The parameter 'limit' cannot be null.");
+        else if (limit !== undefined)
+            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processCategoryThreads(_response);
+        });
+    }
+    processCategoryThreads(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("Category not found", status, _responseText, _headers, result404);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
      * Get user profile
      * @param id user id
      * @return Success
      */
-    usersProfile(id, cancelToken) {
-        let url_ = this.baseUrl + "/users/{id}";
+    userProfile(id, cancelToken) {
+        let url_ = this.baseUrl + "/user/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1600,10 +1909,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUsersProfile(_response);
+            return this.processUserProfile(_response);
         });
     }
-    processUsersProfile(response) {
+    processUserProfile(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1645,8 +1954,8 @@ class Client {
      * @param id user id
      * @return Success
      */
-    usersProfileName(id, cancelToken) {
-        let url_ = this.baseUrl + "/users/{id}/name";
+    userName(id, cancelToken) {
+        let url_ = this.baseUrl + "/user/{id}/name";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1670,10 +1979,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUsersProfileName(_response);
+            return this.processUserName(_response);
         });
     }
-    processUsersProfileName(response) {
+    processUserName(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1715,8 +2024,8 @@ class Client {
      * @param id user id
      * @return Success
      */
-    usersProfileAvatar(id, cancelToken) {
-        let url_ = this.baseUrl + "/users/{id}/avatar";
+    userAvatar(id, cancelToken) {
+        let url_ = this.baseUrl + "/user/{id}/avatar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1741,10 +2050,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUsersProfileAvatar(_response);
+            return this.processUserAvatar(_response);
         });
     }
-    processUsersProfileAvatar(response) {
+    processUserAvatar(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1777,6 +2086,91 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Get threads created by a user
+     * @param id user id
+     * @param sort (optional) Sort threads by created or lastcomment
+     * @param page (optional) page number
+     * @param limit (optional) number of threads per page
+     * @return Success
+     */
+    userThreads(id, sort, page, limit, cancelToken) {
+        let url_ = this.baseUrl + "/user/{id}/threads?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (sort === null)
+            throw new Error("The parameter 'sort' cannot be null.");
+        else if (sort !== undefined)
+            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (limit === null)
+            throw new Error("The parameter 'limit' cannot be null.");
+        else if (limit !== undefined)
+            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processUserThreads(_response);
+        });
+    }
+    processUserThreads(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("User not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2224,101 +2618,16 @@ class Client {
         return Promise.resolve(null);
     }
     /**
-     * Get threads in a category
-     * @param category category id, or bytid<thread id>
-     * @param sort (optional) Sort threads by `0: latest` or `1: viral`
-     * @param page (optional) page number
-     * @param limit (optional) limit per page
-     * @return Success
-     */
-    menuCategory(category, sort, page, limit, cancelToken) {
-        let url_ = this.baseUrl + "/menu/{category}?";
-        if (category === undefined || category === null)
-            throw new Error("The parameter 'category' must be defined.");
-        url_ = url_.replace("{category}", encodeURIComponent("" + category));
-        if (sort === null)
-            throw new Error("The parameter 'sort' cannot be null.");
-        else if (sort !== undefined)
-            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
-        if (page === null)
-            throw new Error("The parameter 'page' cannot be null.");
-        else if (page !== undefined)
-            url_ += "page=" + encodeURIComponent("" + page) + "&";
-        if (limit === null)
-            throw new Error("The parameter 'limit' cannot be null.");
-        else if (limit !== undefined)
-            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-        let options_ = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processMenuCategory(_response);
-        });
-    }
-    processMenuCategory(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 400) {
-            const _responseText = response.data;
-            let result400 = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException("Invalid request", status, _responseText, _headers, result400);
-        }
-        else if (status === 404) {
-            const _responseText = response.data;
-            let result404 = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException("Category not found", status, _responseText, _headers, result404);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
      * Search threads
      * @param q Search query
-     * @param mode (optional) Search mode. `0: title` or `1: op`
-     * @param sort (optional) Sort threads by `0: latest` or `1: viral`
+     * @param mode (optional) Search mode. title or op
+     * @param sort (optional) Sort threads by relevance, created or lastcomment
      * @param page (optional) page number
-     * @param limit (optional) limit per page
+     * @param limit (optional) number of threads per page
      * @return Success
      */
-    menuSearch(q, mode, sort, page, limit, cancelToken) {
-        let url_ = this.baseUrl + "/menu/search?";
+    threadsSearch(q, mode, sort, page, limit, cancelToken) {
+        let url_ = this.baseUrl + "/threads/search?";
         if (q === undefined || q === null)
             throw new Error("The parameter 'q' must be defined and cannot be null.");
         else
@@ -2359,10 +2668,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processMenuSearch(_response);
+            return this.processThreadsSearch(_response);
         });
     }
-    processMenuSearch(response) {
+    processThreadsSearch(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2385,91 +2694,6 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
-     * Get threads created by a user
-     * @param id user id
-     * @param sort (optional) Sort threads by `0: Created time` or `1: Last comment time`
-     * @param page (optional) page number
-     * @param limit (optional) limit per page
-     * @return Success
-     */
-    menuHistory(id, sort, page, limit, cancelToken) {
-        let url_ = this.baseUrl + "/menu/history/{id}?";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (sort === null)
-            throw new Error("The parameter 'sort' cannot be null.");
-        else if (sort !== undefined)
-            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
-        if (page === null)
-            throw new Error("The parameter 'page' cannot be null.");
-        else if (page !== undefined)
-            url_ += "page=" + encodeURIComponent("" + page) + "&";
-        if (limit === null)
-            throw new Error("The parameter 'limit' cannot be null.");
-        else if (limit !== undefined)
-            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-        let options_ = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processMenuHistory(_response);
-        });
-    }
-    processMenuHistory(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 400) {
-            const _responseText = response.data;
-            let result400 = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException("Invalid request", status, _responseText, _headers, result400);
-        }
-        else if (status === 404) {
-            const _responseText = response.data;
-            let result404 = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException("User not found", status, _responseText, _headers, result404);
         }
         else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2479,15 +2703,18 @@ class Client {
     }
     /**
      * Get threads
-     * @param threads array of thread ids
+     * @param id array of thread ids
      * @return Success
      */
-    menuThreads(threads, cancelToken) {
-        let url_ = this.baseUrl + "/menu/threads?";
-        if (threads === undefined || threads === null)
-            throw new Error("The parameter 'threads' must be defined and cannot be null.");
+    threads(id, cancelToken) {
+        let url_ = this.baseUrl + "/threads?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
         else
-            url_ += "threads=" + JSON.stringify(threads) + "&";
+            id &&
+                id.forEach((item) => {
+                    url_ += "id=" + encodeURIComponent("" + item) + "&";
+                });
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
@@ -2508,10 +2735,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processMenuThreads(_response);
+            return this.processThreads(_response);
         });
     }
-    processMenuThreads(response) {
+    processThreads(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2543,42 +2770,10 @@ class Client {
     }
 }
 exports.Client = Client;
-/** Vote. "U" means upvote. "D" means downvote. */
-var Vote;
-(function (Vote) {
-    Vote["U"] = "U";
-    Vote["D"] = "D";
-})(Vote = exports.Vote || (exports.Vote = {}));
 function isComment(object) {
     return object && object[""] === "Comment";
 }
 exports.isComment = isComment;
-var Sort;
-(function (Sort) {
-    Sort["Score"] = "score";
-    Sort["Time"] = "time";
-    Sort["Latest"] = "latest";
-})(Sort = exports.Sort || (exports.Sort = {}));
-var Sort2;
-(function (Sort2) {
-    Sort2[Sort2["_0"] = 0] = "_0";
-    Sort2[Sort2["_1"] = 1] = "_1";
-})(Sort2 = exports.Sort2 || (exports.Sort2 = {}));
-var Mode;
-(function (Mode) {
-    Mode[Mode["_0"] = 0] = "_0";
-    Mode[Mode["_1"] = 1] = "_1";
-})(Mode = exports.Mode || (exports.Mode = {}));
-var Sort3;
-(function (Sort3) {
-    Sort3[Sort3["_0"] = 0] = "_0";
-    Sort3[Sort3["_1"] = 1] = "_1";
-})(Sort3 = exports.Sort3 || (exports.Sort3 = {}));
-var Sort4;
-(function (Sort4) {
-    Sort4[Sort4["_0"] = 0] = "_0";
-    Sort4[Sort4["_1"] = 1] = "_1";
-})(Sort4 = exports.Sort4 || (exports.Sort4 = {}));
 function isAnonymous5(object) {
     return object && object[""] === "Anonymous5";
 }
@@ -2587,20 +2782,6 @@ function isAnonymous6(object) {
     return object && object[""] === "Anonymous6";
 }
 exports.isAnonymous6 = isAnonymous6;
-var OKResponse;
-(function (OKResponse) {
-    OKResponse["Ok"] = "ok";
-})(OKResponse = exports.OKResponse || (exports.OKResponse = {}));
-var UserSex;
-(function (UserSex) {
-    UserSex["M"] = "M";
-    UserSex["F"] = "F";
-})(UserSex = exports.UserSex || (exports.UserSex = {}));
-var UserRole;
-(function (UserRole) {
-    UserRole["Admin"] = "admin";
-    UserRole["User"] = "user";
-})(UserRole = exports.UserRole || (exports.UserRole = {}));
 function isQuote(object) {
     return object && object[""] === "Quote";
 }
