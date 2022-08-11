@@ -12,13 +12,15 @@
     "generate": "./generate.sh",
     "lint": "prettier --write src",
     "test": "ts-node test.ts",
-    "deploy": "yarn build && yarn publish"
+    "deploy": "yarn build && yarn publish",
+    "prepare": "husky install"
   },
   "dependencies": {
     "axios": "^0.27.2"
   },
   "devDependencies": {
     "@types/node": "^18.7.1",
+    "husky": "^8.0.1",
     "nswag": "^13.16.1",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
