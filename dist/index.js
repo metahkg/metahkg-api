@@ -20,7 +20,7 @@ class Client {
         this.baseUrl =
             baseUrl !== undefined && baseUrl !== null
                 ? baseUrl
-                : "https://dev.metahkg.org/api";
+                : "https://metahkg.org/api";
     }
     /**
      * Get thread
