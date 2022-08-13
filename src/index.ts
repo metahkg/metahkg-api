@@ -147,6 +147,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -165,10 +189,10 @@ export class Client {
      * @return OK
      */
     threadCheck(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
-        let url_ = this.baseUrl + "/thread/check?";
+        let url_ = this.baseUrl + "/thread/check";
         if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined and cannot be null.");
-        else url_ += "id=" + encodeURIComponent("" + id) + "&";
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -221,6 +245,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -321,6 +369,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -419,6 +491,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -525,11 +621,23 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Recaptcha token invalid",
+                "Recaptcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -637,6 +745,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -757,6 +889,30 @@ export class Client {
                 _headers,
                 result410
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -875,6 +1031,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result410
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1001,11 +1181,23 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Recaptcha token invalid",
+                "Recaptcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1137,11 +1329,23 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "User has already voted",
+                "Already voted, or too many requests",
                 status,
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1266,6 +1470,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1398,6 +1626,30 @@ export class Client {
                 _headers,
                 result410
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -1529,6 +1781,30 @@ export class Client {
                 _headers,
                 result409
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -1588,6 +1864,30 @@ export class Client {
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
             return Promise.resolve<Anonymous3>(result200);
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -1658,6 +1958,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result401
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1745,6 +2069,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1857,6 +2205,30 @@ export class Client {
                 _headers,
                 result409
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -1955,6 +2327,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2087,6 +2483,18 @@ export class Client {
                 _headers,
                 result422
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
         } else if (status === 500) {
             const _responseText = response.data;
             let result500: any = null;
@@ -2098,6 +2506,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2197,6 +2617,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2344,6 +2788,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -2449,6 +2917,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -2535,6 +3027,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2623,6 +3139,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -2709,6 +3249,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2815,6 +3379,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -2914,6 +3502,30 @@ export class Client {
                 _headers,
                 result409
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -2997,6 +3609,30 @@ export class Client {
                 _headers,
                 result409
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -3078,11 +3714,35 @@ export class Client {
             let resultData401 = _responseText;
             result401 = JSON.parse(resultData401);
             return throwException(
-                "Code incorrect or expired / email not found",
+                "Code incorrect or expired, or email not found",
                 status,
                 _responseText,
                 _headers,
                 result401
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -3177,11 +3837,23 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Too many requests / ReCAPTCHA token invalid",
+                "Recaptcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -3276,11 +3948,23 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Too many requests / ReCAPTCHA token invalid",
+                "Recaptcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -3381,6 +4065,18 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -3479,6 +4175,30 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -3557,6 +4277,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -3637,7 +4381,7 @@ export interface CommentC {
     comment: string;
     /** comment converted to plain text */
     text: string;
-    images?: string[];
+    images: string[];
     createdAt: Date;
     /** shortened link to the comment */
     slink: string;
