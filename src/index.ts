@@ -3551,10 +3551,18 @@ export class Client {
 
     /**
      * Block user
+     * @param id user id
      * @return OK
      */
-    userBlock(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK> {
+    userBlock(
+        id: number,
+        body: Body6,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/block";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -3686,20 +3694,20 @@ export class Client {
 
     /**
      * Unblock user
+     * @param id user id
      * @return OK
      */
-    userUnblock(body: Body7, cancelToken?: CancelToken | undefined): Promise<OK> {
+    userUnblock(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/unblock";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_: AxiosRequestConfig = {
-            data: content_,
             method: "POST",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
@@ -3811,7 +3819,7 @@ export class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body8, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3934,7 +3942,7 @@ export class Client {
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4041,7 +4049,7 @@ export class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4152,7 +4160,7 @@ export class Client {
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4263,7 +4271,7 @@ export class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4374,7 +4382,7 @@ export class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body: Body13, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body: Body12, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4723,6 +4731,7 @@ export interface OK {
 }
 
 export interface Token {
+    /** jwt token */
     token: string;
 }
 
@@ -4884,20 +4893,17 @@ export type Sort2 = "latest" | "viral";
 export type Sort3 = "created" | "lastcomment";
 
 export interface Body6 {
-    id?: number;
+    /** Reason for blocking user */
+    reason?: string;
 }
 
 export interface Body7 {
-    id?: number;
-}
-
-export interface Body8 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
 
-export interface Body9 {
+export interface Body8 {
     name: string;
     email: string;
     pwd: string;
@@ -4907,10 +4913,15 @@ export interface Body9 {
     inviteCode?: string;
 }
 
-export interface Body10 {
+export interface Body9 {
     email: string;
     /** Verification code sent to email */
     code: string;
+}
+
+export interface Body10 {
+    email: string;
+    rtoken: string;
 }
 
 export interface Body11 {
@@ -4919,11 +4930,6 @@ export interface Body11 {
 }
 
 export interface Body12 {
-    email: string;
-    rtoken: string;
-}
-
-export interface Body13 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -4953,6 +4959,7 @@ export interface Anonymous4 {
 }
 
 export interface Anonymous5 extends OK {
+    /** jwt token */
     token: string;
 }
 

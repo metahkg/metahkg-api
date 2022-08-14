@@ -214,51 +214,53 @@ export declare class Client {
     protected processUserThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Block user
+     * @param id user id
      * @return OK
      */
-    userBlock(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
+    userBlock(id: number, body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserBlock(response: AxiosResponse): Promise<OK>;
     /**
      * Unblock user
+     * @param id user id
      * @return OK
      */
-    userUnblock(body: Body7, cancelToken?: CancelToken | undefined): Promise<OK>;
+    userUnblock(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserUnblock(response: AxiosResponse): Promise<OK>;
     /**
      * Login
      * @return Success
      */
-    usersLogin(body: Body8, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersLogin(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersLogin(response: AxiosResponse): Promise<Token>;
     /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersRegister(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersVerify(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersVerify(response: AxiosResponse): Promise<Token>;
     /**
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersResend(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersForgot(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
      * @return Success
      */
-    usersReset(body: Body13, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersReset(body: Body12, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
     /**
      * Search threads
@@ -284,6 +286,7 @@ export interface OK {
     success: boolean;
 }
 export interface Token {
+    /** jwt token */
     token: string;
 }
 export interface ErrorDto {
@@ -418,17 +421,15 @@ export interface Body5 {
 export declare type Sort2 = "latest" | "viral";
 export declare type Sort3 = "created" | "lastcomment";
 export interface Body6 {
-    id?: number;
+    /** Reason for blocking user */
+    reason?: string;
 }
 export interface Body7 {
-    id?: number;
-}
-export interface Body8 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
-export interface Body9 {
+export interface Body8 {
     name: string;
     email: string;
     pwd: string;
@@ -437,20 +438,20 @@ export interface Body9 {
     /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
     inviteCode?: string;
 }
-export interface Body10 {
+export interface Body9 {
     email: string;
     /** Verification code sent to email */
     code: string;
+}
+export interface Body10 {
+    email: string;
+    rtoken: string;
 }
 export interface Body11 {
     email: string;
     rtoken: string;
 }
 export interface Body12 {
-    email: string;
-    rtoken: string;
-}
-export interface Body13 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -473,6 +474,7 @@ export interface Anonymous4 {
     vote: Vote;
 }
 export interface Anonymous5 extends OK {
+    /** jwt token */
     token: string;
 }
 export declare function isAnonymous5(object: any): object is Anonymous5;

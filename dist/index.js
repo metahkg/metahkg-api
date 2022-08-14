@@ -2618,10 +2618,14 @@ class Client {
     }
     /**
      * Block user
+     * @param id user id
      * @return OK
      */
-    userBlock(body, cancelToken) {
+    userBlock(id, body, cancelToken) {
         let url_ = this.baseUrl + "/user/{id}/block";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
         let options_ = {
@@ -2715,18 +2719,19 @@ class Client {
     }
     /**
      * Unblock user
+     * @param id user id
      * @return OK
      */
-    userUnblock(body, cancelToken) {
+    userUnblock(id, cancelToken) {
         let url_ = this.baseUrl + "/user/{id}/unblock";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
-        const content_ = JSON.stringify(body);
         let options_ = {
-            data: content_,
             method: "POST",
             url: url_,
             headers: {
-                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
