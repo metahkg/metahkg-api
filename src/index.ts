@@ -147,6 +147,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -165,10 +189,10 @@ export class Client {
      * @return OK
      */
     threadCheck(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
-        let url_ = this.baseUrl + "/thread/check?";
+        let url_ = this.baseUrl + "/thread/check";
         if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined and cannot be null.");
-        else url_ += "id=" + encodeURIComponent("" + id) + "&";
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -221,6 +245,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -321,6 +369,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -419,6 +491,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -525,11 +621,23 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Recaptcha token invalid",
+                "Recaptcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -541,6 +649,300 @@ export class Client {
             );
         }
         return Promise.resolve<Anonymous>(null as any);
+    }
+
+    /**
+     * Star thread
+     * @param id thread id
+     * @return OK
+     */
+    threadStar(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/thread/{id}/star";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processThreadStar(_response);
+            });
+    }
+
+    protected processThreadStar(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "Thread already starred",
+                status,
+                _responseText,
+                _headers,
+                result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Unstar thread
+     * @param id thread id
+     * @return OK
+     */
+    threadUnstar(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/thread/{id}/unstar";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processThreadUnstar(_response);
+            });
+    }
+
+    protected processThreadUnstar(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "Thread not starred",
+                status,
+                _responseText,
+                _headers,
+                result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
     }
 
     /**
@@ -637,6 +1039,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -757,6 +1183,30 @@ export class Client {
                 _headers,
                 result410
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -875,6 +1325,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result410
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1001,11 +1475,23 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Recaptcha token invalid",
+                "Recaptcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1137,11 +1623,23 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "User has already voted",
+                "Already voted, or too many requests",
                 status,
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1266,6 +1764,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -1398,6 +1920,30 @@ export class Client {
                 _headers,
                 result410
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -1529,6 +2075,30 @@ export class Client {
                 _headers,
                 result409
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -1588,6 +2158,30 @@ export class Client {
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
             return Promise.resolve<Anonymous3>(result200);
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -1604,7 +2198,7 @@ export class Client {
      * Get blocked users
      * @return Success
      */
-    meBlocked(cancelToken?: CancelToken | undefined): Promise<User[]> {
+    meBlocked(cancelToken?: CancelToken | undefined): Promise<BlockedUser[]> {
         let url_ = this.baseUrl + "/me/blocked";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1631,7 +2225,7 @@ export class Client {
             });
     }
 
-    protected processMeBlocked(response: AxiosResponse): Promise<User[]> {
+    protected processMeBlocked(response: AxiosResponse): Promise<BlockedUser[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1646,7 +2240,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<User[]>(result200);
+            return Promise.resolve<BlockedUser[]>(result200);
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
@@ -1659,6 +2253,30 @@ export class Client {
                 _headers,
                 result401
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -1668,16 +2286,114 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<User[]>(null as any);
+        return Promise.resolve<BlockedUser[]>(null as any);
     }
 
     /**
-     * Get votes
+     * Get starred threads
+     * @return Success
+     */
+    meStarred(cancelToken?: CancelToken | undefined): Promise<Star[]> {
+        let url_ = this.baseUrl + "/me/starred";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processMeStarred(_response);
+            });
+    }
+
+    protected processMeStarred(response: AxiosResponse): Promise<Star[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Star[]>(result200);
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Star[]>(null as any);
+    }
+
+    /**
+     * Get votes in thread
      * @param id thread id
      * @return Success
      */
-    meVotes(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous4[]> {
-        let url_ = this.baseUrl + "/me/votes/{id}";
+    meVotesThread(
+        id: number,
+        cancelToken?: CancelToken | undefined
+    ): Promise<Anonymous4[]> {
+        let url_ = this.baseUrl + "/me/votes/thread/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1702,11 +2418,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processMeVotes(_response);
+                return this.processMeVotesThread(_response);
             });
     }
 
-    protected processMeVotes(response: AxiosResponse): Promise<Anonymous4[]> {
+    protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous4[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1746,6 +2462,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -1756,216 +2496,6 @@ export class Client {
             );
         }
         return Promise.resolve<Anonymous4[]>(null as any);
-    }
-
-    /**
-     * Block user
-     * @return OK
-     */
-    meBlock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK> {
-        let url_ = this.baseUrl + "/me/block";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeBlock(_response);
-            });
-    }
-
-    protected processMeBlock(response: AxiosResponse): Promise<OK> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException(
-                "User not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
-        } else if (status === 409) {
-            const _responseText = response.data;
-            let result409: any = null;
-            let resultData409 = _responseText;
-            result409 = JSON.parse(resultData409);
-            return throwException(
-                "User already blocked",
-                status,
-                _responseText,
-                _headers,
-                result409
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<OK>(null as any);
-    }
-
-    /**
-     * Unblock user
-     * @return OK
-     */
-    meUnblock(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK> {
-        let url_ = this.baseUrl + "/me/unblock";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: AxiosRequestConfig = {
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeUnblock(_response);
-            });
-    }
-
-    protected processMeUnblock(response: AxiosResponse): Promise<OK> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
-        } else if (status === 409) {
-            const _responseText = response.data;
-            let result409: any = null;
-            let resultData409 = _responseText;
-            result409 = JSON.parse(resultData409);
-            return throwException(
-                "User not blocked",
-                status,
-                _responseText,
-                _headers,
-                result409
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<OK>(null as any);
     }
 
     /**
@@ -2087,6 +2617,18 @@ export class Client {
                 _headers,
                 result422
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
         } else if (status === 500) {
             const _responseText = response.data;
             let result500: any = null;
@@ -2098,6 +2640,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2115,7 +2669,7 @@ export class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body7, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
+    meRename(body: Body5, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2197,6 +2751,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2344,6 +2922,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -2449,6 +3051,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -2535,6 +3161,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2623,6 +3273,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -2709,6 +3383,30 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -2815,6 +3513,30 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -2828,10 +3550,276 @@ export class Client {
     }
 
     /**
+     * Block user
+     * @param id user id
+     * @return OK
+     */
+    userBlock(
+        id: number,
+        body: Body6,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
+        let url_ = this.baseUrl + "/user/{id}/block";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processUserBlock(_response);
+            });
+    }
+
+    protected processUserBlock(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "User not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "User already blocked",
+                status,
+                _responseText,
+                _headers,
+                result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Unblock user
+     * @param id user id
+     * @return OK
+     */
+    userUnblock(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/user/{id}/unblock";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processUserUnblock(_response);
+            });
+    }
+
+    protected processUserUnblock(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "User not blocked",
+                status,
+                _responseText,
+                _headers,
+                result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
      * Login
      * @return Success
      */
-    usersLogin(body: Body8, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2914,6 +3902,30 @@ export class Client {
                 _headers,
                 result409
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -2930,7 +3942,7 @@ export class Client {
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body9, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2997,6 +4009,30 @@ export class Client {
                 _headers,
                 result409
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -3013,7 +4049,7 @@ export class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body10, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3078,11 +4114,35 @@ export class Client {
             let resultData401 = _responseText;
             result401 = JSON.parse(resultData401);
             return throwException(
-                "Code incorrect or expired / email not found",
+                "Code incorrect or expired, or email not found",
                 status,
                 _responseText,
                 _headers,
                 result401
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -3100,7 +4160,7 @@ export class Client {
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3177,11 +4237,23 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Too many requests / ReCAPTCHA token invalid",
+                "Recaptcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -3199,7 +4271,7 @@ export class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3276,11 +4348,23 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Too many requests / ReCAPTCHA token invalid",
+                "Recaptcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -3298,7 +4382,7 @@ export class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body: Body13, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body: Body12, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3380,6 +4464,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
             );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
@@ -3479,6 +4575,30 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -3558,6 +4678,30 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException(
@@ -3587,6 +4731,7 @@ export interface OK {
 }
 
 export interface Token {
+    /** jwt token */
     token: string;
 }
 
@@ -3605,6 +4750,18 @@ export interface User {
     name: string;
     sex: UserSex;
     role: UserRole;
+}
+
+/** Blocked user (user object with block date and reason) */
+export interface BlockedUser extends User {
+    /** block date */
+    date: Date;
+    /** block reason */
+    reason: string;
+}
+
+export function isBlockedUser(object: any): object is BlockedUser {
+    return object && object[""] === "BlockedUser";
 }
 
 export interface Category {
@@ -3637,7 +4794,7 @@ export interface CommentC {
     comment: string;
     /** comment converted to plain text */
     text: string;
-    images?: string[];
+    images: string[];
     createdAt: Date;
     /** shortened link to the comment */
     slink: string;
@@ -3697,6 +4854,13 @@ export interface ThreadMeta {
     slink: string;
 }
 
+/** star thread record */
+export interface Star {
+    id: number;
+    /** date when star was created */
+    date: Date;
+}
+
 export type Sort = "score" | "time" | "latest";
 
 export interface Body {
@@ -3721,14 +4885,6 @@ export interface Body4 {
 }
 
 export interface Body5 {
-    id?: number;
-}
-
-export interface Body6 {
-    id?: number;
-}
-
-export interface Body7 {
     name: string;
 }
 
@@ -3736,13 +4892,18 @@ export type Sort2 = "latest" | "viral";
 
 export type Sort3 = "created" | "lastcomment";
 
-export interface Body8 {
+export interface Body6 {
+    /** Reason for blocking user */
+    reason?: string;
+}
+
+export interface Body7 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
 
-export interface Body9 {
+export interface Body8 {
     name: string;
     email: string;
     pwd: string;
@@ -3752,10 +4913,15 @@ export interface Body9 {
     inviteCode?: string;
 }
 
-export interface Body10 {
+export interface Body9 {
     email: string;
     /** Verification code sent to email */
     code: string;
+}
+
+export interface Body10 {
+    email: string;
+    rtoken: string;
 }
 
 export interface Body11 {
@@ -3764,11 +4930,6 @@ export interface Body11 {
 }
 
 export interface Body12 {
-    email: string;
-    rtoken: string;
-}
-
-export interface Body13 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -3798,6 +4959,7 @@ export interface Anonymous4 {
 }
 
 export interface Anonymous5 extends OK {
+    /** jwt token */
     token: string;
 }
 
