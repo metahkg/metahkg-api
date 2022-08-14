@@ -44,6 +44,20 @@ export declare class Client {
     threadCreate(body: Body, cancelToken?: CancelToken | undefined): Promise<Anonymous>;
     protected processThreadCreate(response: AxiosResponse): Promise<Anonymous>;
     /**
+     * Star thread
+     * @param id thread id
+     * @return OK
+     */
+    threadStar(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processThreadStar(response: AxiosResponse): Promise<OK>;
+    /**
+     * Unstar thread
+     * @param id thread id
+     * @return OK
+     */
+    threadUnstar(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processThreadUnstar(response: AxiosResponse): Promise<OK>;
+    /**
      * Get comment
      * @param id thread id
      * @param cid comment id
@@ -116,8 +130,14 @@ export declare class Client {
      * Get blocked users
      * @return Success
      */
-    meBlocked(cancelToken?: CancelToken | undefined): Promise<User[]>;
-    protected processMeBlocked(response: AxiosResponse): Promise<User[]>;
+    meBlocked(cancelToken?: CancelToken | undefined): Promise<BlockedUser[]>;
+    protected processMeBlocked(response: AxiosResponse): Promise<BlockedUser[]>;
+    /**
+     * Get starred threads
+     * @return Success
+     */
+    meStarred(cancelToken?: CancelToken | undefined): Promise<Star[]>;
+    protected processMeStarred(response: AxiosResponse): Promise<Star[]>;
     /**
      * Get votes
      * @param id thread id
@@ -125,18 +145,6 @@ export declare class Client {
      */
     meVotes(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous4[]>;
     protected processMeVotes(response: AxiosResponse): Promise<Anonymous4[]>;
-    /**
-     * Block user
-     * @return OK
-     */
-    meBlock(body: Body5, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processMeBlock(response: AxiosResponse): Promise<OK>;
-    /**
-     * Unblock user
-     * @return OK
-     */
-    meUnblock(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processMeUnblock(response: AxiosResponse): Promise<OK>;
     /**
      * Set avatar
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
@@ -148,7 +156,7 @@ export declare class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body7, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
+    meRename(body: Body5, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
     protected processMeRename(response: AxiosResponse): Promise<Anonymous5>;
     /**
      * Get categories
@@ -204,6 +212,18 @@ export declare class Client {
      */
     userThreads(id: number, sort?: Sort3, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
     protected processUserThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
+    /**
+     * Block user
+     * @return OK
+     */
+    blockUser(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processBlockUser(response: AxiosResponse): Promise<OK>;
+    /**
+     * Unblock user
+     * @return OK
+     */
+    unblockUser(body: Body7, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUnblockUser(response: AxiosResponse): Promise<OK>;
     /**
      * Login
      * @return Success
@@ -280,6 +300,14 @@ export interface User {
     sex: UserSex;
     role: UserRole;
 }
+/** Blocked user (user object with block date and reason) */
+export interface BlockedUser extends User {
+    /** block date */
+    date: Date;
+    /** block reason */
+    reason: string;
+}
+export declare function isBlockedUser(object: any): object is BlockedUser;
 export interface Category {
     /** category id */
     id: number;
@@ -360,6 +388,12 @@ export interface ThreadMeta {
     lastModified: Date;
     slink: string;
 }
+/** star thread record */
+export interface Star {
+    id: number;
+    /** date when star was created */
+    date: Date;
+}
 export declare type Sort = "score" | "time" | "latest";
 export interface Body {
     title: string;
@@ -379,16 +413,16 @@ export interface Body4 {
     emotion?: Emotion;
 }
 export interface Body5 {
-    id?: number;
-}
-export interface Body6 {
-    id?: number;
-}
-export interface Body7 {
     name: string;
 }
 export declare type Sort2 = "latest" | "viral";
 export declare type Sort3 = "created" | "lastcomment";
+export interface Body6 {
+    id?: number;
+}
+export interface Body7 {
+    id?: number;
+}
 export interface Body8 {
     /** Username or email */
     name: Name;
