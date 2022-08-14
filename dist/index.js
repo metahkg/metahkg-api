@@ -1738,12 +1738,12 @@ class Client {
         return Promise.resolve(null);
     }
     /**
-     * Get votes
+     * Get votes in thread
      * @param id thread id
      * @return Success
      */
-    meVotes(id, cancelToken) {
-        let url_ = this.baseUrl + "/me/votes/{id}";
+    meVotesThread(id, cancelToken) {
+        let url_ = this.baseUrl + "/me/votes/thread/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1767,10 +1767,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processMeVotes(_response);
+            return this.processMeVotesThread(_response);
         });
     }
-    processMeVotes(response) {
+    processMeVotesThread(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2620,7 +2620,7 @@ class Client {
      * Block user
      * @return OK
      */
-    blockUser(body, cancelToken) {
+    userBlock(body, cancelToken) {
         let url_ = this.baseUrl + "/user/{id}/block";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -2645,10 +2645,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processBlockUser(_response);
+            return this.processUserBlock(_response);
         });
     }
-    processBlockUser(response) {
+    processUserBlock(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2717,7 +2717,7 @@ class Client {
      * Unblock user
      * @return OK
      */
-    unblockUser(body, cancelToken) {
+    userUnblock(body, cancelToken) {
         let url_ = this.baseUrl + "/user/{id}/unblock";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
@@ -2742,10 +2742,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUnblockUser(_response);
+            return this.processUserUnblock(_response);
         });
     }
-    processUnblockUser(response) {
+    processUserUnblock(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {

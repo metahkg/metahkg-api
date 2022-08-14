@@ -2385,12 +2385,15 @@ export class Client {
     }
 
     /**
-     * Get votes
+     * Get votes in thread
      * @param id thread id
      * @return Success
      */
-    meVotes(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous4[]> {
-        let url_ = this.baseUrl + "/me/votes/{id}";
+    meVotesThread(
+        id: number,
+        cancelToken?: CancelToken | undefined
+    ): Promise<Anonymous4[]> {
+        let url_ = this.baseUrl + "/me/votes/thread/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2415,11 +2418,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processMeVotes(_response);
+                return this.processMeVotesThread(_response);
             });
     }
 
-    protected processMeVotes(response: AxiosResponse): Promise<Anonymous4[]> {
+    protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous4[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3550,7 +3553,7 @@ export class Client {
      * Block user
      * @return OK
      */
-    blockUser(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK> {
+    userBlock(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/block";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3577,11 +3580,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processBlockUser(_response);
+                return this.processUserBlock(_response);
             });
     }
 
-    protected processBlockUser(response: AxiosResponse): Promise<OK> {
+    protected processUserBlock(response: AxiosResponse): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3685,7 +3688,7 @@ export class Client {
      * Unblock user
      * @return OK
      */
-    unblockUser(body: Body7, cancelToken?: CancelToken | undefined): Promise<OK> {
+    userUnblock(body: Body7, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/unblock";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3712,11 +3715,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processUnblockUser(_response);
+                return this.processUserUnblock(_response);
             });
     }
 
-    protected processUnblockUser(response: AxiosResponse): Promise<OK> {
+    protected processUserUnblock(response: AxiosResponse): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {

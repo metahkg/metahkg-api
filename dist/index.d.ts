@@ -139,12 +139,12 @@ export declare class Client {
     meStarred(cancelToken?: CancelToken | undefined): Promise<Star[]>;
     protected processMeStarred(response: AxiosResponse): Promise<Star[]>;
     /**
-     * Get votes
+     * Get votes in thread
      * @param id thread id
      * @return Success
      */
-    meVotes(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous4[]>;
-    protected processMeVotes(response: AxiosResponse): Promise<Anonymous4[]>;
+    meVotesThread(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous4[]>;
+    protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous4[]>;
     /**
      * Set avatar
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
@@ -216,14 +216,14 @@ export declare class Client {
      * Block user
      * @return OK
      */
-    blockUser(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processBlockUser(response: AxiosResponse): Promise<OK>;
+    userBlock(body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUserBlock(response: AxiosResponse): Promise<OK>;
     /**
      * Unblock user
      * @return OK
      */
-    unblockUser(body: Body7, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUnblockUser(response: AxiosResponse): Promise<OK>;
+    userUnblock(body: Body7, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUserUnblock(response: AxiosResponse): Promise<OK>;
     /**
      * Login
      * @return Success
