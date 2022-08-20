@@ -105,6 +105,14 @@ export declare class Client {
     commentEmotion(id: number, cid: number, body: Body4, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCommentEmotion(response: AxiosResponse): Promise<OK>;
     /**
+     * Delete emotion
+     * @param id thread id
+     * @param cid comment id
+     * @return OK
+     */
+    commentEmotionDelete(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCommentEmotionDelete(response: AxiosResponse): Promise<OK>;
+    /**
      * Pin comment
      * @param id thread id
      * @param cid comment id
@@ -281,7 +289,6 @@ export declare class Client {
     threads(id: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
     protected processThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
 }
-export declare type Emotion = "sob" | "joy" | "smile" | "sad" | "sweatsmile" | "heart" | "grin" | "good" | "bad";
 export interface OK {
     success: boolean;
 }
@@ -413,7 +420,7 @@ export interface Body3 {
     vote: Vote;
 }
 export interface Body4 {
-    emotion?: Emotion;
+    emotion?: string;
 }
 export interface Body5 {
     name: string;
@@ -495,7 +502,7 @@ export interface Quote extends CommentC {
 export declare function isQuote(object: any): object is Quote;
 export interface Emotions {
     user: number;
-    emotion: Emotion;
+    emotion: string;
 }
 /** Comment object with score */
 export interface Conversation extends Comment {
