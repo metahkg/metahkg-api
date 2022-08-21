@@ -1363,6 +1363,416 @@ export class Client {
     }
 
     /**
+     * Get votes
+     * @param id thread id
+     * @param cid comment id
+     * @return Success
+     */
+    commentVotes(
+        id: number,
+        cid: number,
+        cancelToken?: CancelToken | undefined
+    ): Promise<Anonymous2> {
+        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/votes";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processCommentVotes(_response);
+            });
+    }
+
+    protected processCommentVotes(response: AxiosResponse): Promise<Anonymous2> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Anonymous2>(result200);
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread or comment not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Comment removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Anonymous2>(null as any);
+    }
+
+    /**
+     * Get emotions
+     * @param id thread id
+     * @param cid comment id
+     * @return Success
+     */
+    commentEmotions(
+        id: number,
+        cid: number,
+        cancelToken?: CancelToken | undefined
+    ): Promise<Anonymous3[]> {
+        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotions";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processCommentEmotions(_response);
+            });
+    }
+
+    protected processCommentEmotions(response: AxiosResponse): Promise<Anonymous3[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Anonymous3[]>(result200);
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread or comment not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Comment removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Anonymous3[]>(null as any);
+    }
+
+    /**
+     * Get users who expressed the emotion
+     * @param id thread id
+     * @param cid comment id
+     * @param emotion emotion to search for users
+     * @return Success
+     */
+    commentEmotionUsers(
+        id: number,
+        cid: number,
+        emotion: string,
+        cancelToken?: CancelToken | undefined
+    ): Promise<User[]> {
+        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotion/{emotion}/users";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
+        if (emotion === undefined || emotion === null)
+            throw new Error("The parameter 'emotion' must be defined.");
+        url_ = url_.replace("{emotion}", encodeURIComponent("" + emotion));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processCommentEmotionUsers(_response);
+            });
+    }
+
+    protected processCommentEmotionUsers(response: AxiosResponse): Promise<User[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<User[]>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread or comment not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Comment removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<User[]>(null as any);
+    }
+
+    /**
      * Create comment
      * @param id thread id
      * @return Success
@@ -1371,7 +1781,7 @@ export class Client {
         id: number,
         body: Body2,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous2> {
+    ): Promise<Anonymous4> {
         let url_ = this.baseUrl + "/thread/{id}/comment/create";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1405,7 +1815,7 @@ export class Client {
             });
     }
 
-    protected processCommentCreate(response: AxiosResponse): Promise<Anonymous2> {
+    protected processCommentCreate(response: AxiosResponse): Promise<Anonymous4> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1420,7 +1830,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous2>(result200);
+            return Promise.resolve<Anonymous4>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -1502,7 +1912,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous2>(null as any);
+        return Promise.resolve<Anonymous4>(null as any);
     }
 
     /**
@@ -1659,7 +2069,7 @@ export class Client {
      * @param cid comment id
      * @return OK
      */
-    commentEmotion(
+    commentEmotionSet(
         id: number,
         cid: number,
         body: Body4,
@@ -1697,11 +2107,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processCommentEmotion(_response);
+                return this.processCommentEmotionSet(_response);
             });
     }
 
-    protected processCommentEmotion(response: AxiosResponse): Promise<OK> {
+    protected processCommentEmotionSet(response: AxiosResponse): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1764,6 +2174,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Comment removed",
+                status,
+                _responseText,
+                _headers,
+                result410
             );
         } else if (status === 429) {
             const _responseText = response.data;
@@ -1919,6 +2341,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result409
+            );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Comment removed",
+                status,
+                _responseText,
+                _headers,
+                result410
             );
         } else if (status === 429) {
             const _responseText = response.data;
@@ -2270,7 +2704,7 @@ export class Client {
      * Get status
      * @return Success
      */
-    meStatus(cancelToken?: CancelToken | undefined): Promise<Anonymous3> {
+    meStatus(cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
         let url_ = this.baseUrl + "/me/status";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2297,7 +2731,7 @@ export class Client {
             });
     }
 
-    protected processMeStatus(response: AxiosResponse): Promise<Anonymous3> {
+    protected processMeStatus(response: AxiosResponse): Promise<Anonymous5> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2312,7 +2746,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous3>(result200);
+            return Promise.resolve<Anonymous5>(result200);
         } else if (status === 429) {
             const _responseText = response.data;
             let result429: any = null;
@@ -2346,7 +2780,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous3>(null as any);
+        return Promise.resolve<Anonymous5>(null as any);
     }
 
     /**
@@ -2547,7 +2981,7 @@ export class Client {
     meVotesThread(
         id: number,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous4[]> {
+    ): Promise<Anonymous6[]> {
         let url_ = this.baseUrl + "/me/votes/thread/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2577,7 +3011,7 @@ export class Client {
             });
     }
 
-    protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous4[]> {
+    protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous6[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2592,7 +3026,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous4[]>(result200);
+            return Promise.resolve<Anonymous6[]>(result200);
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
@@ -2650,7 +3084,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous4[]>(null as any);
+        return Promise.resolve<Anonymous6[]>(null as any);
     }
 
     /**
@@ -2824,7 +3258,7 @@ export class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body5, cancelToken?: CancelToken | undefined): Promise<Anonymous5> {
+    meRename(body: Body5, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2855,7 +3289,7 @@ export class Client {
             });
     }
 
-    protected processMeRename(response: AxiosResponse): Promise<Anonymous5> {
+    protected processMeRename(response: AxiosResponse): Promise<Anonymous7> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2870,7 +3304,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous5>(result200);
+            return Promise.resolve<Anonymous7>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -2940,7 +3374,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous5>(null as any);
+        return Promise.resolve<Anonymous7>(null as any);
     }
 
     /**
@@ -3247,7 +3681,7 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6> {
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous8> {
         let url_ = this.baseUrl + "/user/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -3277,7 +3711,7 @@ export class Client {
             });
     }
 
-    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6> {
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous8> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3292,7 +3726,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous6>(result200);
+            return Promise.resolve<Anonymous8>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -3350,7 +3784,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous6>(null as any);
+        return Promise.resolve<Anonymous8>(null as any);
     }
 
     /**
@@ -3358,7 +3792,7 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous9> {
         let url_ = this.baseUrl + "/user/{id}/name";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -3388,7 +3822,7 @@ export class Client {
             });
     }
 
-    protected processUserName(response: AxiosResponse): Promise<Anonymous7> {
+    protected processUserName(response: AxiosResponse): Promise<Anonymous9> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3403,7 +3837,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous7>(result200);
+            return Promise.resolve<Anonymous9>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -3461,7 +3895,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous7>(null as any);
+        return Promise.resolve<Anonymous9>(null as any);
     }
 
     /**
@@ -4928,7 +5362,7 @@ export interface RemovedComment {
     removed: boolean;
 }
 
-/** Comment object with constants only (without upvotes, downvotes and replies) */
+/** Comment object with constants only (without upvotes, downvotes, replies and emotions) */
 export interface CommentC {
     /** comment id */
     id: number;
@@ -4945,6 +5379,18 @@ export interface CommentC {
     quote?: Quote;
 }
 
+/** Comment object with constants dynamic part (votes, replies and emotions) */
+export interface CommentD {
+    /** number of downvotes */
+    D?: number;
+    /** number of upvotes */
+    U?: number;
+    /** list of comment ids that are replies to this comment */
+    replies?: number[];
+    /** list of emotions users have expressed */
+    emotions?: Anonymous3[];
+}
+
 /** Comment object */
 export interface Comment extends CommentC {
     /** number of downvotes */
@@ -4954,7 +5400,7 @@ export interface Comment extends CommentC {
     /** list of comment ids that are replies to this comment */
     replies?: number[];
     /** list of emotions users have expressed */
-    emotions?: Emotions[];
+    emotions?: Anonymous3[];
 }
 
 export function isComment(object: any): object is Comment {
@@ -5089,40 +5535,50 @@ export interface Anonymous {
 }
 
 export interface Anonymous2 {
-    id: number;
+    U?: number;
+    D?: number;
 }
 
 export interface Anonymous3 {
+    user: number;
+    emotion: string;
+}
+
+export interface Anonymous4 {
+    id: number;
+}
+
+export interface Anonymous5 {
     /** Whether user is logged in */
     active: boolean;
 }
 
-export interface Anonymous4 {
+export interface Anonymous6 {
     cid: number;
     vote: Vote;
 }
 
-export interface Anonymous5 extends OK {
+export interface Anonymous7 extends OK {
     /** jwt token */
     token: string;
 }
 
-export function isAnonymous5(object: any): object is Anonymous5 {
-    return object && object[""] === "Anonymous5";
+export function isAnonymous7(object: any): object is Anonymous7 {
+    return object && object[""] === "Anonymous7";
 }
 
-export interface Anonymous6 extends User {
+export interface Anonymous8 extends User {
     /** Number of threads created by user */
     count: number;
     /** Date and time when user was created */
     createdAt?: Date;
 }
 
-export function isAnonymous6(object: any): object is Anonymous6 {
-    return object && object[""] === "Anonymous6";
+export function isAnonymous8(object: any): object is Anonymous8 {
+    return object && object[""] === "Anonymous8";
 }
 
-export interface Anonymous7 {
+export interface Anonymous9 {
     name: string;
 }
 
@@ -5134,11 +5590,6 @@ export interface Quote extends CommentC {}
 
 export function isQuote(object: any): object is Quote {
     return object && object[""] === "Quote";
-}
-
-export interface Emotions {
-    user: number;
-    emotion: string;
 }
 
 /** Comment object with score */

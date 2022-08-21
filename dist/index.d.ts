@@ -82,12 +82,37 @@ export declare class Client {
     commentImages(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<Image[]>;
     protected processCommentImages(response: AxiosResponse): Promise<Image[]>;
     /**
+     * Get votes
+     * @param id thread id
+     * @param cid comment id
+     * @return Success
+     */
+    commentVotes(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<Anonymous2>;
+    protected processCommentVotes(response: AxiosResponse): Promise<Anonymous2>;
+    /**
+     * Get emotions
+     * @param id thread id
+     * @param cid comment id
+     * @return Success
+     */
+    commentEmotions(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<Anonymous3[]>;
+    protected processCommentEmotions(response: AxiosResponse): Promise<Anonymous3[]>;
+    /**
+     * Get users who expressed the emotion
+     * @param id thread id
+     * @param cid comment id
+     * @param emotion emotion to search for users
+     * @return Success
+     */
+    commentEmotionUsers(id: number, cid: number, emotion: string, cancelToken?: CancelToken | undefined): Promise<User[]>;
+    protected processCommentEmotionUsers(response: AxiosResponse): Promise<User[]>;
+    /**
      * Create comment
      * @param id thread id
      * @return Success
      */
-    commentCreate(id: number, body: Body2, cancelToken?: CancelToken | undefined): Promise<Anonymous2>;
-    protected processCommentCreate(response: AxiosResponse): Promise<Anonymous2>;
+    commentCreate(id: number, body: Body2, cancelToken?: CancelToken | undefined): Promise<Anonymous4>;
+    protected processCommentCreate(response: AxiosResponse): Promise<Anonymous4>;
     /**
      * Vote on comment
      * @param id thread id
@@ -102,8 +127,8 @@ export declare class Client {
      * @param cid comment id
      * @return OK
      */
-    commentEmotion(id: number, cid: number, body: Body4, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCommentEmotion(response: AxiosResponse): Promise<OK>;
+    commentEmotionSet(id: number, cid: number, body: Body4, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCommentEmotionSet(response: AxiosResponse): Promise<OK>;
     /**
      * Delete emotion
      * @param id thread id
@@ -132,8 +157,8 @@ export declare class Client {
      * Get status
      * @return Success
      */
-    meStatus(cancelToken?: CancelToken | undefined): Promise<Anonymous3>;
-    protected processMeStatus(response: AxiosResponse): Promise<Anonymous3>;
+    meStatus(cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
+    protected processMeStatus(response: AxiosResponse): Promise<Anonymous5>;
     /**
      * Get blocked users
      * @return Success
@@ -151,8 +176,8 @@ export declare class Client {
      * @param id thread id
      * @return Success
      */
-    meVotesThread(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous4[]>;
-    protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous4[]>;
+    meVotesThread(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6[]>;
+    protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous6[]>;
     /**
      * Set avatar
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
@@ -164,8 +189,8 @@ export declare class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body5, cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
-    protected processMeRename(response: AxiosResponse): Promise<Anonymous5>;
+    meRename(body: Body5, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
+    protected processMeRename(response: AxiosResponse): Promise<Anonymous7>;
     /**
      * Get categories
      * @return Success
@@ -194,15 +219,15 @@ export declare class Client {
      * @param id user id
      * @return Success
      */
-    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
-    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6>;
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous8>;
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous8>;
     /**
      * Get user name
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
-    protected processUserName(response: AxiosResponse): Promise<Anonymous7>;
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
+    protected processUserName(response: AxiosResponse): Promise<Anonymous9>;
     /**
      * Get user avatar
      * @param id user id
@@ -335,7 +360,7 @@ export interface RemovedComment {
     id: number;
     removed: boolean;
 }
-/** Comment object with constants only (without upvotes, downvotes and replies) */
+/** Comment object with constants only (without upvotes, downvotes, replies and emotions) */
 export interface CommentC {
     /** comment id */
     id: number;
@@ -351,6 +376,17 @@ export interface CommentC {
     slink: string;
     quote?: Quote;
 }
+/** Comment object with constants dynamic part (votes, replies and emotions) */
+export interface CommentD {
+    /** number of downvotes */
+    D?: number;
+    /** number of upvotes */
+    U?: number;
+    /** list of comment ids that are replies to this comment */
+    replies?: number[];
+    /** list of emotions users have expressed */
+    emotions?: Anonymous3[];
+}
 /** Comment object */
 export interface Comment extends CommentC {
     /** number of downvotes */
@@ -360,7 +396,7 @@ export interface Comment extends CommentC {
     /** list of comment ids that are replies to this comment */
     replies?: number[];
     /** list of emotions users have expressed */
-    emotions?: Emotions[];
+    emotions?: Anonymous3[];
 }
 export declare function isComment(object: any): object is Comment;
 export interface Thread {
@@ -470,29 +506,37 @@ export interface Anonymous {
     id: number;
 }
 export interface Anonymous2 {
-    id: number;
+    U?: number;
+    D?: number;
 }
 export interface Anonymous3 {
+    user: number;
+    emotion: string;
+}
+export interface Anonymous4 {
+    id: number;
+}
+export interface Anonymous5 {
     /** Whether user is logged in */
     active: boolean;
 }
-export interface Anonymous4 {
+export interface Anonymous6 {
     cid: number;
     vote: Vote;
 }
-export interface Anonymous5 extends OK {
+export interface Anonymous7 extends OK {
     /** jwt token */
     token: string;
 }
-export declare function isAnonymous5(object: any): object is Anonymous5;
-export interface Anonymous6 extends User {
+export declare function isAnonymous7(object: any): object is Anonymous7;
+export interface Anonymous8 extends User {
     /** Number of threads created by user */
     count: number;
     /** Date and time when user was created */
     createdAt?: Date;
 }
-export declare function isAnonymous6(object: any): object is Anonymous6;
-export interface Anonymous7 {
+export declare function isAnonymous8(object: any): object is Anonymous8;
+export interface Anonymous9 {
     name: string;
 }
 export declare type UserSex = "M" | "F";
@@ -500,10 +544,6 @@ export declare type UserRole = "admin" | "user";
 export interface Quote extends CommentC {
 }
 export declare function isQuote(object: any): object is Quote;
-export interface Emotions {
-    user: number;
-    emotion: string;
-}
 /** Comment object with score */
 export interface Conversation extends Comment {
     /** score of the comment (`upvotes - downvotes`) */
