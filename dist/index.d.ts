@@ -17,6 +17,13 @@ export declare class Client {
     thread(id: number, page?: number, limit?: number, sort?: Sort, start?: number, end?: number, cancelToken?: CancelToken | undefined): Promise<Thread>;
     protected processThread(response: AxiosResponse): Promise<Thread>;
     /**
+     * Delete thread
+     * @param id thread id
+     * @return OK
+     */
+    threadDelete(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processThreadDelete(response: AxiosResponse): Promise<OK>;
+    /**
      * Check if a thread exists
      * @param id thread id
      * @return OK
@@ -31,7 +38,7 @@ export declare class Client {
     threadImages(id: number, cancelToken?: CancelToken | undefined): Promise<Image[]>;
     protected processThreadImages(response: AxiosResponse): Promise<Image[]>;
     /**
-     * get thread category
+     * Get thread category
      * @param id thread id
      * @return Success
      */
@@ -65,6 +72,12 @@ export declare class Client {
      */
     comment(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<Comment>;
     protected processComment(response: AxiosResponse): Promise<Comment>;
+    /**
+     * Delete comment
+     * @return OK
+     */
+    commentDelete(cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCommentDelete(response: AxiosResponse): Promise<OK>;
     /**
      * Get replies
      * @param id thread id
@@ -205,6 +218,20 @@ export declare class Client {
     category(id: number, cancelToken?: CancelToken | undefined): Promise<Category>;
     protected processCategory(response: AxiosResponse): Promise<Category>;
     /**
+     * Modify a category
+     * @param id category id
+     * @return OK
+     */
+    categoryModify(id: number, body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCategoryModify(response: AxiosResponse): Promise<OK>;
+    /**
+     * Delete a category
+     * @param id category id
+     * @return OK
+     */
+    categoryDelete(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCategoryDelete(response: AxiosResponse): Promise<OK>;
+    /**
      * Get threads in a category
      * @param id category id
      * @param sort (optional) Sort threads by latest or viral
@@ -214,6 +241,11 @@ export declare class Client {
      */
     categoryThreads(id: number, sort?: Sort2, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
     protected processCategoryThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
+    /**
+     * @return OK
+     */
+    categoryCreate(body: Body7, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCategoryCreate(response: AxiosResponse): Promise<OK>;
     /**
      * Get user profile
      * @param id user id
@@ -250,7 +282,7 @@ export declare class Client {
      * @param id user id
      * @return OK
      */
-    userBlock(id: number, body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
+    userBlock(id: number, body: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserBlock(response: AxiosResponse): Promise<OK>;
     /**
      * Unblock user
@@ -260,40 +292,52 @@ export declare class Client {
     userUnblock(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserUnblock(response: AxiosResponse): Promise<OK>;
     /**
+     * Mute user
+     * @return OK
+     */
+    userMute(cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUserMute(response: AxiosResponse): Promise<OK>;
+    /**
+     * Unmute user
+     * @return OK
+     */
+    userUnmute(cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUserUnmute(response: AxiosResponse): Promise<OK>;
+    /**
      * Login
      * @return Success
      */
-    usersLogin(body: Body7, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersLogin(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersLogin(response: AxiosResponse): Promise<Token>;
     /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body8, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersRegister(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersVerify(body: Body11, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersVerify(response: AxiosResponse): Promise<Token>;
     /**
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersResend(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersForgot(body: Body13, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
      * @return Success
      */
-    usersReset(body: Body12, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersReset(body: Body14, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
     /**
      * Search threads
@@ -348,6 +392,8 @@ export interface Category {
     id: number;
     /** category name */
     name: string;
+    /** category tags */
+    tags?: string[];
     /** category is hidden */
     hidden?: boolean;
 }
@@ -360,8 +406,8 @@ export interface RemovedComment {
     id: number;
     removed: boolean;
 }
-/** Comment object with constants only (without upvotes, downvotes, replies and emotions) */
-export interface CommentC {
+/** Comment object */
+export interface Comment {
     /** comment id */
     id: number;
     /** user created the comment */
@@ -375,9 +421,6 @@ export interface CommentC {
     /** shortened link to the comment */
     slink: string;
     quote?: Quote;
-}
-/** Comment object with constants dynamic part (votes, replies and emotions) */
-export interface CommentD {
     /** number of downvotes */
     D?: number;
     /** number of upvotes */
@@ -387,18 +430,17 @@ export interface CommentD {
     /** list of emotions users have expressed */
     emotions?: Anonymous3[];
 }
-/** Comment object */
-export interface Comment extends CommentC {
-    /** number of downvotes */
-    D?: number;
-    /** number of upvotes */
-    U?: number;
-    /** list of comment ids that are replies to this comment */
-    replies?: number[];
-    /** list of emotions users have expressed */
-    emotions?: Anonymous3[];
+/** Comment object with constants only (without upvotes, downvotes, replies and emotions) */
+export interface CommentC {
+    id: number;
+    user: User;
+    comment: string;
+    text: string;
+    images: string[];
+    createdAt: Date;
+    slink: string;
+    quote?: Quote;
 }
-export declare function isComment(object: any): object is Comment;
 export interface Thread {
     /** thread id */
     id: number;
@@ -461,18 +503,27 @@ export interface Body4 {
 export interface Body5 {
     name: string;
 }
-export declare type Sort2 = "latest" | "viral";
-export declare type Sort3 = "created" | "lastcomment";
 export interface Body6 {
+    name?: string;
+    tags?: string[];
+}
+export declare type Sort2 = "latest" | "viral";
+export interface Body7 {
+    name: string;
+    hidden?: boolean;
+    tags?: string[];
+}
+export declare type Sort3 = "created" | "lastcomment";
+export interface Body8 {
     /** Reason for blocking user */
     reason?: string;
 }
-export interface Body7 {
+export interface Body9 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
-export interface Body8 {
+export interface Body10 {
     name: string;
     email: string;
     pwd: string;
@@ -481,20 +532,20 @@ export interface Body8 {
     /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
     inviteCode?: string;
 }
-export interface Body9 {
+export interface Body11 {
     email: string;
     /** Verification code sent to email */
     code: string;
 }
-export interface Body10 {
-    email: string;
-    rtoken: string;
-}
-export interface Body11 {
-    email: string;
-    rtoken: string;
-}
 export interface Body12 {
+    email: string;
+    rtoken: string;
+}
+export interface Body13 {
+    email: string;
+    rtoken: string;
+}
+export interface Body14 {
     email: string;
     /** Verification code sent to email */
     code: string;
