@@ -171,13 +171,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -314,13 +326,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -457,13 +481,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -592,13 +628,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -727,13 +775,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -874,13 +934,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -896,6 +968,332 @@ export class Client {
             );
         }
         return Promise.resolve<Anonymous>(null as any);
+    }
+
+    /**
+     * Pin comment
+     * @param id thread id
+     * @return OK
+     */
+    threadPin(
+        id: number,
+        body: Body4,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
+        let url_ = this.baseUrl + "/thread/{id}/pin";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processThreadPin(_response);
+            });
+    }
+
+    protected processThreadPin(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread or comment not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Comment removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Unpin comment
+     * @param id thread id
+     * @return OK
+     */
+    threadUnpin(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/thread/{id}/pin";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "DELETE",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processThreadUnpin(_response);
+            });
+    }
+
+    protected processThreadUnpin(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread or comment not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "Comment not pinned",
+                status,
+                _responseText,
+                _headers,
+                result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
     }
 
     /**
@@ -1033,13 +1431,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -1192,13 +1602,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -1335,13 +1757,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -1368,7 +1802,7 @@ export class Client {
     commentEdit(
         id: number,
         cid: number,
-        body: Body4,
+        body: Body5,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
@@ -1483,13 +1917,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -1516,7 +1962,7 @@ export class Client {
     commentDelete(
         id: number,
         cid: number,
-        body: Body5,
+        body: Body6,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
@@ -1631,13 +2077,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -1774,13 +2232,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -1917,13 +2387,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -2048,13 +2530,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -2179,13 +2673,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -2327,13 +2833,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -2358,7 +2876,7 @@ export class Client {
      */
     commentCreate(
         id: number,
-        body: Body6,
+        body: Body7,
         cancelToken?: CancelToken | undefined
     ): Promise<Anonymous4> {
         let url_ = this.baseUrl + "/thread/{id}/comment/create";
@@ -2470,13 +2988,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -2501,7 +3031,7 @@ export class Client {
      * @return OK
      */
     commentVote(
-        body: Body7,
+        body: Body8,
         id: number,
         cid: number,
         cancelToken?: CancelToken | undefined
@@ -2618,13 +3148,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -2651,7 +3193,7 @@ export class Client {
     commentEmotionSet(
         id: number,
         cid: number,
-        body: Body8,
+        body: Body9,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotion";
@@ -2778,13 +3320,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -2945,160 +3499,17 @@ export class Client {
                 _headers,
                 result429
             );
-        } else if (status === 502) {
+        } else if (status === 500) {
             const _responseText = response.data;
-            let result502: any = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
             return throwException(
-                "Bad gateway, server error",
+                "Internal server error",
                 status,
                 _responseText,
                 _headers,
-                result502
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<OK>(null as any);
-    }
-
-    /**
-     * Pin comment
-     * @param id thread id
-     * @param cid comment id
-     * @return OK
-     */
-    commentPin(
-        id: number,
-        cid: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/pin";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (cid === undefined || cid === null)
-            throw new Error("The parameter 'cid' must be defined.");
-        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processCommentPin(_response);
-            });
-    }
-
-    protected processCommentPin(response: AxiosResponse): Promise<OK> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException(
-                "Forbidden",
-                status,
-                _responseText,
-                _headers,
-                result403
-            );
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException(
-                "Thread or comment not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
-        } else if (status === 410) {
-            const _responseText = response.data;
-            let result410: any = null;
-            let resultData410 = _responseText;
-            result410 = JSON.parse(resultData410);
-            return throwException(
-                "Comment removed",
-                status,
-                _responseText,
-                _headers,
-                result410
-            );
-        } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException(
-                "Too many requests",
-                status,
-                _responseText,
-                _headers,
-                result429
+                result500
             );
         } else if (status === 502) {
             const _responseText = response.data;
@@ -3106,162 +3517,7 @@ export class Client {
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
-                status,
-                _responseText,
-                _headers,
-                result502
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<OK>(null as any);
-    }
-
-    /**
-     * Unpin comment
-     * @param id thread id
-     * @param cid comment id
-     * @return OK
-     */
-    commentUnpin(
-        id: number,
-        cid: number,
-        cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/unpin";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        if (cid === undefined || cid === null)
-            throw new Error("The parameter 'cid' must be defined.");
-        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processCommentUnpin(_response);
-            });
-    }
-
-    protected processCommentUnpin(response: AxiosResponse): Promise<OK> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException(
-                "Forbidden",
-                status,
-                _responseText,
-                _headers,
-                result403
-            );
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException(
-                "Thread or comment not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
-        } else if (status === 409) {
-            const _responseText = response.data;
-            let result409: any = null;
-            let resultData409 = _responseText;
-            result409 = JSON.parse(resultData409);
-            return throwException(
-                "Comment not pinned",
-                status,
-                _responseText,
-                _headers,
-                result409
-            );
-        } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException(
-                "Too many requests",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
-        } else if (status === 502) {
-            const _responseText = response.data;
-            let result502: any = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -3338,13 +3594,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -3433,13 +3701,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -3528,13 +3808,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -3642,13 +3934,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -3815,7 +4119,7 @@ export class Client {
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -3838,7 +4142,7 @@ export class Client {
      * @return Success
      * @deprecated
      */
-    meRename(body: Body9, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
+    meRename(body: Body10, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3933,13 +4237,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -4103,13 +4419,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -4134,7 +4462,7 @@ export class Client {
      */
     categoryEdit(
         id: number,
-        body: Body10,
+        body: Body11,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/category/{id}";
@@ -4234,13 +4562,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -4357,13 +4697,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -4486,13 +4838,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -4513,7 +4877,7 @@ export class Client {
     /**
      * @return OK
      */
-    categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
+    categoryCreate(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/category/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4608,13 +4972,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -4719,13 +5095,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -4750,7 +5138,7 @@ export class Client {
      */
     userEdit(
         id: number,
-        body: Body12,
+        body: Body13,
         cancelToken?: CancelToken | undefined
     ): Promise<Anonymous9> {
         let url_ = this.baseUrl + "/user/{id}";
@@ -4850,13 +5238,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -4961,13 +5361,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -5072,13 +5484,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -5201,13 +5625,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -5232,7 +5668,7 @@ export class Client {
      */
     userBlock(
         id: number,
-        body: Body13,
+        body: Body14,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/block";
@@ -5344,13 +5780,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -5467,13 +5915,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -5498,7 +5958,7 @@ export class Client {
      */
     userMute(
         id: number,
-        body: Body14,
+        body: Body15,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/mute";
@@ -5610,13 +6070,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -5745,13 +6217,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -5773,7 +6257,7 @@ export class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body15, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body: Body16, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5868,13 +6352,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -5896,7 +6392,7 @@ export class Client {
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body16, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body: Body17, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5945,11 +6441,15 @@ export class Client {
             return Promise.resolve<OK>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
             return throwException(
                 "Bad request / registration disabled / invalid invite code",
                 status,
                 _responseText,
-                _headers
+                _headers,
+                result400
             );
         } else if (status === 409) {
             const _responseText = response.data;
@@ -5975,13 +6475,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -6003,7 +6515,7 @@ export class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body17, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body: Body18, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -6086,13 +6598,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -6114,7 +6638,7 @@ export class Client {
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body: Body19, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -6197,13 +6721,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -6225,7 +6761,7 @@ export class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body19, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body: Body20, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -6308,13 +6844,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -6336,7 +6884,7 @@ export class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body: Body20, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body: Body21, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -6419,13 +6967,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -6541,13 +7101,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -6644,13 +7216,25 @@ export class Client {
                 _headers,
                 result429
             );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
         } else if (status === 502) {
             const _responseText = response.data;
             let result502: any = null;
             let resultData502 = _responseText;
             result502 = JSON.parse(resultData502);
             return throwException(
-                "Bad gateway, server error",
+                "Bad gateway",
                 status,
                 _responseText,
                 _headers,
@@ -6843,35 +7427,39 @@ export interface Body3 {
 }
 
 export interface Body4 {
+    cid: number;
+}
+
+export interface Body5 {
     comment: string;
     /** Reason for editing comment */
     reason: string;
 }
 
-export interface Body5 {
+export interface Body6 {
     /** Reason for removing comment */
     reason: string;
 }
 
-export interface Body6 {
+export interface Body7 {
     comment: string;
     rtoken: string;
     quote?: number;
 }
 
-export interface Body7 {
+export interface Body8 {
     vote: Vote;
 }
 
-export interface Body8 {
+export interface Body9 {
     emotion: string;
 }
 
-export interface Body9 {
+export interface Body10 {
     name: string;
 }
 
-export interface Body10 {
+export interface Body11 {
     name?: string;
     tags?: string[];
     pinned?: boolean;
@@ -6879,39 +7467,39 @@ export interface Body10 {
 
 export type Sort2 = "latest" | "viral";
 
-export interface Body11 {
+export interface Body12 {
     name: string;
     hidden?: boolean;
     tags?: string[];
     pinned?: boolean;
 }
 
-export interface Body12 {
+export interface Body13 {
     name?: string;
     sex?: UserSex;
 }
 
 export type Sort3 = "created" | "lastcomment";
 
-export interface Body13 {
+export interface Body14 {
     /** Reason for blocking user */
     reason?: string;
 }
 
-export interface Body14 {
+export interface Body15 {
     /** Reason for muting the user */
     reason: string;
     /** expiration (optional) */
     exp?: Date;
 }
 
-export interface Body15 {
+export interface Body16 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
 
-export interface Body16 {
+export interface Body17 {
     name: string;
     email: string;
     pwd: string;
@@ -6921,15 +7509,10 @@ export interface Body16 {
     inviteCode?: string;
 }
 
-export interface Body17 {
+export interface Body18 {
     email: string;
     /** Verification code sent to email */
     code: string;
-}
-
-export interface Body18 {
-    email: string;
-    rtoken: string;
 }
 
 export interface Body19 {
@@ -6938,6 +7521,11 @@ export interface Body19 {
 }
 
 export interface Body20 {
+    email: string;
+    rtoken: string;
+}
+
+export interface Body21 {
     email: string;
     /** Verification code sent to email */
     code: string;
