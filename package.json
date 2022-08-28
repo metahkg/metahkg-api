@@ -7,6 +7,9 @@
   "repository": "https://gitlab.com/metahkg/metahkg-api.git",
   "author": "wcyat <wcyat@wcyat.me>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc",
     "generate": "./generate.sh",
