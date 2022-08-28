@@ -215,7 +215,7 @@ export class Client {
 
         let options_: AxiosRequestConfig = {
             data: content_,
-            method: "PUT",
+            method: "PATCH",
             url: url_,
             headers: {
                 "Content-Type": "application/json",
@@ -1384,7 +1384,7 @@ export class Client {
 
         let options_: AxiosRequestConfig = {
             data: content_,
-            method: "PUT",
+            method: "PATCH",
             url: url_,
             headers: {
                 "Content-Type": "application/json",
@@ -2990,7 +2990,7 @@ export class Client {
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
-            method: "PUT",
+            method: "POST",
             url: url_,
             headers: {
                 Accept: "application/json",
@@ -3145,7 +3145,7 @@ export class Client {
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
-            method: "PUT",
+            method: "POST",
             url: url_,
             headers: {
                 Accept: "application/json",
@@ -3836,6 +3836,7 @@ export class Client {
     /**
      * Rename
      * @return Success
+     * @deprecated
      */
     meRename(body: Body9, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
         let url_ = this.baseUrl + "/me/rename";
@@ -4146,7 +4147,7 @@ export class Client {
 
         let options_: AxiosRequestConfig = {
             data: content_,
-            method: "PUT",
+            method: "PATCH",
             url: url_,
             headers: {
                 "Content-Type": "application/json",
@@ -4743,11 +4744,134 @@ export class Client {
     }
 
     /**
+     * Edit user info
+     * @return Success
+     */
+    userEdit(body: Body12, cancelToken?: CancelToken | undefined): Promise<Anonymous9> {
+        let url_ = this.baseUrl + "/user/{id}";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PATCH",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processUserEdit(_response);
+            });
+    }
+
+    protected processUserEdit(response: AxiosResponse): Promise<Anonymous9> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Anonymous9>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "Name already taken",
+                status,
+                _responseText,
+                _headers,
+                result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Anonymous9>(null as any);
+    }
+
+    /**
      * Get user name
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous9> {
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous10> {
         let url_ = this.baseUrl + "/user/{id}/name";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -4777,7 +4901,7 @@ export class Client {
             });
     }
 
-    protected processUserName(response: AxiosResponse): Promise<Anonymous9> {
+    protected processUserName(response: AxiosResponse): Promise<Anonymous10> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4792,7 +4916,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous9>(result200);
+            return Promise.resolve<Anonymous10>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -4850,7 +4974,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous9>(null as any);
+        return Promise.resolve<Anonymous10>(null as any);
     }
 
     /**
@@ -5100,7 +5224,7 @@ export class Client {
      */
     userBlock(
         id: number,
-        body: Body12,
+        body: Body13,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/block";
@@ -5366,7 +5490,7 @@ export class Client {
      */
     userMute(
         id: number,
-        body: Body13,
+        body: Body14,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/mute";
@@ -5641,7 +5765,7 @@ export class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body14, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body: Body15, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5764,7 +5888,7 @@ export class Client {
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body15, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body: Body16, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5871,7 +5995,7 @@ export class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body16, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body: Body17, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5982,7 +6106,7 @@ export class Client {
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body17, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -6093,7 +6217,7 @@ export class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body: Body19, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -6204,7 +6328,7 @@ export class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body: Body19, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body: Body20, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -6754,27 +6878,32 @@ export interface Body11 {
     pinned?: boolean;
 }
 
+export interface Body12 {
+    name?: string;
+    sex?: UserSex;
+}
+
 export type Sort3 = "created" | "lastcomment";
 
-export interface Body12 {
+export interface Body13 {
     /** Reason for blocking user */
     reason?: string;
 }
 
-export interface Body13 {
+export interface Body14 {
     /** Reason for muting the user */
     reason: string;
     /** expiration (optional) */
     exp?: Date;
 }
 
-export interface Body14 {
+export interface Body15 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
 
-export interface Body15 {
+export interface Body16 {
     name: string;
     email: string;
     pwd: string;
@@ -6784,15 +6913,10 @@ export interface Body15 {
     inviteCode?: string;
 }
 
-export interface Body16 {
+export interface Body17 {
     email: string;
     /** Verification code sent to email */
     code: string;
-}
-
-export interface Body17 {
-    email: string;
-    rtoken: string;
 }
 
 export interface Body18 {
@@ -6801,6 +6925,11 @@ export interface Body18 {
 }
 
 export interface Body19 {
+    email: string;
+    rtoken: string;
+}
+
+export interface Body20 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -6859,7 +6988,16 @@ export function isAnonymous8(object: any): object is Anonymous8 {
     return object && object[""] === "Anonymous8";
 }
 
-export interface Anonymous9 {
+export interface Anonymous9 extends OK {
+    /** jwt token */
+    token: string;
+}
+
+export function isAnonymous9(object: any): object is Anonymous9 {
+    return object && object[""] === "Anonymous9";
+}
+
+export interface Anonymous10 {
     name: string;
 }
 

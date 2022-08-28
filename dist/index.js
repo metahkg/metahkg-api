@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.isConversation = exports.isQuote = exports.isAnonymous8 = exports.isAnonymous7 = exports.isBlockedUser = exports.Client = void 0;
+exports.ApiException = exports.isConversation = exports.isQuote = exports.isAnonymous9 = exports.isAnonymous8 = exports.isAnonymous7 = exports.isBlockedUser = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -159,7 +159,7 @@ class Client {
         const content_ = JSON.stringify(body);
         let options_ = {
             data: content_,
-            method: "PUT",
+            method: "PATCH",
             url: url_,
             headers: {
                 "Content-Type": "application/json",
@@ -991,7 +991,7 @@ class Client {
         const content_ = JSON.stringify(body);
         let options_ = {
             data: content_,
-            method: "PUT",
+            method: "PATCH",
             url: url_,
             headers: {
                 "Content-Type": "application/json",
@@ -2133,7 +2133,7 @@ class Client {
         url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
-            method: "PUT",
+            method: "POST",
             url: url_,
             headers: {
                 Accept: "application/json",
@@ -2242,7 +2242,7 @@ class Client {
         url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
-            method: "PUT",
+            method: "POST",
             url: url_,
             headers: {
                 Accept: "application/json",
@@ -2749,6 +2749,7 @@ class Client {
     /**
      * Rename
      * @return Success
+     * @deprecated
      */
     meRename(body, cancelToken) {
         let url_ = this.baseUrl + "/me/rename";
@@ -2986,7 +2987,7 @@ class Client {
         const content_ = JSON.stringify(body);
         let options_ = {
             data: content_,
-            method: "PUT",
+            method: "PATCH",
             url: url_,
             headers: {
                 "Content-Type": "application/json",
@@ -3408,6 +3409,96 @@ class Client {
             let resultData404 = _responseText;
             result404 = JSON.parse(resultData404);
             return throwException("User not found", status, _responseText, _headers, result404);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway, server error", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Edit user info
+     * @return Success
+     */
+    userEdit(body, cancelToken) {
+        let url_ = this.baseUrl + "/user/{id}";
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ = {
+            data: content_,
+            method: "PATCH",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processUserEdit(_response);
+        });
+    }
+    processUserEdit(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 409) {
+            const _responseText = response.data;
+            let result409 = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException("Name already taken", status, _responseText, _headers, result409);
         }
         else if (status === 429) {
             const _responseText = response.data;
@@ -4786,6 +4877,10 @@ function isAnonymous8(object) {
     return object && object[""] === "Anonymous8";
 }
 exports.isAnonymous8 = isAnonymous8;
+function isAnonymous9(object) {
+    return object && object[""] === "Anonymous9";
+}
+exports.isAnonymous9 = isAnonymous9;
 function isQuote(object) {
     return object && object[""] === "Quote";
 }

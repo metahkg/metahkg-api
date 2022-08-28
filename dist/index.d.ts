@@ -211,6 +211,7 @@ export declare class Client {
     /**
      * Rename
      * @return Success
+     * @deprecated
      */
     meRename(body: Body9, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
     protected processMeRename(response: AxiosResponse): Promise<Anonymous7>;
@@ -264,12 +265,18 @@ export declare class Client {
     userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous8>;
     protected processUserProfile(response: AxiosResponse): Promise<Anonymous8>;
     /**
+     * Edit user info
+     * @return Success
+     */
+    userEdit(body: Body12, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
+    protected processUserEdit(response: AxiosResponse): Promise<Anonymous9>;
+    /**
      * Get user name
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
-    protected processUserName(response: AxiosResponse): Promise<Anonymous9>;
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous10>;
+    protected processUserName(response: AxiosResponse): Promise<Anonymous10>;
     /**
      * Get user avatar
      * @param id user id
@@ -292,7 +299,7 @@ export declare class Client {
      * @param id user id
      * @return OK
      */
-    userBlock(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<OK>;
+    userBlock(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserBlock(response: AxiosResponse): Promise<OK>;
     /**
      * Unblock user
@@ -306,7 +313,7 @@ export declare class Client {
      * @param id user id
      * @return OK
      */
-    userMute(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<OK>;
+    userMute(id: number, body: Body14, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserMute(response: AxiosResponse): Promise<OK>;
     /**
      * Unmute user
@@ -319,37 +326,37 @@ export declare class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body14, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersLogin(body: Body15, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersLogin(response: AxiosResponse): Promise<Token>;
     /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body15, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersRegister(body: Body16, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body16, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersVerify(body: Body17, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersVerify(response: AxiosResponse): Promise<Token>;
     /**
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body17, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersResend(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersForgot(body: Body19, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
      * @return Success
      */
-    usersReset(body: Body19, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersReset(body: Body20, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
     /**
      * Search threads
@@ -556,23 +563,27 @@ export interface Body11 {
     tags?: string[];
     pinned?: boolean;
 }
-export declare type Sort3 = "created" | "lastcomment";
 export interface Body12 {
+    name?: string;
+    sex?: UserSex;
+}
+export declare type Sort3 = "created" | "lastcomment";
+export interface Body13 {
     /** Reason for blocking user */
     reason?: string;
 }
-export interface Body13 {
+export interface Body14 {
     /** Reason for muting the user */
     reason: string;
     /** expiration (optional) */
     exp?: Date;
 }
-export interface Body14 {
+export interface Body15 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
-export interface Body15 {
+export interface Body16 {
     name: string;
     email: string;
     pwd: string;
@@ -581,20 +592,20 @@ export interface Body15 {
     /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
     inviteCode?: string;
 }
-export interface Body16 {
+export interface Body17 {
     email: string;
     /** Verification code sent to email */
     code: string;
-}
-export interface Body17 {
-    email: string;
-    rtoken: string;
 }
 export interface Body18 {
     email: string;
     rtoken: string;
 }
 export interface Body19 {
+    email: string;
+    rtoken: string;
+}
+export interface Body20 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -636,7 +647,12 @@ export interface Anonymous8 extends User {
     createdAt?: Date;
 }
 export declare function isAnonymous8(object: any): object is Anonymous8;
-export interface Anonymous9 {
+export interface Anonymous9 extends OK {
+    /** jwt token */
+    token: string;
+}
+export declare function isAnonymous9(object: any): object is Anonymous9;
+export interface Anonymous10 {
     name: string;
 }
 export declare type UserSex = "M" | "F";
