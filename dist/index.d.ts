@@ -414,6 +414,8 @@ export interface Category {
     tags?: string[];
     /** category is hidden */
     hidden?: boolean;
+    /** category is pinned */
+    pinned?: boolean;
 }
 export interface Image {
     cid: number;
@@ -545,12 +547,14 @@ export interface Body9 {
 export interface Body10 {
     name?: string;
     tags?: string[];
+    pinned?: boolean;
 }
 export declare type Sort2 = "latest" | "viral";
 export interface Body11 {
     name: string;
     hidden?: boolean;
     tags?: string[];
+    pinned?: boolean;
 }
 export declare type Sort3 = "created" | "lastcomment";
 export interface Body12 {
@@ -640,12 +644,14 @@ export declare type UserRole = "admin" | "user";
 export interface Edits {
     admin: User;
     /** reason for editing */
-    reason?: string;
+    reason: string;
+    date?: Date;
 }
 export interface Replies {
     admin: User;
     /** admin's reply */
     reply: string;
+    date?: Date;
 }
 export interface Quote extends CommentC {
 }
