@@ -500,7 +500,7 @@ export interface ThreadMeta {
     title: string;
     category: number;
     op: User;
-    count?: number;
+    count: number;
     score: number;
     createdAt: Date;
     lastModified: Date;
