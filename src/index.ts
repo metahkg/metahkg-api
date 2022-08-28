@@ -4745,10 +4745,18 @@ export class Client {
 
     /**
      * Edit user info
+     * @param id user id
      * @return Success
      */
-    userEdit(body: Body12, cancelToken?: CancelToken | undefined): Promise<Anonymous9> {
+    userEdit(
+        id: number,
+        body: Body12,
+        cancelToken?: CancelToken | undefined
+    ): Promise<Anonymous9> {
         let url_ = this.baseUrl + "/user/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);

@@ -266,9 +266,10 @@ export declare class Client {
     protected processUserProfile(response: AxiosResponse): Promise<Anonymous8>;
     /**
      * Edit user info
+     * @param id user id
      * @return Success
      */
-    userEdit(body: Body12, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
+    userEdit(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
     protected processUserEdit(response: AxiosResponse): Promise<Anonymous9>;
     /**
      * Get user name
