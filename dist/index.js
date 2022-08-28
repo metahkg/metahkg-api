@@ -118,6 +118,114 @@ class Client {
             result404 = JSON.parse(resultData404);
             return throwException("Thread not found", status, _responseText, _headers, result404);
         }
+        else if (status === 410) {
+            const _responseText = response.data;
+            let result410 = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException("Thread removed", status, _responseText, _headers, result410);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway, server error", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Edit thread
+     * @param id thread id
+     * @return OK
+     */
+    threadEdit(id, body, cancelToken) {
+        let url_ = this.baseUrl + "/thread/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processThreadEdit(_response);
+        });
+    }
+    processThreadEdit(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("Thread or category not found", status, _responseText, _headers, result404);
+        }
+        else if (status === 410) {
+            const _responseText = response.data;
+            let result410 = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException("Thread removed", status, _responseText, _headers, result410);
+        }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
@@ -143,16 +251,19 @@ class Client {
      * @param id thread id
      * @return OK
      */
-    threadDelete(id, cancelToken) {
+    threadDelete(id, body, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
         let options_ = {
+            data: content_,
             method: "DELETE",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
@@ -209,83 +320,12 @@ class Client {
             result404 = JSON.parse(resultData404);
             return throwException("Thread not found", status, _responseText, _headers, result404);
         }
-        else if (status === 429) {
+        else if (status === 410) {
             const _responseText = response.data;
-            let result429 = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException("Too many requests", status, _responseText, _headers, result429);
-        }
-        else if (status === 502) {
-            const _responseText = response.data;
-            let result502 = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException("Bad gateway, server error", status, _responseText, _headers, result502);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
-     * Check if a thread exists
-     * @param id thread id
-     * @return OK
-     */
-    threadCheck(id, cancelToken) {
-        let url_ = this.baseUrl + "/thread/check?";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined and cannot be null.");
-        else
-            url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-        let options_ = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processThreadCheck(_response);
-        });
-    }
-    processThreadCheck(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 404) {
-            const _responseText = response.data;
-            let result404 = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException("Thread not found", status, _responseText, _headers, result404);
+            let result410 = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException("Thread removed", status, _responseText, _headers, result410);
         }
         else if (status === 429) {
             const _responseText = response.data;
@@ -378,6 +418,13 @@ class Client {
             result404 = JSON.parse(resultData404);
             return throwException("Thread not found", status, _responseText, _headers, result404);
         }
+        else if (status === 410) {
+            const _responseText = response.data;
+            let result410 = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException("Thread removed", status, _responseText, _headers, result410);
+        }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
@@ -468,6 +515,13 @@ class Client {
             let resultData404 = _responseText;
             result404 = JSON.parse(resultData404);
             return throwException("Thread not found", status, _responseText, _headers, result404);
+        }
+        else if (status === 410) {
+            const _responseText = response.data;
+            let result410 = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException("Thread removed", status, _responseText, _headers, result410);
         }
         else if (status === 429) {
             const _responseText = response.data;
@@ -565,6 +619,13 @@ class Client {
             let resultData404 = _responseText;
             result404 = JSON.parse(resultData404);
             return throwException("Category not found", status, _responseText, _headers, result404);
+        }
+        else if (status === 409) {
+            const _responseText = response.data;
+            let result409 = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException("Title already exists", status, _responseText, _headers, result409);
         }
         else if (status === 429) {
             const _responseText = response.data;
@@ -671,6 +732,13 @@ class Client {
             result409 = JSON.parse(resultData409);
             return throwException("Thread already starred", status, _responseText, _headers, result409);
         }
+        else if (status === 410) {
+            const _responseText = response.data;
+            let result410 = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException("Thread removed", status, _responseText, _headers, result410);
+        }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
@@ -776,6 +844,13 @@ class Client {
             result409 = JSON.parse(resultData409);
             return throwException("Thread not starred", status, _responseText, _headers, result409);
         }
+        else if (status === 410) {
+            const _responseText = response.data;
+            let result410 = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException("Thread removed", status, _responseText, _headers, result410);
+        }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
@@ -871,6 +946,118 @@ class Client {
             result404 = JSON.parse(resultData404);
             return throwException("Thread or comment not found", status, _responseText, _headers, result404);
         }
+        else if (status === 410) {
+            const _responseText = response.data;
+            let result410 = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException("Comment removed", status, _responseText, _headers, result410);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway, server error", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Edit comment
+     * @param id thread id
+     * @param cid comment id
+     * @return OK
+     */
+    commentEdit(id, cid, body, cancelToken) {
+        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processCommentEdit(_response);
+        });
+    }
+    processCommentEdit(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("Thread or comment not found", status, _responseText, _headers, result404);
+        }
+        else if (status === 410) {
+            const _responseText = response.data;
+            let result410 = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException("Comment removed", status, _responseText, _headers, result410);
+        }
         else if (status === 429) {
             const _responseText = response.data;
             let result429 = null;
@@ -893,15 +1080,26 @@ class Client {
     }
     /**
      * Delete comment
+     * @param id thread id
+     * @param cid comment id
      * @return OK
      */
-    commentDelete(cancelToken) {
+    commentDelete(id, cid, body, cancelToken) {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
         url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
         let options_ = {
+            data: content_,
             method: "DELETE",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
@@ -957,6 +1155,13 @@ class Client {
             let resultData404 = _responseText;
             result404 = JSON.parse(resultData404);
             return throwException("Thread or comment not found", status, _responseText, _headers, result404);
+        }
+        else if (status === 410) {
+            const _responseText = response.data;
+            let result410 = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException("Comment removed", status, _responseText, _headers, result410);
         }
         else if (status === 429) {
             const _responseText = response.data;
@@ -2768,11 +2973,11 @@ class Client {
         return Promise.resolve(null);
     }
     /**
-     * Modify a category
+     * Edit a category
      * @param id category id
      * @return OK
      */
-    categoryModify(id, body, cancelToken) {
+    categoryEdit(id, body, cancelToken) {
         let url_ = this.baseUrl + "/category/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2800,10 +3005,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processCategoryModify(_response);
+            return this.processCategoryEdit(_response);
         });
     }
-    processCategoryModify(response) {
+    processCategoryEdit(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3689,15 +3894,22 @@ class Client {
     }
     /**
      * Mute user
+     * @param id user id
      * @return OK
      */
-    userMute(cancelToken) {
+    userMute(id, body, cancelToken) {
         let url_ = this.baseUrl + "/user/{id}/mute";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
         let options_ = {
+            data: content_,
             method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
@@ -3783,10 +3995,14 @@ class Client {
     }
     /**
      * Unmute user
+     * @param id user id
      * @return OK
      */
-    userUnmute(cancelToken) {
+    userUnmute(id, cancelToken) {
         let url_ = this.baseUrl + "/user/{id}/unmute";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "POST",

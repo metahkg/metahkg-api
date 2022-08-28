@@ -147,6 +147,18 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Thread removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
         } else if (status === 429) {
             const _responseText = response.data;
             let result429: any = null;
@@ -184,21 +196,172 @@ export class Client {
     }
 
     /**
-     * Delete thread
+     * Edit thread
      * @param id thread id
      * @return OK
      */
-    threadDelete(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    threadEdit(
+        id: number,
+        body: Body,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
         let url_ = this.baseUrl + "/thread/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processThreadEdit(_response);
+            });
+    }
+
+    protected processThreadEdit(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread or category not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Thread removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Delete thread
+     * @param id thread id
+     * @return OK
+     */
+    threadDelete(
+        id: number,
+        body: Body2,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
+        let url_ = this.baseUrl + "/thread/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
             method: "DELETE",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
@@ -270,104 +433,17 @@ export class Client {
                 _headers,
                 result404
             );
-        } else if (status === 429) {
+        } else if (status === 410) {
             const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
             return throwException(
-                "Too many requests",
+                "Thread removed",
                 status,
                 _responseText,
                 _headers,
-                result429
-            );
-        } else if (status === 502) {
-            const _responseText = response.data;
-            let result502: any = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException(
-                "Bad gateway, server error",
-                status,
-                _responseText,
-                _headers,
-                result502
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<OK>(null as any);
-    }
-
-    /**
-     * Check if a thread exists
-     * @param id thread id
-     * @return OK
-     */
-    threadCheck(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
-        let url_ = this.baseUrl + "/thread/check?";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined and cannot be null.");
-        else url_ += "id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processThreadCheck(_response);
-            });
-    }
-
-    protected processThreadCheck(response: AxiosResponse): Promise<OK> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException(
-                "Thread not found",
-                status,
-                _responseText,
-                _headers,
-                result404
+                result410
             );
         } else if (status === 429) {
             const _responseText = response.data;
@@ -492,6 +568,18 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Thread removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
         } else if (status === 429) {
             const _responseText = response.data;
             let result429: any = null;
@@ -615,6 +703,18 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Thread removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
         } else if (status === 429) {
             const _responseText = response.data;
             let result429: any = null;
@@ -655,7 +755,7 @@ export class Client {
      * Create thread
      * @return Success
      */
-    threadCreate(body: Body, cancelToken?: CancelToken | undefined): Promise<Anonymous> {
+    threadCreate(body: Body3, cancelToken?: CancelToken | undefined): Promise<Anonymous> {
         let url_ = this.baseUrl + "/thread/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -749,6 +849,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "Title already exists",
+                status,
+                _responseText,
+                _headers,
+                result409
             );
         } else if (status === 429) {
             const _responseText = response.data;
@@ -897,6 +1009,18 @@ export class Client {
                 _headers,
                 result409
             );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Thread removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
         } else if (status === 429) {
             const _responseText = response.data;
             let result429: any = null;
@@ -1044,6 +1168,18 @@ export class Client {
                 _headers,
                 result409
             );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Thread removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
         } else if (status === 429) {
             const _responseText = response.data;
             let result429: any = null;
@@ -1175,6 +1311,18 @@ export class Client {
                 _headers,
                 result404
             );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Comment removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
         } else if (status === 429) {
             const _responseText = response.data;
             let result429: any = null;
@@ -1212,17 +1360,182 @@ export class Client {
     }
 
     /**
-     * Delete comment
+     * Edit comment
+     * @param id thread id
+     * @param cid comment id
      * @return OK
      */
-    commentDelete(cancelToken?: CancelToken | undefined): Promise<OK> {
+    commentEdit(
+        id: number,
+        cid: number,
+        body: Body4,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processCommentEdit(_response);
+            });
+    }
+
+    protected processCommentEdit(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Thread or comment not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Comment removed",
+                status,
+                _responseText,
+                _headers,
+                result410
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway, server error",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Delete comment
+     * @param id thread id
+     * @param cid comment id
+     * @return OK
+     */
+    commentDelete(
+        id: number,
+        cid: number,
+        body: Body5,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
+        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (cid === undefined || cid === null)
+            throw new Error("The parameter 'cid' must be defined.");
+        url_ = url_.replace("{cid}", encodeURIComponent("" + cid));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
             method: "DELETE",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
@@ -1293,6 +1606,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result404
+            );
+        } else if (status === 410) {
+            const _responseText = response.data;
+            let result410: any = null;
+            let resultData410 = _responseText;
+            result410 = JSON.parse(resultData410);
+            return throwException(
+                "Comment removed",
+                status,
+                _responseText,
+                _headers,
+                result410
             );
         } else if (status === 429) {
             const _responseText = response.data;
@@ -2033,7 +2358,7 @@ export class Client {
      */
     commentCreate(
         id: number,
-        body: Body2,
+        body: Body6,
         cancelToken?: CancelToken | undefined
     ): Promise<Anonymous4> {
         let url_ = this.baseUrl + "/thread/{id}/comment/create";
@@ -2176,7 +2501,7 @@ export class Client {
      * @return OK
      */
     commentVote(
-        body: Body3,
+        body: Body7,
         id: number,
         cid: number,
         cancelToken?: CancelToken | undefined
@@ -2326,7 +2651,7 @@ export class Client {
     commentEmotionSet(
         id: number,
         cid: number,
-        body: Body4,
+        body: Body8,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotion";
@@ -3512,7 +3837,7 @@ export class Client {
      * Rename
      * @return Success
      */
-    meRename(body: Body5, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
+    meRename(body: Body9, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
         let url_ = this.baseUrl + "/me/rename";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3802,13 +4127,13 @@ export class Client {
     }
 
     /**
-     * Modify a category
+     * Edit a category
      * @param id category id
      * @return OK
      */
-    categoryModify(
+    categoryEdit(
         id: number,
-        body: Body6,
+        body: Body10,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/category/{id}";
@@ -3840,11 +4165,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processCategoryModify(_response);
+                return this.processCategoryEdit(_response);
             });
     }
 
-    protected processCategoryModify(response: AxiosResponse): Promise<OK> {
+    protected processCategoryEdit(response: AxiosResponse): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4187,7 +4512,7 @@ export class Client {
     /**
      * @return OK
      */
-    categoryCreate(body: Body7, cancelToken?: CancelToken | undefined): Promise<OK> {
+    categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/category/create";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4775,7 +5100,7 @@ export class Client {
      */
     userBlock(
         id: number,
-        body: Body8,
+        body: Body12,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/block";
@@ -5036,16 +5361,28 @@ export class Client {
 
     /**
      * Mute user
+     * @param id user id
      * @return OK
      */
-    userMute(cancelToken?: CancelToken | undefined): Promise<OK> {
+    userMute(
+        id: number,
+        body: Body13,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/mute";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(body);
+
         let options_: AxiosRequestConfig = {
+            data: content_,
             method: "POST",
             url: url_,
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
             },
             cancelToken,
@@ -5167,10 +5504,14 @@ export class Client {
 
     /**
      * Unmute user
+     * @param id user id
      * @return OK
      */
-    userUnmute(cancelToken?: CancelToken | undefined): Promise<OK> {
+    userUnmute(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/user/{id}/unmute";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -5300,7 +5641,7 @@ export class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body9, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body: Body14, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5423,7 +5764,7 @@ export class Client {
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body: Body15, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5530,7 +5871,7 @@ export class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body11, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body: Body16, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5641,7 +5982,7 @@ export class Client {
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body: Body17, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5752,7 +6093,7 @@ export class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body13, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5863,7 +6204,7 @@ export class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body: Body14, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body: Body19, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -6222,6 +6563,13 @@ export interface User {
     role: UserRole;
 }
 
+/** Admin actions / responses */
+export interface Admin {
+    edits?: Edits[];
+    /** admin replies */
+    replies?: Replies[];
+}
+
 /** Blocked user (user object with block date and reason) */
 export interface BlockedUser extends User {
     /** block date */
@@ -6279,6 +6627,7 @@ export interface Comment {
     replies?: number[];
     /** list of emotions users have expressed */
     emotions?: Anonymous3[];
+    admin?: Admin;
 }
 
 /** Comment object with constants only (without upvotes, downvotes, replies and emotions) */
@@ -6301,7 +6650,7 @@ export interface Thread {
     category: number;
     op: User;
     /** number of comments in the thread (i.e. `conversation.length`) */
-    c: number;
+    count: number;
     /** An array of comments. Comment ids must not be duplicated. */
     conversation: (Conversation | RemovedComment)[];
     /** score of the thread (first comment) (`upvotes - downvotes`) */
@@ -6315,6 +6664,7 @@ export interface Thread {
     slink: string;
     /** pinned comment */
     pin?: CommentC;
+    admin?: Admin;
 }
 
 /** Thread metadata (no comments, images and pinned comment) */
@@ -6323,7 +6673,7 @@ export interface ThreadMeta {
     title: string;
     category: number;
     op: User;
-    c: number;
+    count?: number;
     score: number;
     createdAt: Date;
     lastModified: Date;
@@ -6340,38 +6690,61 @@ export interface Star {
 export type Sort = "score" | "time" | "latest";
 
 export interface Body {
+    title?: string;
+    category?: number;
+    /** Reason for editing */
+    reason: string;
+}
+
+export interface Body2 {
+    /** Reason for removing comment */
+    reason: string;
+}
+
+export interface Body3 {
     title: string;
     comment: string;
     rtoken: string;
     category: number;
 }
 
-export interface Body2 {
+export interface Body4 {
+    comment: string;
+    /** Reason for editing comment */
+    reason: string;
+}
+
+export interface Body5 {
+    /** Reason for removing comment */
+    reason: string;
+}
+
+export interface Body6 {
     comment: string;
     rtoken: string;
     quote?: number;
 }
 
-export interface Body3 {
+export interface Body7 {
     vote: Vote;
 }
 
-export interface Body4 {
-    emotion?: string;
+export interface Body8 {
+    emotion: string;
 }
 
-export interface Body5 {
+export interface Body9 {
     name: string;
 }
 
-export interface Body6 {
+export interface Body10 {
     name?: string;
     tags?: string[];
 }
 
 export type Sort2 = "latest" | "viral";
 
-export interface Body7 {
+export interface Body11 {
     name: string;
     hidden?: boolean;
     tags?: string[];
@@ -6379,18 +6752,25 @@ export interface Body7 {
 
 export type Sort3 = "created" | "lastcomment";
 
-export interface Body8 {
+export interface Body12 {
     /** Reason for blocking user */
     reason?: string;
 }
 
-export interface Body9 {
+export interface Body13 {
+    /** Reason for muting the user */
+    reason: string;
+    /** expiration (optional) */
+    exp?: Date;
+}
+
+export interface Body14 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
 
-export interface Body10 {
+export interface Body15 {
     name: string;
     email: string;
     pwd: string;
@@ -6400,23 +6780,23 @@ export interface Body10 {
     inviteCode?: string;
 }
 
-export interface Body11 {
+export interface Body16 {
     email: string;
     /** Verification code sent to email */
     code: string;
 }
 
-export interface Body12 {
+export interface Body17 {
     email: string;
     rtoken: string;
 }
 
-export interface Body13 {
+export interface Body18 {
     email: string;
     rtoken: string;
 }
 
-export interface Body14 {
+export interface Body19 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -6482,6 +6862,18 @@ export interface Anonymous9 {
 export type UserSex = "M" | "F";
 
 export type UserRole = "admin" | "user";
+
+export interface Edits {
+    admin: User;
+    /** reason for editing */
+    reason?: string;
+}
+
+export interface Replies {
+    admin: User;
+    /** admin's reply */
+    reply: string;
+}
 
 export interface Quote extends CommentC {}
 
