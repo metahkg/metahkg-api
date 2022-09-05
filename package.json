@@ -1,24 +1,29 @@
 {
   "name": "@metahkg/api",
-  "version": "4.2.0",
+  "version": "4.8.0",
   "access": "public",
   "description": "Access the metahkg api.",
   "main": "dist/index.js",
   "repository": "https://gitlab.com/metahkg/metahkg-api.git",
   "author": "wcyat <wcyat@wcyat.me>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc",
     "generate": "./generate.sh",
-    "lint": "prettier --write src",
+    "lint": "prettier --check src || prettier --write src",
     "test": "ts-node test.ts",
-    "deploy": "yarn build && yarn publish"
+    "deploy": "yarn build && yarn publish",
+    "prepare": "husky install"
   },
   "dependencies": {
     "axios": "^0.27.2"
   },
   "devDependencies": {
-    "@types/node": "^18.6.2",
+    "@types/node": "^18.7.1",
+    "husky": "^8.0.1",
     "nswag": "^13.16.1",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
