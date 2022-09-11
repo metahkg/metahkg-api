@@ -23,6 +23,310 @@ class Client {
                 : "https://dev.metahkg.org/api";
     }
     /**
+     * Get threads
+     * @param id array of thread ids
+     * @return Success
+     */
+    threads(id, cancelToken) {
+        let url_ = this.baseUrl + "/threads?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            id &&
+                id.forEach((item) => {
+                    url_ += "id=" + encodeURIComponent("" + item) + "&";
+                });
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processThreads(_response);
+        });
+    }
+    processThreads(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Create thread
+     * @return Success
+     */
+    threadCreate(body, cancelToken) {
+        let url_ = this.baseUrl + "/threads";
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processThreadCreate(_response);
+        });
+    }
+    processThreadCreate(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("User muted by an admin", status, _responseText, _headers, result403);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("Category not found", status, _responseText, _headers, result404);
+        }
+        else if (status === 409) {
+            const _responseText = response.data;
+            let result409 = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException("Title already exists", status, _responseText, _headers, result409);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Recaptcha token invalid, or too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Search threads
+     * @param q Search query
+     * @param mode (optional) Search mode. title or op
+     * @param sort (optional) Sort threads by relevance, created or lastcomment
+     * @param page (optional) page number
+     * @param limit (optional) number of threads per page
+     * @return Success
+     */
+    threadsSearch(q, mode, sort, page, limit, cancelToken) {
+        let url_ = this.baseUrl + "/threads/search?";
+        if (q === undefined || q === null)
+            throw new Error("The parameter 'q' must be defined and cannot be null.");
+        else
+            url_ += "q=" + encodeURIComponent("" + q) + "&";
+        if (mode === null)
+            throw new Error("The parameter 'mode' cannot be null.");
+        else if (mode !== undefined)
+            url_ += "mode=" + encodeURIComponent("" + mode) + "&";
+        if (sort === null)
+            throw new Error("The parameter 'sort' cannot be null.");
+        else if (sort !== undefined)
+            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (limit === null)
+            throw new Error("The parameter 'limit' cannot be null.");
+        else if (limit !== undefined)
+            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processThreadsSearch(_response);
+        });
+    }
+    processThreadsSearch(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
      * Get thread
      * @param id thread id
      * @param page (optional) Page number. Ignored if start and end both specified.
@@ -33,7 +337,7 @@ class Client {
      * @return Success
      */
     thread(id, page, limit, sort, start, end, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}?";
+        let url_ = this.baseUrl + "/threads/{id}?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -158,7 +462,7 @@ class Client {
      * @return OK
      */
     threadEdit(id, body, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}";
+        let url_ = this.baseUrl + "/threads/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -266,7 +570,7 @@ class Client {
      * @return OK
      */
     threadDelete(id, body, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}";
+        let url_ = this.baseUrl + "/threads/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -374,7 +678,7 @@ class Client {
      * @return Success
      */
     threadImages(id, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/images";
+        let url_ = this.baseUrl + "/threads/{id}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -479,7 +783,7 @@ class Client {
      * @return Success
      */
     threadCategory(id, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/category";
+        let url_ = this.baseUrl + "/threads/{id}/category";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -579,123 +883,12 @@ class Client {
         return Promise.resolve(null);
     }
     /**
-     * Create thread
-     * @return Success
-     */
-    threadCreate(body, cancelToken) {
-        let url_ = this.baseUrl + "/thread/create";
-        url_ = url_.replace(/[?&]$/, "");
-        const content_ = JSON.stringify(body);
-        let options_ = {
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processThreadCreate(_response);
-        });
-    }
-    processThreadCreate(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 400) {
-            const _responseText = response.data;
-            let result400 = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException("Invalid request", status, _responseText, _headers, result400);
-        }
-        else if (status === 401) {
-            const _responseText = response.data;
-            let result401 = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-        }
-        else if (status === 403) {
-            const _responseText = response.data;
-            let result403 = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException("User muted by an admin", status, _responseText, _headers, result403);
-        }
-        else if (status === 404) {
-            const _responseText = response.data;
-            let result404 = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException("Category not found", status, _responseText, _headers, result404);
-        }
-        else if (status === 409) {
-            const _responseText = response.data;
-            let result409 = null;
-            let resultData409 = _responseText;
-            result409 = JSON.parse(resultData409);
-            return throwException("Title already exists", status, _responseText, _headers, result409);
-        }
-        else if (status === 429) {
-            const _responseText = response.data;
-            let result429 = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException("Recaptcha token invalid, or too many requests", status, _responseText, _headers, result429);
-        }
-        else if (status === 500) {
-            const _responseText = response.data;
-            let result500 = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException("Internal server error", status, _responseText, _headers, result500);
-        }
-        else if (status === 502) {
-            const _responseText = response.data;
-            let result502 = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException("Bad gateway", status, _responseText, _headers, result502);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
      * Pin comment
      * @param id thread id
      * @return OK
      */
     threadPin(id, body, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/pin";
+        let url_ = this.baseUrl + "/threads/{id}/pin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -810,7 +1003,7 @@ class Client {
      * @return OK
      */
     threadUnpin(id, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/pin";
+        let url_ = this.baseUrl + "/threads/{id}/pin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -922,7 +1115,7 @@ class Client {
      * @return OK
      */
     threadStar(id, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/star";
+        let url_ = this.baseUrl + "/threads/{id}/star";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1041,7 +1234,7 @@ class Client {
      * @return OK
      */
     threadUnstar(id, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/unstar";
+        let url_ = this.baseUrl + "/threads/{id}/unstar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1161,7 +1354,7 @@ class Client {
      * @return Success
      */
     comment(id, cid, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1270,7 +1463,7 @@ class Client {
      * @return OK
      */
     commentEdit(id, cid, body, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1382,7 +1575,7 @@ class Client {
      * @return OK
      */
     commentDelete(id, cid, body, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1494,7 +1687,7 @@ class Client {
      * @return Success
      */
     commentReplies(id, cid, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/replies";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/replies";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1603,7 +1796,7 @@ class Client {
      * @return Success
      */
     commentImages(id, cid, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/images";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/images";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1712,7 +1905,7 @@ class Client {
      * @return Success
      */
     commentVotes(id, cid, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/votes";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/votes";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1814,7 +2007,7 @@ class Client {
      * @return Success
      */
     commentEmotions(id, cid, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotions";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/emotions";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -1917,7 +2110,7 @@ class Client {
      * @return Success
      */
     commentEmotionUsers(id, cid, emotion, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotion/{emotion}/users";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/emotion/{emotion}/users";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2028,7 +2221,7 @@ class Client {
      * @return Success
      */
     commentCreate(id, body, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/create";
+        let url_ = this.baseUrl + "/threads/{id}/comments";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2137,7 +2330,7 @@ class Client {
      * @return OK
      */
     commentVote(body, id, cid, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/vote";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/vote";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2249,7 +2442,7 @@ class Client {
      * @return OK
      */
     commentEmotionSet(id, cid, body, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotion";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/emotion";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2368,7 +2561,7 @@ class Client {
      * @return OK
      */
     commentEmotionDelete(id, cid, cancelToken) {
-        let url_ = this.baseUrl + "/thread/{id}/comment/{cid}/emotion";
+        let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/emotion";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -2723,7 +2916,7 @@ class Client {
      * @return Success
      */
     meVotesThread(id, cancelToken) {
-        let url_ = this.baseUrl + "/me/votes/thread/{id}";
+        let url_ = this.baseUrl + "/me/votes/threads/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3074,12 +3267,108 @@ class Client {
         return Promise.resolve(null);
     }
     /**
+     * @return OK
+     */
+    categoryCreate(body, cancelToken) {
+        let url_ = this.baseUrl + "/categories";
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processCategoryCreate(_response);
+        });
+    }
+    processCategoryCreate(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden", status, _responseText, _headers, result403);
+        }
+        else if (status === 409) {
+            const _responseText = response.data;
+            let result409 = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException("Category already exists", status, _responseText, _headers, result409);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
      * Get category
      * @param id category id
      * @return Success
      */
     category(id, cancelToken) {
-        let url_ = this.baseUrl + "/category/{id}";
+        let url_ = this.baseUrl + "/categories/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3170,7 +3459,7 @@ class Client {
      * @return OK
      */
     categoryEdit(id, body, cancelToken) {
-        let url_ = this.baseUrl + "/category/{id}";
+        let url_ = this.baseUrl + "/categories/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3271,7 +3560,7 @@ class Client {
      * @return OK
      */
     categoryDelete(id, cancelToken) {
-        let url_ = this.baseUrl + "/category/{id}";
+        let url_ = this.baseUrl + "/categories/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3372,7 +3661,7 @@ class Client {
      * @return Success
      */
     categoryThreads(id, sort, page, limit, cancelToken) {
-        let url_ = this.baseUrl + "/category/{id}/threads?";
+        let url_ = this.baseUrl + "/categories/{id}/threads?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3470,108 +3759,12 @@ class Client {
         return Promise.resolve(null);
     }
     /**
-     * @return OK
-     */
-    categoryCreate(body, cancelToken) {
-        let url_ = this.baseUrl + "/category/create";
-        url_ = url_.replace(/[?&]$/, "");
-        const content_ = JSON.stringify(body);
-        let options_ = {
-            data: content_,
-            method: "POST",
-            url: url_,
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processCategoryCreate(_response);
-        });
-    }
-    processCategoryCreate(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 400) {
-            const _responseText = response.data;
-            let result400 = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException("Invalid request", status, _responseText, _headers, result400);
-        }
-        else if (status === 403) {
-            const _responseText = response.data;
-            let result403 = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException("Forbidden", status, _responseText, _headers, result403);
-        }
-        else if (status === 409) {
-            const _responseText = response.data;
-            let result409 = null;
-            let resultData409 = _responseText;
-            result409 = JSON.parse(resultData409);
-            return throwException("Category already exists", status, _responseText, _headers, result409);
-        }
-        else if (status === 429) {
-            const _responseText = response.data;
-            let result429 = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException("Too many requests", status, _responseText, _headers, result429);
-        }
-        else if (status === 500) {
-            const _responseText = response.data;
-            let result500 = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException("Internal server error", status, _responseText, _headers, result500);
-        }
-        else if (status === 502) {
-            const _responseText = response.data;
-            let result502 = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException("Bad gateway", status, _responseText, _headers, result502);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
      * Get user profile
      * @param id user id
      * @return Success
      */
     userProfile(id, cancelToken) {
-        let url_ = this.baseUrl + "/user/{id}";
+        let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3662,7 +3855,7 @@ class Client {
      * @return Success
      */
     userEdit(id, body, cancelToken) {
-        let url_ = this.baseUrl + "/user/{id}";
+        let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3763,7 +3956,7 @@ class Client {
      * @return Success
      */
     userName(id, cancelToken) {
-        let url_ = this.baseUrl + "/user/{id}/name";
+        let url_ = this.baseUrl + "/users/{id}/name";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3854,7 +4047,7 @@ class Client {
      * @return Success
      */
     userAvatar(id, cancelToken) {
-        let url_ = this.baseUrl + "/user/{id}/avatar";
+        let url_ = this.baseUrl + "/users/{id}/avatar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -3952,7 +4145,7 @@ class Client {
      * @return Success
      */
     userThreads(id, sort, page, limit, cancelToken) {
-        let url_ = this.baseUrl + "/user/{id}/threads?";
+        let url_ = this.baseUrl + "/users/{id}/threads?";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -4055,7 +4248,7 @@ class Client {
      * @return OK
      */
     userBlock(id, body, cancelToken) {
-        let url_ = this.baseUrl + "/user/{id}/block";
+        let url_ = this.baseUrl + "/users/{id}/block";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -4163,7 +4356,7 @@ class Client {
      * @return OK
      */
     userUnblock(id, cancelToken) {
-        let url_ = this.baseUrl + "/user/{id}/unblock";
+        let url_ = this.baseUrl + "/users/{id}/unblock";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -4261,7 +4454,7 @@ class Client {
      * @return OK
      */
     userMute(id, body, cancelToken) {
-        let url_ = this.baseUrl + "/user/{id}/mute";
+        let url_ = this.baseUrl + "/users/{id}/mute";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -4369,7 +4562,7 @@ class Client {
      * @return OK
      */
     userUnmute(id, cancelToken) {
-        let url_ = this.baseUrl + "/user/{id}/unmute";
+        let url_ = this.baseUrl + "/users/{id}/unmute";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -4987,199 +5180,6 @@ class Client {
             let resultData404 = _responseText;
             result404 = JSON.parse(resultData404);
             return throwException("User not found", status, _responseText, _headers, result404);
-        }
-        else if (status === 429) {
-            const _responseText = response.data;
-            let result429 = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException("Too many requests", status, _responseText, _headers, result429);
-        }
-        else if (status === 500) {
-            const _responseText = response.data;
-            let result500 = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException("Internal server error", status, _responseText, _headers, result500);
-        }
-        else if (status === 502) {
-            const _responseText = response.data;
-            let result502 = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException("Bad gateway", status, _responseText, _headers, result502);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
-     * Search threads
-     * @param q Search query
-     * @param mode (optional) Search mode. title or op
-     * @param sort (optional) Sort threads by relevance, created or lastcomment
-     * @param page (optional) page number
-     * @param limit (optional) number of threads per page
-     * @return Success
-     */
-    threadsSearch(q, mode, sort, page, limit, cancelToken) {
-        let url_ = this.baseUrl + "/threads/search?";
-        if (q === undefined || q === null)
-            throw new Error("The parameter 'q' must be defined and cannot be null.");
-        else
-            url_ += "q=" + encodeURIComponent("" + q) + "&";
-        if (mode === null)
-            throw new Error("The parameter 'mode' cannot be null.");
-        else if (mode !== undefined)
-            url_ += "mode=" + encodeURIComponent("" + mode) + "&";
-        if (sort === null)
-            throw new Error("The parameter 'sort' cannot be null.");
-        else if (sort !== undefined)
-            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
-        if (page === null)
-            throw new Error("The parameter 'page' cannot be null.");
-        else if (page !== undefined)
-            url_ += "page=" + encodeURIComponent("" + page) + "&";
-        if (limit === null)
-            throw new Error("The parameter 'limit' cannot be null.");
-        else if (limit !== undefined)
-            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-        let options_ = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processThreadsSearch(_response);
-        });
-    }
-    processThreadsSearch(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 400) {
-            const _responseText = response.data;
-            let result400 = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException("Invalid request", status, _responseText, _headers, result400);
-        }
-        else if (status === 429) {
-            const _responseText = response.data;
-            let result429 = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException("Too many requests", status, _responseText, _headers, result429);
-        }
-        else if (status === 500) {
-            const _responseText = response.data;
-            let result500 = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException("Internal server error", status, _responseText, _headers, result500);
-        }
-        else if (status === 502) {
-            const _responseText = response.data;
-            let result502 = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException("Bad gateway", status, _responseText, _headers, result502);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
-     * Get threads
-     * @param id array of thread ids
-     * @return Success
-     */
-    threads(id, cancelToken) {
-        let url_ = this.baseUrl + "/threads?";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined and cannot be null.");
-        else
-            id &&
-                id.forEach((item) => {
-                    url_ += "id=" + encodeURIComponent("" + item) + "&";
-                });
-        url_ = url_.replace(/[?&]$/, "");
-        let options_ = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processThreads(_response);
-        });
-    }
-    processThreads(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 400) {
-            const _responseText = response.data;
-            let result400 = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 429) {
             const _responseText = response.data;

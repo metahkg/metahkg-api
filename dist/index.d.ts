@@ -5,6 +5,30 @@ export declare class Client {
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined;
     constructor(baseUrl?: string, instance?: AxiosInstance);
     /**
+     * Get threads
+     * @param id array of thread ids
+     * @return Success
+     */
+    threads(id: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
+    /**
+     * Create thread
+     * @return Success
+     */
+    threadCreate(body: Body, cancelToken?: CancelToken | undefined): Promise<Anonymous>;
+    protected processThreadCreate(response: AxiosResponse): Promise<Anonymous>;
+    /**
+     * Search threads
+     * @param q Search query
+     * @param mode (optional) Search mode. title or op
+     * @param sort (optional) Sort threads by relevance, created or lastcomment
+     * @param page (optional) page number
+     * @param limit (optional) number of threads per page
+     * @return Success
+     */
+    threadsSearch(q: string, mode?: Mode, sort?: Sort, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    protected processThreadsSearch(response: AxiosResponse): Promise<ThreadMeta[]>;
+    /**
      * Get thread
      * @param id thread id
      * @param page (optional) Page number. Ignored if start and end both specified.
@@ -14,21 +38,21 @@ export declare class Client {
      * @param end (optional) Ending at comment id. Must be greater or equal to start. If start is specified but end is not, end defaults to `page * limit`
      * @return Success
      */
-    thread(id: number, page?: number, limit?: number, sort?: Sort, start?: number, end?: number, cancelToken?: CancelToken | undefined): Promise<Thread>;
+    thread(id: number, page?: number, limit?: number, sort?: Sort2, start?: number, end?: number, cancelToken?: CancelToken | undefined): Promise<Thread>;
     protected processThread(response: AxiosResponse): Promise<Thread>;
     /**
      * Edit thread
      * @param id thread id
      * @return OK
      */
-    threadEdit(id: number, body: Body, cancelToken?: CancelToken | undefined): Promise<OK>;
+    threadEdit(id: number, body: Body2, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processThreadEdit(response: AxiosResponse): Promise<OK>;
     /**
      * Delete thread
      * @param id thread id
      * @return OK
      */
-    threadDelete(id: number, body: Body2, cancelToken?: CancelToken | undefined): Promise<OK>;
+    threadDelete(id: number, body: Body3, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processThreadDelete(response: AxiosResponse): Promise<OK>;
     /**
      * Get thread images
@@ -44,12 +68,6 @@ export declare class Client {
      */
     threadCategory(id: number, cancelToken?: CancelToken | undefined): Promise<Category>;
     protected processThreadCategory(response: AxiosResponse): Promise<Category>;
-    /**
-     * Create thread
-     * @return Success
-     */
-    threadCreate(body: Body3, cancelToken?: CancelToken | undefined): Promise<Anonymous>;
-    protected processThreadCreate(response: AxiosResponse): Promise<Anonymous>;
     /**
      * Pin comment
      * @param id thread id
@@ -220,6 +238,11 @@ export declare class Client {
     categories(cancelToken?: CancelToken | undefined): Promise<Category[]>;
     protected processCategories(response: AxiosResponse): Promise<Category[]>;
     /**
+     * @return OK
+     */
+    categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processCategoryCreate(response: AxiosResponse): Promise<OK>;
+    /**
      * Get category
      * @param id category id
      * @return Success
@@ -231,7 +254,7 @@ export declare class Client {
      * @param id category id
      * @return OK
      */
-    categoryEdit(id: number, body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
+    categoryEdit(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCategoryEdit(response: AxiosResponse): Promise<OK>;
     /**
      * Delete a category
@@ -248,13 +271,8 @@ export declare class Client {
      * @param limit (optional) number of threads per page
      * @return Success
      */
-    categoryThreads(id: number, sort?: Sort2, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    categoryThreads(id: number, sort?: Sort3, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
     protected processCategoryThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
-    /**
-     * @return OK
-     */
-    categoryCreate(body: Body12, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCategoryCreate(response: AxiosResponse): Promise<OK>;
     /**
      * Get user profile
      * @param id user id
@@ -291,7 +309,7 @@ export declare class Client {
      * @param limit (optional) number of threads per page
      * @return Success
      */
-    userThreads(id: number, sort?: Sort3, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
+    userThreads(id: number, sort?: Sort4, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
     protected processUserThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
     /**
      * Block user
@@ -357,24 +375,6 @@ export declare class Client {
      */
     usersReset(body: Body21, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
-    /**
-     * Search threads
-     * @param q Search query
-     * @param mode (optional) Search mode. title or op
-     * @param sort (optional) Sort threads by relevance, created or lastcomment
-     * @param page (optional) page number
-     * @param limit (optional) number of threads per page
-     * @return Success
-     */
-    threadsSearch(q: string, mode?: Mode, sort?: Sort4, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processThreadsSearch(response: AxiosResponse): Promise<ThreadMeta[]>;
-    /**
-     * Get threads
-     * @param id array of thread ids
-     * @return Success
-     */
-    threads(id: number[], cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
-    protected processThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
 }
 export interface OK {
     success: boolean;
@@ -510,22 +510,24 @@ export interface Star {
     /** date when star was created */
     date: Date;
 }
-export declare type Sort = "score" | "time" | "latest";
 export interface Body {
+    title: string;
+    comment: string;
+    rtoken: string;
+    category: number;
+}
+export declare type Mode = "title" | "op";
+export declare type Sort = "relevance" | "created" | "lastcomment";
+export declare type Sort2 = "score" | "time" | "latest";
+export interface Body2 {
     title?: string;
     category?: number;
     /** Reason for editing */
     reason: string;
 }
-export interface Body2 {
+export interface Body3 {
     /** Reason for removing comment */
     reason: string;
-}
-export interface Body3 {
-    title: string;
-    comment: string;
-    rtoken: string;
-    category: number;
 }
 export interface Body4 {
     cid: number;
@@ -554,22 +556,22 @@ export interface Body10 {
     name: string;
 }
 export interface Body11 {
-    name?: string;
-    tags?: string[];
-    pinned?: boolean;
-}
-export declare type Sort2 = "latest" | "viral";
-export interface Body12 {
     name: string;
     hidden?: boolean;
     tags?: string[];
     pinned?: boolean;
 }
+export interface Body12 {
+    name?: string;
+    tags?: string[];
+    pinned?: boolean;
+}
+export declare type Sort3 = "latest" | "viral";
 export interface Body13 {
     name?: string;
     sex?: UserSex;
 }
-export declare type Sort3 = "created" | "lastcomment";
+export declare type Sort4 = "created" | "lastcomment";
 export interface Body14 {
     /** Reason for blocking user */
     reason?: string;
@@ -613,8 +615,6 @@ export interface Body21 {
     code: string;
     pwd: string;
 }
-export declare type Mode = "title" | "op";
-export declare type Sort4 = "relevance" | "created" | "lastcomment";
 export interface Anonymous {
     id: number;
 }
