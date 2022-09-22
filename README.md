@@ -1,6 +1,6 @@
 # Metahkg Api
 
-Wrapper for the [metahkg server](https://gitlab.com/metahkg/metahkg-server).
+Client for the [metahkg server](https://gitlab.com/metahkg/metahkg-server).
 Generated with the [openapi spec](https://gitlab.com/metahkg/metahkg-server/-/blob/master/openapi.yaml) using [nswag](https://github.com/RicoSuter/NSwag).
 
 ## Regenerate
