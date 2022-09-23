@@ -218,20 +218,6 @@ export declare class Client {
     meVotesThread(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6[]>;
     protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous6[]>;
     /**
-     * Set avatar
-     * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
-     * @return OK
-     */
-    meAvatar(avatar?: FileParameter, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processMeAvatar(response: AxiosResponse): Promise<OK>;
-    /**
-     * Rename
-     * @return Success
-     * @deprecated
-     */
-    meRename(body: Body10, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
-    protected processMeRename(response: AxiosResponse): Promise<Anonymous7>;
-    /**
      * Get categories
      * @return Success
      */
@@ -240,7 +226,7 @@ export declare class Client {
     /**
      * @return OK
      */
-    categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
+    categoryCreate(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCategoryCreate(response: AxiosResponse): Promise<OK>;
     /**
      * Get category
@@ -254,7 +240,7 @@ export declare class Client {
      * @param id category id
      * @return OK
      */
-    categoryEdit(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<OK>;
+    categoryEdit(id: number, body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCategoryEdit(response: AxiosResponse): Promise<OK>;
     /**
      * Delete a category
@@ -278,22 +264,22 @@ export declare class Client {
      * @param id user id
      * @return Success
      */
-    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous8>;
-    protected processUserProfile(response: AxiosResponse): Promise<Anonymous8>;
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous7>;
     /**
      * Edit user info
      * @param id user id
      * @return Success
      */
-    userEdit(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
-    protected processUserEdit(response: AxiosResponse): Promise<Anonymous9>;
+    userEdit(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<Anonymous8>;
+    protected processUserEdit(response: AxiosResponse): Promise<Anonymous8>;
     /**
      * Get user name
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous10>;
-    protected processUserName(response: AxiosResponse): Promise<Anonymous10>;
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
+    protected processUserName(response: AxiosResponse): Promise<Anonymous9>;
     /**
      * Get user avatar
      * @param id user id
@@ -301,6 +287,13 @@ export declare class Client {
      */
     userAvatar(id: number, cancelToken?: CancelToken | undefined): Promise<FileResponse>;
     protected processUserAvatar(response: AxiosResponse): Promise<FileResponse>;
+    /**
+     * Upload avatar
+     * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
+     * @return OK
+     */
+    userUploadAvatar(avatar?: FileParameter, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUserUploadAvatar(response: AxiosResponse): Promise<OK>;
     /**
      * Get threads created by a user
      * @param id user id
@@ -316,7 +309,7 @@ export declare class Client {
      * @param id user id
      * @return OK
      */
-    userBlock(id: number, body: Body14, cancelToken?: CancelToken | undefined): Promise<OK>;
+    userBlock(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserBlock(response: AxiosResponse): Promise<OK>;
     /**
      * Unblock user
@@ -330,7 +323,7 @@ export declare class Client {
      * @param id user id
      * @return OK
      */
-    userMute(id: number, body: Body15, cancelToken?: CancelToken | undefined): Promise<OK>;
+    userMute(id: number, body: Body14, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserMute(response: AxiosResponse): Promise<OK>;
     /**
      * Unmute user
@@ -343,37 +336,37 @@ export declare class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body16, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersLogin(body: Body15, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersLogin(response: AxiosResponse): Promise<Token>;
     /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body17, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersRegister(body: Body16, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body18, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersVerify(body: Body17, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersVerify(response: AxiosResponse): Promise<Token>;
     /**
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body19, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersResend(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body20, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersForgot(body: Body19, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
      * @return Success
      */
-    usersReset(body: Body21, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersReset(body: Body20, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
 }
 export interface OK {
@@ -554,40 +547,37 @@ export interface Body9 {
 }
 export interface Body10 {
     name: string;
-}
-export interface Body11 {
-    name: string;
     hidden?: boolean;
     tags?: string[];
     pinned?: boolean;
 }
-export interface Body12 {
+export interface Body11 {
     name?: string;
     tags?: string[];
     pinned?: boolean;
 }
 export declare type Sort3 = "latest" | "viral";
-export interface Body13 {
+export interface Body12 {
     name?: string;
     sex?: UserSex;
 }
 export declare type Sort4 = "created" | "lastcomment";
-export interface Body14 {
+export interface Body13 {
     /** Reason for blocking user */
     reason?: string;
 }
-export interface Body15 {
+export interface Body14 {
     /** Reason for muting the user */
     reason: string;
     /** expiration (optional) */
     exp?: Date;
 }
-export interface Body16 {
+export interface Body15 {
     /** Username or email */
     name: Name;
     pwd: string;
 }
-export interface Body17 {
+export interface Body16 {
     name: string;
     email: string;
     pwd: string;
@@ -596,20 +586,20 @@ export interface Body17 {
     /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
     inviteCode?: string;
 }
-export interface Body18 {
+export interface Body17 {
     email: string;
     /** Verification code sent to email */
     code: string;
+}
+export interface Body18 {
+    email: string;
+    rtoken: string;
 }
 export interface Body19 {
     email: string;
     rtoken: string;
 }
 export interface Body20 {
-    email: string;
-    rtoken: string;
-}
-export interface Body21 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -637,24 +627,19 @@ export interface Anonymous6 {
     cid: number;
     vote: Vote;
 }
-export interface Anonymous7 extends OK {
-    /** jwt token */
-    token: string;
-}
-export declare function isAnonymous7(object: any): object is Anonymous7;
-export interface Anonymous8 extends User {
+export interface Anonymous7 extends User {
     /** Number of threads created by user */
     count: number;
     /** Date and time when user was created */
     createdAt?: Date;
 }
-export declare function isAnonymous8(object: any): object is Anonymous8;
-export interface Anonymous9 extends OK {
+export declare function isAnonymous7(object: any): object is Anonymous7;
+export interface Anonymous8 extends OK {
     /** jwt token */
     token: string;
 }
-export declare function isAnonymous9(object: any): object is Anonymous9;
-export interface Anonymous10 {
+export declare function isAnonymous8(object: any): object is Anonymous8;
+export interface Anonymous9 {
     name: string;
 }
 export declare type UserSex = "M" | "F";
