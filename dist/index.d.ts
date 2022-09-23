@@ -289,10 +289,11 @@ export declare class Client {
     protected processUserAvatar(response: AxiosResponse): Promise<FileResponse>;
     /**
      * Upload avatar
+     * @param id user id
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
      * @return OK
      */
-    userUploadAvatar(avatar?: FileParameter, cancelToken?: CancelToken | undefined): Promise<OK>;
+    userUploadAvatar(id: number, avatar?: FileParameter, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserUploadAvatar(response: AxiosResponse): Promise<OK>;
     /**
      * Get threads created by a user

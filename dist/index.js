@@ -3932,11 +3932,15 @@ class Client {
     }
     /**
      * Upload avatar
+     * @param id user id
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
      * @return OK
      */
-    userUploadAvatar(avatar, cancelToken) {
+    userUploadAvatar(id, avatar, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/avatar";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
         const content_ = new FormData();
         if (avatar === null || avatar === undefined)
