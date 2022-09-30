@@ -7305,7 +7305,6 @@ export type Sort2 = "score" | "time" | "latest";
 export interface Body2 {
     title?: string;
     category?: number;
-    /** Reason for editing */
     reason: string;
 }
 
@@ -7476,14 +7475,14 @@ export interface Edits {
     admin: User;
     /** reason for editing */
     reason: string;
-    date?: Date;
+    date: Date;
 }
 
 export interface Replies {
     admin: User;
     /** admin's reply */
     reply: string;
-    date?: Date;
+    date: Date;
 }
 
 export interface Quote extends CommentC {}
