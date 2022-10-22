@@ -36,10 +36,10 @@ axios.interceptors.response.use((response) => {
     return response;
 });
 
-const client = new Client("https://dev.metahkg.org/api", axios);
+const api = new Client("https://dev.metahkg.org/api", axios);
 
-client
-    .thread(1)
-    .then(console.log)
-    .catch(console.error);
+api
+  .thread(1)
+  .then(console.log)
+  .catch(console.error);
 ```
