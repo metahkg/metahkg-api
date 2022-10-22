@@ -17,6 +17,9 @@ yarn add @metahkg/api
 
 ## Usage
 
+Function names are based on operationIds. \
+For example, if the operationId is `commentCreate`, you can use `api.commentCreate`.
+
 ```typescript
 import { Client } from "@metahkg/api";
 
