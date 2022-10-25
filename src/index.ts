@@ -30,7 +30,7 @@ export class Client {
         this.baseUrl =
             baseUrl !== undefined && baseUrl !== null
                 ? baseUrl
-                : "https://metahkg.org/api";
+                : "https://dev.metahkg.org/api";
     }
 
     /**
