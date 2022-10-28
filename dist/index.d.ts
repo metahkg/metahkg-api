@@ -193,11 +193,17 @@ export declare class Client {
     commentEmotionDelete(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCommentEmotionDelete(response: AxiosResponse): Promise<OK>;
     /**
-     * Get status
+     * Get current logged in session
      * @return Success
      */
-    meStatus(cancelToken?: CancelToken | undefined): Promise<Anonymous5>;
-    protected processMeStatus(response: AxiosResponse): Promise<Anonymous5>;
+    meSession(cancelToken?: CancelToken | undefined): Promise<Session>;
+    protected processMeSession(response: AxiosResponse): Promise<Session>;
+    /**
+     * Get active sessions
+     * @return Success
+     */
+    meSessions(cancelToken?: CancelToken | undefined): Promise<Session[]>;
+    protected processMeSessions(response: AxiosResponse): Promise<Session[]>;
     /**
      * Get blocked users
      * @return Success
@@ -215,8 +221,8 @@ export declare class Client {
      * @param id thread id
      * @return Success
      */
-    meVotesThread(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6[]>;
-    protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous6[]>;
+    meVotesThread(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous5[]>;
+    protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous5[]>;
     /**
      * Get categories
      * @return Success
@@ -264,22 +270,22 @@ export declare class Client {
      * @param id user id
      * @return Success
      */
-    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
-    protected processUserProfile(response: AxiosResponse): Promise<Anonymous7>;
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6>;
     /**
      * Edit user info
      * @param id user id
      * @return Success
      */
-    userEdit(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<Anonymous8>;
-    protected processUserEdit(response: AxiosResponse): Promise<Anonymous8>;
+    userEdit(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<Token>;
+    protected processUserEdit(response: AxiosResponse): Promise<Token>;
     /**
      * Get user name
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
-    protected processUserName(response: AxiosResponse): Promise<Anonymous9>;
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
+    protected processUserName(response: AxiosResponse): Promise<Anonymous7>;
     /**
      * Get user avatar
      * @param id user id
@@ -390,6 +396,18 @@ export interface User {
     name: string;
     sex: UserSex;
     role: UserRole;
+}
+export interface Session {
+    /** 30-digit random id */
+    id: string;
+    /** session created date */
+    createdAt: Date;
+    /** session expire date */
+    exp: Date;
+    /** user agent used to create the session */
+    userAgent: string;
+    /** whether the session is restricted to a same ip */
+    sameIp?: boolean;
 }
 /** Admin actions / responses */
 export interface Admin {
@@ -575,12 +593,13 @@ export interface Body14 {
 export interface Body15 {
     /** Username or email */
     name: Name;
-    pwd: string;
+    password: string;
+    sameIp?: boolean;
 }
 export interface Body16 {
     name: string;
     email: string;
-    pwd: string;
+    password: string;
     sex: UserSex;
     rtoken: string;
     /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
@@ -590,6 +609,7 @@ export interface Body17 {
     email: string;
     /** Verification code sent to email */
     code: string;
+    sameIp?: boolean;
 }
 export interface Body18 {
     email: string;
@@ -603,7 +623,7 @@ export interface Body20 {
     email: string;
     /** Verification code sent to email */
     code: string;
-    pwd: string;
+    password: string;
 }
 export interface Anonymous {
     id: number;
@@ -620,26 +640,17 @@ export interface Anonymous4 {
     id: number;
 }
 export interface Anonymous5 {
-    /** Whether user is logged in */
-    active: boolean;
-}
-export interface Anonymous6 {
     cid: number;
     vote: Vote;
 }
-export interface Anonymous7 extends User {
+export interface Anonymous6 extends User {
     /** Number of threads created by user */
     count: number;
     /** Date and time when user was created */
     createdAt?: Date;
 }
-export declare function isAnonymous7(object: any): object is Anonymous7;
-export interface Anonymous8 extends OK {
-    /** jwt token */
-    token: string;
-}
-export declare function isAnonymous8(object: any): object is Anonymous8;
-export interface Anonymous9 {
+export declare function isAnonymous6(object: any): object is Anonymous6;
+export interface Anonymous7 {
     name: string;
 }
 export declare type UserSex = "M" | "F";
@@ -657,6 +668,7 @@ export interface Replies {
     date: Date;
 }
 export interface Quote extends CommentC {
+    [key: string]: any;
 }
 export declare function isQuote(object: any): object is Quote;
 /** Comment object with score */
@@ -666,6 +678,7 @@ export interface Conversation extends Comment {
 }
 export declare function isConversation(object: any): object is Conversation;
 export interface Name {
+    [key: string]: any;
 }
 export interface FileParameter {
     data: any;
