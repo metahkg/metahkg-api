@@ -7281,6 +7281,8 @@ export interface Token {
 }
 
 export interface ErrorDto {
+    /** status code */
+    statusCode: number;
     /** error message */
     error: string;
 }

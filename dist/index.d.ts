@@ -384,6 +384,8 @@ export interface Token {
     token: string;
 }
 export interface ErrorDto {
+    /** status code */
+    statusCode: number;
     /** error message */
     error: string;
 }
