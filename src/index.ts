@@ -7525,7 +7525,7 @@ export interface Body14 {
 
 export interface Body15 {
     /** Username or email */
-    name: Name;
+    name: string;
     password: string;
     sameIp?: boolean;
 }
@@ -7636,10 +7636,6 @@ export interface Conversation extends Comment {
 
 export function isConversation(object: any): object is Conversation {
     return object && object[""] === "Conversation";
-}
-
-export interface Name {
-    [key: string]: any;
 }
 
 export interface FileParameter {

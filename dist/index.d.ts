@@ -592,7 +592,7 @@ export interface Body14 {
 }
 export interface Body15 {
     /** Username or email */
-    name: Name;
+    name: string;
     password: string;
     sameIp?: boolean;
 }
@@ -677,9 +677,6 @@ export interface Conversation extends Comment {
     score?: number;
 }
 export declare function isConversation(object: any): object is Conversation;
-export interface Name {
-    [key: string]: any;
-}
 export interface FileParameter {
     data: any;
     fileName: string;
