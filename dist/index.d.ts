@@ -199,11 +199,31 @@ export declare class Client {
     meSession(cancelToken?: CancelToken | undefined): Promise<Session>;
     protected processMeSession(response: AxiosResponse): Promise<Session>;
     /**
+     * Logout
+     * @return OK
+     */
+    meLogout(cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processMeLogout(response: AxiosResponse): Promise<OK>;
+    /**
      * Get active sessions
      * @return Success
      */
     meSessions(cancelToken?: CancelToken | undefined): Promise<Session[]>;
     protected processMeSessions(response: AxiosResponse): Promise<Session[]>;
+    /**
+     * Get session by id
+     * @param id session id
+     * @return Success
+     */
+    meSessionsGet(id: string, cancelToken?: CancelToken | undefined): Promise<Session[]>;
+    protected processMeSessionsGet(response: AxiosResponse): Promise<Session[]>;
+    /**
+     * Revoke session by id
+     * @param id session id
+     * @return OK
+     */
+    meSessionsRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processMeSessionsRevoke(response: AxiosResponse): Promise<OK>;
     /**
      * Get blocked users
      * @return Success
