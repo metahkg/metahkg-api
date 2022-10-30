@@ -3785,113 +3785,6 @@ export class Client {
     }
 
     /**
-     * Get current logged in session
-     * @return Success
-     */
-    meSession(cancelToken?: CancelToken | undefined): Promise<Session> {
-        let url_ = this.baseUrl + "/me/session";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeSession(_response);
-            });
-    }
-
-    protected processMeSession(response: AxiosResponse): Promise<Session> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<Session>(result200);
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
-        } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException(
-                "Too many requests",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException(
-                "Internal server error",
-                status,
-                _responseText,
-                _headers,
-                result500
-            );
-        } else if (status === 502) {
-            const _responseText = response.data;
-            let result502: any = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException(
-                "Bad gateway",
-                status,
-                _responseText,
-                _headers,
-                result502
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<Session>(null as any);
-    }
-
-    /**
      * Logout
      * @return OK
      */
@@ -3996,6 +3889,113 @@ export class Client {
             );
         }
         return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Get current logged in session
+     * @return Success
+     */
+    meSession(cancelToken?: CancelToken | undefined): Promise<Session> {
+        let url_ = this.baseUrl + "/me/session";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processMeSession(_response);
+            });
+    }
+
+    protected processMeSession(response: AxiosResponse): Promise<Session> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Session>(result200);
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Session>(null as any);
     }
 
     /**
@@ -4338,6 +4338,358 @@ export class Client {
                 _responseText,
                 _headers,
                 result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Get notifications
+     * @return Success
+     */
+    meNotifications(cancelToken?: CancelToken | undefined): Promise<Notification[]> {
+        let url_ = this.baseUrl + "/me/notifications";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processMeNotifications(_response);
+            });
+    }
+
+    protected processMeNotifications(response: AxiosResponse): Promise<Notification[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Notification[]>(result200);
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Notification[]>(null as any);
+    }
+
+    /**
+     * Subscribe to notification
+     * @return OK
+     */
+    meNotificationsSubscribe(
+        body: Body10,
+        cancelToken?: CancelToken | undefined
+    ): Promise<OK> {
+        let url_ = this.baseUrl + "/me/notifications/subscribe";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processMeNotificationsSubscribe(_response);
+            });
+    }
+
+    protected processMeNotificationsSubscribe(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Unsubscribe to notification
+     * @return OK
+     */
+    meNotificationsUnsubscribe(cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/me/notifications/unsubscribe";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processMeNotificationsUnsubscribe(_response);
+            });
+    }
+
+    protected processMeNotificationsUnsubscribe(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 429) {
             const _responseText = response.data;
@@ -4789,7 +5141,7 @@ export class Client {
     /**
      * @return OK
      */
-    categoryCreate(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK> {
+    categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/categories";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5050,7 +5402,7 @@ export class Client {
      */
     categoryEdit(
         id: number,
-        body: Body11,
+        body: Body12,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/categories/{id}";
@@ -5592,7 +5944,7 @@ export class Client {
      */
     userEdit(
         id: number,
-        body: Body12,
+        body: Body13,
         cancelToken?: CancelToken | undefined
     ): Promise<Token> {
         let url_ = this.baseUrl + "/users/{id}";
@@ -6324,7 +6676,7 @@ export class Client {
      */
     userBlock(
         id: number,
-        body: Body13,
+        body: Body14,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/users/{id}/block";
@@ -6614,7 +6966,7 @@ export class Client {
      */
     userMute(
         id: number,
-        body: Body14,
+        body: Body15,
         cancelToken?: CancelToken | undefined
     ): Promise<OK> {
         let url_ = this.baseUrl + "/users/{id}/mute";
@@ -6913,7 +7265,7 @@ export class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body15, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersLogin(body: Body16, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -7048,7 +7400,7 @@ export class Client {
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body16, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersRegister(body: Body17, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -7171,7 +7523,7 @@ export class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body17, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersVerify(body: Body18, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/verify";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -7294,7 +7646,7 @@ export class Client {
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersResend(body: Body19, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -7417,7 +7769,7 @@ export class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body19, cancelToken?: CancelToken | undefined): Promise<OK> {
+    usersForgot(body: Body20, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/users/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -7540,7 +7892,7 @@ export class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body: Body20, cancelToken?: CancelToken | undefined): Promise<Token> {
+    usersReset(body: Body21, cancelToken?: CancelToken | undefined): Promise<Token> {
         let url_ = this.baseUrl + "/users/reset";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -7674,6 +8026,14 @@ export interface ErrorDto {
     statusCode: number;
     /** error message */
     error: string;
+}
+
+export interface Notification {
+    /** title of the notification */
+    title?: string;
+    /** when the notification was created */
+    createdAt?: Date;
+    options?: Options;
 }
 
 /** Vote. "U" means upvote. "D" means downvote. */
@@ -7880,14 +8240,21 @@ export interface Body9 {
     emotion: string;
 }
 
+/** Endpoint and keys for push notifications. */
 export interface Body10 {
+    /** Push notification endpoint */
+    endpoint: string;
+    keys: Keys;
+}
+
+export interface Body11 {
     name: string;
     hidden?: boolean;
     tags?: string[];
     pinned?: boolean;
 }
 
-export interface Body11 {
+export interface Body12 {
     name?: string;
     tags?: string[];
     pinned?: boolean;
@@ -7895,33 +8262,33 @@ export interface Body11 {
 
 export type Sort3 = "latest" | "viral";
 
-export interface Body12 {
+export interface Body13 {
     name?: string;
     sex?: UserSex;
 }
 
 export type Sort4 = "created" | "lastcomment";
 
-export interface Body13 {
+export interface Body14 {
     /** Reason for blocking user */
     reason?: string;
 }
 
-export interface Body14 {
+export interface Body15 {
     /** Reason for muting the user */
     reason: string;
     /** expiration (optional) */
     exp?: Date;
 }
 
-export interface Body15 {
+export interface Body16 {
     /** Username or email */
     name: string;
     password: string;
     sameIp?: boolean;
 }
 
-export interface Body16 {
+export interface Body17 {
     name: string;
     email: string;
     password: string;
@@ -7931,16 +8298,11 @@ export interface Body16 {
     inviteCode?: string;
 }
 
-export interface Body17 {
+export interface Body18 {
     email: string;
     /** Verification code sent to email */
     code: string;
     sameIp?: boolean;
-}
-
-export interface Body18 {
-    email: string;
-    rtoken: string;
 }
 
 export interface Body19 {
@@ -7949,6 +8311,11 @@ export interface Body19 {
 }
 
 export interface Body20 {
+    email: string;
+    rtoken: string;
+}
+
+export interface Body21 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -7993,6 +8360,12 @@ export interface Anonymous7 {
     name: string;
 }
 
+export interface Options {
+    /** body of the notification */
+    body?: string;
+    data?: Data;
+}
+
 export type UserSex = "M" | "F";
 
 export type UserRole = "admin" | "user";
@@ -8028,6 +8401,22 @@ export interface Conversation extends Comment {
 export function isConversation(object: any): object is Conversation {
     return object && object[""] === "Conversation";
 }
+
+export interface Keys {
+    /** auth key */
+    auth: string;
+    /** p256dh key */
+    p256dh: string;
+}
+
+export interface Data {
+    /** type of the notification */
+    type?: DataType;
+    /** url of the notification */
+    url?: string;
+}
+
+export type DataType = "thread" | "comment" | "reply" | "emotion";
 
 export interface FileParameter {
     data: any;

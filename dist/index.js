@@ -2678,14 +2678,14 @@ class Client {
         return Promise.resolve(null);
     }
     /**
-     * Get current logged in session
-     * @return Success
+     * Logout
+     * @return OK
      */
-    meSession(cancelToken) {
-        let url_ = this.baseUrl + "/me/session";
+    meLogout(cancelToken) {
+        let url_ = this.baseUrl + "/me/logout";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
-            method: "GET",
+            method: "POST",
             url: url_,
             headers: {
                 Accept: "application/json",
@@ -2703,10 +2703,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processMeSession(_response);
+            return this.processMeLogout(_response);
         });
     }
-    processMeSession(response) {
+    processMeLogout(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2758,14 +2758,14 @@ class Client {
         return Promise.resolve(null);
     }
     /**
-     * Logout
-     * @return OK
+     * Get current logged in session
+     * @return Success
      */
-    meLogout(cancelToken) {
-        let url_ = this.baseUrl + "/me/logout";
+    meSession(cancelToken) {
+        let url_ = this.baseUrl + "/me/session";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
-            method: "POST",
+            method: "GET",
             url: url_,
             headers: {
                 Accept: "application/json",
@@ -2783,10 +2783,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processMeLogout(_response);
+            return this.processMeSession(_response);
         });
     }
-    processMeLogout(response) {
+    processMeSession(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3092,6 +3092,263 @@ class Client {
             let resultData409 = _responseText;
             result409 = JSON.parse(resultData409);
             return throwException("Failed to revoke an older session", status, _responseText, _headers, result409);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Get notifications
+     * @return Success
+     */
+    meNotifications(cancelToken) {
+        let url_ = this.baseUrl + "/me/notifications";
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processMeNotifications(_response);
+        });
+    }
+    processMeNotifications(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Subscribe to notification
+     * @return OK
+     */
+    meNotificationsSubscribe(body, cancelToken) {
+        let url_ = this.baseUrl + "/me/notifications/subscribe";
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processMeNotificationsSubscribe(_response);
+        });
+    }
+    processMeNotificationsSubscribe(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Unsubscribe to notification
+     * @return OK
+     */
+    meNotificationsUnsubscribe(cancelToken) {
+        let url_ = this.baseUrl + "/me/notifications/unsubscribe";
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "POST",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processMeNotificationsUnsubscribe(_response);
+        });
+    }
+    processMeNotificationsUnsubscribe(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 429) {
             const _responseText = response.data;

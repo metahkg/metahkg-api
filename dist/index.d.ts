@@ -193,17 +193,17 @@ export declare class Client {
     commentEmotionDelete(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCommentEmotionDelete(response: AxiosResponse): Promise<OK>;
     /**
-     * Get current logged in session
-     * @return Success
-     */
-    meSession(cancelToken?: CancelToken | undefined): Promise<Session>;
-    protected processMeSession(response: AxiosResponse): Promise<Session>;
-    /**
      * Logout
      * @return OK
      */
     meLogout(cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processMeLogout(response: AxiosResponse): Promise<OK>;
+    /**
+     * Get current logged in session
+     * @return Success
+     */
+    meSession(cancelToken?: CancelToken | undefined): Promise<Session>;
+    protected processMeSession(response: AxiosResponse): Promise<Session>;
     /**
      * Get active sessions
      * @return Success
@@ -224,6 +224,24 @@ export declare class Client {
      */
     meSessionsRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processMeSessionsRevoke(response: AxiosResponse): Promise<OK>;
+    /**
+     * Get notifications
+     * @return Success
+     */
+    meNotifications(cancelToken?: CancelToken | undefined): Promise<Notification[]>;
+    protected processMeNotifications(response: AxiosResponse): Promise<Notification[]>;
+    /**
+     * Subscribe to notification
+     * @return OK
+     */
+    meNotificationsSubscribe(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processMeNotificationsSubscribe(response: AxiosResponse): Promise<OK>;
+    /**
+     * Unsubscribe to notification
+     * @return OK
+     */
+    meNotificationsUnsubscribe(cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processMeNotificationsUnsubscribe(response: AxiosResponse): Promise<OK>;
     /**
      * Get blocked users
      * @return Success
@@ -252,7 +270,7 @@ export declare class Client {
     /**
      * @return OK
      */
-    categoryCreate(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK>;
+    categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCategoryCreate(response: AxiosResponse): Promise<OK>;
     /**
      * Get category
@@ -266,7 +284,7 @@ export declare class Client {
      * @param id category id
      * @return OK
      */
-    categoryEdit(id: number, body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
+    categoryEdit(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCategoryEdit(response: AxiosResponse): Promise<OK>;
     /**
      * Delete a category
@@ -297,7 +315,7 @@ export declare class Client {
      * @param id user id
      * @return Success
      */
-    userEdit(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<Token>;
+    userEdit(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUserEdit(response: AxiosResponse): Promise<Token>;
     /**
      * Get user name
@@ -336,7 +354,7 @@ export declare class Client {
      * @param id user id
      * @return OK
      */
-    userBlock(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<OK>;
+    userBlock(id: number, body: Body14, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserBlock(response: AxiosResponse): Promise<OK>;
     /**
      * Unblock user
@@ -350,7 +368,7 @@ export declare class Client {
      * @param id user id
      * @return OK
      */
-    userMute(id: number, body: Body14, cancelToken?: CancelToken | undefined): Promise<OK>;
+    userMute(id: number, body: Body15, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUserMute(response: AxiosResponse): Promise<OK>;
     /**
      * Unmute user
@@ -363,37 +381,37 @@ export declare class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body15, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersLogin(body: Body16, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersLogin(response: AxiosResponse): Promise<Token>;
     /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body16, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersRegister(body: Body17, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body17, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersVerify(body: Body18, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersVerify(response: AxiosResponse): Promise<Token>;
     /**
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersResend(body: Body19, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body19, cancelToken?: CancelToken | undefined): Promise<OK>;
+    usersForgot(body: Body20, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processUsersForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
      * @return Success
      */
-    usersReset(body: Body20, cancelToken?: CancelToken | undefined): Promise<Token>;
+    usersReset(body: Body21, cancelToken?: CancelToken | undefined): Promise<Token>;
     protected processUsersReset(response: AxiosResponse): Promise<Token>;
 }
 export interface OK {
@@ -408,6 +426,13 @@ export interface ErrorDto {
     statusCode: number;
     /** error message */
     error: string;
+}
+export interface Notification {
+    /** title of the notification */
+    title?: string;
+    /** when the notification was created */
+    createdAt?: Date;
+    options?: Options;
 }
 /** Vote. "U" means upvote. "D" means downvote. */
 export declare type Vote = "U" | "D";
@@ -585,40 +610,46 @@ export interface Body8 {
 export interface Body9 {
     emotion: string;
 }
+/** Endpoint and keys for push notifications. */
 export interface Body10 {
+    /** Push notification endpoint */
+    endpoint: string;
+    keys: Keys;
+}
+export interface Body11 {
     name: string;
     hidden?: boolean;
     tags?: string[];
     pinned?: boolean;
 }
-export interface Body11 {
+export interface Body12 {
     name?: string;
     tags?: string[];
     pinned?: boolean;
 }
 export declare type Sort3 = "latest" | "viral";
-export interface Body12 {
+export interface Body13 {
     name?: string;
     sex?: UserSex;
 }
 export declare type Sort4 = "created" | "lastcomment";
-export interface Body13 {
+export interface Body14 {
     /** Reason for blocking user */
     reason?: string;
 }
-export interface Body14 {
+export interface Body15 {
     /** Reason for muting the user */
     reason: string;
     /** expiration (optional) */
     exp?: Date;
 }
-export interface Body15 {
+export interface Body16 {
     /** Username or email */
     name: string;
     password: string;
     sameIp?: boolean;
 }
-export interface Body16 {
+export interface Body17 {
     name: string;
     email: string;
     password: string;
@@ -627,21 +658,21 @@ export interface Body16 {
     /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
     inviteCode?: string;
 }
-export interface Body17 {
+export interface Body18 {
     email: string;
     /** Verification code sent to email */
     code: string;
     sameIp?: boolean;
-}
-export interface Body18 {
-    email: string;
-    rtoken: string;
 }
 export interface Body19 {
     email: string;
     rtoken: string;
 }
 export interface Body20 {
+    email: string;
+    rtoken: string;
+}
+export interface Body21 {
     email: string;
     /** Verification code sent to email */
     code: string;
@@ -675,6 +706,11 @@ export declare function isAnonymous6(object: any): object is Anonymous6;
 export interface Anonymous7 {
     name: string;
 }
+export interface Options {
+    /** body of the notification */
+    body?: string;
+    data?: Data;
+}
 export declare type UserSex = "M" | "F";
 export declare type UserRole = "admin" | "user";
 export interface Edits {
@@ -699,6 +735,19 @@ export interface Conversation extends Comment {
     score?: number;
 }
 export declare function isConversation(object: any): object is Conversation;
+export interface Keys {
+    /** auth key */
+    auth: string;
+    /** p256dh key */
+    p256dh: string;
+}
+export interface Data {
+    /** type of the notification */
+    type?: DataType;
+    /** url of the notification */
+    url?: string;
+}
+export declare type DataType = "thread" | "comment" | "reply" | "emotion";
 export interface FileParameter {
     data: any;
     fileName: string;
