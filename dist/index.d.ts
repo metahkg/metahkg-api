@@ -429,10 +429,10 @@ export interface ErrorDto {
 }
 export interface Notification {
     /** title of the notification */
-    title?: string;
+    title: string;
     /** when the notification was created */
-    createdAt?: Date;
-    options?: Options;
+    createdAt: Date;
+    options: Options;
 }
 /** Vote. "U" means upvote. "D" means downvote. */
 export declare type Vote = "U" | "D";
@@ -708,8 +708,8 @@ export interface Anonymous7 {
 }
 export interface Options {
     /** body of the notification */
-    body?: string;
-    data?: Data;
+    body: string;
+    data: Data;
 }
 export declare type UserSex = "M" | "F";
 export declare type UserRole = "admin" | "user";
@@ -743,9 +743,9 @@ export interface Keys {
 }
 export interface Data {
     /** type of the notification */
-    type?: DataType;
+    type: DataType;
     /** url of the notification */
-    url?: string;
+    url: string;
 }
 export declare type DataType = "thread" | "comment" | "reply" | "emotion";
 export interface FileParameter {
