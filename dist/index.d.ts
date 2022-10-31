@@ -744,8 +744,10 @@ export interface Keys {
 export interface Data {
     /** type of the notification */
     type: DataType;
-    /** url of the notification */
+    /** the link that should be opened on click */
     url: string;
+    threadId: number;
+    commentId?: number;
 }
 export declare type DataType = "thread" | "comment" | "reply" | "emotion";
 export interface FileParameter {
