@@ -120,5 +120,4 @@ container_scanning:
 include:
   - template: Auto-DevOps.gitlab-ci.yml
     rules:
-      - if: $UPDATE
-        when: never
+      - if: $UPDATE != "true"
