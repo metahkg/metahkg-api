@@ -15,9 +15,11 @@ stages:
   - incremental rollout 100%
   - performance
   - cleanup
+  - update
 
 update:
   image: node:18-alpine
+  stage: update
   before_script:
     - apk add git wget dotnet6-targeting-pack dotnet6-sdk
     - git config --global user.name metahkg-bot
