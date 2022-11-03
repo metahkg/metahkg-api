@@ -4,6 +4,8 @@ wget "https://gitlab.com/metahkg/metahkg-server/-/raw/$(git symbolic-ref --short
 version=$(cat openapi.yaml | grep version | awk -F: '{ print $2 }' | sed 's/[" ]//g' | sed 's/-dev//g')
 oldversion=$(cat package.json | grep version | awk -F: '{ print $2 }' | sed 's/[", ]//g')
 
+if [ "oldversion" = "version" ]; then echo "version not changed, exiting..." && exit 0; fi;
+
 npx nswag run nswag.json && \
 rm openapi.yaml && \
 npx ts-node patch.ts && \
