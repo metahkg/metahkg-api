@@ -19,7 +19,7 @@ stages:
 update:
   image: node:18-alpine
   before_script:
-    - apk add git wget
+    - apk add git wget dotnet6-targeting-pack dotnet6-sdk
     - git config --global user.name metahkg-bot
     - git config --global user.email bot@metahkg.org
     - git checkout $CI_COMMIT_BRANCH
