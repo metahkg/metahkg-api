@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "generate": "./generate.sh",
+    "generate": "sh generate.sh",
     "lint": "prettier --check src || prettier --write src",
     "test": "ts-node test.ts",
     "deploy": "yarn build && yarn publish",
