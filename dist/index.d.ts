@@ -243,6 +243,12 @@ export declare class Client {
     meNotificationsUnsubscribe(cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processMeNotificationsUnsubscribe(response: AxiosResponse): Promise<OK>;
     /**
+     * Get followed users
+     * @return Success
+     */
+    meFollowing(cancelToken?: CancelToken | undefined): Promise<FollowedUser[]>;
+    protected processMeFollowing(response: AxiosResponse): Promise<FollowedUser[]>;
+    /**
      * Get blocked users
      * @return Success
      */
@@ -356,6 +362,20 @@ export declare class Client {
      */
     userThreads(id: number, sort?: Sort4, page?: number, limit?: number, cancelToken?: CancelToken | undefined): Promise<ThreadMeta[]>;
     protected processUserThreads(response: AxiosResponse): Promise<ThreadMeta[]>;
+    /**
+     * Follow user
+     * @param id user id
+     * @return OK
+     */
+    userFollow(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUserFollow(response: AxiosResponse): Promise<OK>;
+    /**
+     * Unfollow user
+     * @param id user id
+     * @return OK
+     */
+    userUnfollow(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processUserUnfollow(response: AxiosResponse): Promise<OK>;
     /**
      * Block user
      * @param id user id
@@ -483,6 +503,12 @@ export interface Admin {
     /** admin replies */
     replies?: Replies[];
 }
+/** Followed user (user object with follow date) */
+export interface FollowedUser extends User {
+    /** follow date */
+    date: Date;
+}
+export declare function isFollowedUser(object: any): object is FollowedUser;
 /** Blocked user (user object with block date and reason) */
 export interface BlockedUser extends User {
     /** block date */
