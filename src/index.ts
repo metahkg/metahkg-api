@@ -8,8 +8,8 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-import axios, {
-    AxiosError,
+import axios, { AxiosError } from "axios";
+import type {
     AxiosInstance,
     AxiosRequestConfig,
     AxiosResponse,
@@ -9708,7 +9708,7 @@ export interface FileResponse {
 }
 
 export class ApiException extends Error {
-    message: string;
+    override message: string;
     status: number;
     response: string;
     headers: { [key: string]: any };
