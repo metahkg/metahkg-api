@@ -2782,7 +2782,7 @@ class Client {
      * Get current logged in session
      * @return Success
      */
-    meSession(cancelToken) {
+    meSessionCurrent(cancelToken) {
         let url_ = this.baseUrl + "/me/session";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
@@ -2804,10 +2804,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processMeSession(_response);
+            return this.processMeSessionCurrent(_response);
         });
     }
-    processMeSession(response) {
+    processMeSessionCurrent(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2957,7 +2957,7 @@ class Client {
      * @param id session id
      * @return Success
      */
-    meSessionsGet(id, cancelToken) {
+    meSession(id, cancelToken) {
         let url_ = this.baseUrl + "/me/sessions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2982,10 +2982,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processMeSessionsGet(_response);
+            return this.processMeSession(_response);
         });
     }
-    processMeSessionsGet(response) {
+    processMeSession(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3062,7 +3062,7 @@ class Client {
      * @param id session id
      * @return OK
      */
-    meSessionsRevoke(id, cancelToken) {
+    meSessionRevoke(id, cancelToken) {
         let url_ = this.baseUrl + "/me/sessions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -3087,10 +3087,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processMeSessionsRevoke(_response);
+            return this.processMeSessionRevoke(_response);
         });
     }
-    processMeSessionsRevoke(response) {
+    processMeSessionRevoke(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {

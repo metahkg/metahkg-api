@@ -3931,7 +3931,7 @@ export class Client {
      * Get current logged in session
      * @return Success
      */
-    meSession(cancelToken?: CancelToken | undefined): Promise<Session> {
+    meSessionCurrent(cancelToken?: CancelToken | undefined): Promise<Session> {
         let url_ = this.baseUrl + "/me/session";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3954,11 +3954,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processMeSession(_response);
+                return this.processMeSessionCurrent(_response);
             });
     }
 
-    protected processMeSession(response: AxiosResponse): Promise<Session> {
+    protected processMeSessionCurrent(response: AxiosResponse): Promise<Session> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4170,7 +4170,7 @@ export class Client {
      * @param id session id
      * @return Success
      */
-    meSessionsGet(id: string, cancelToken?: CancelToken | undefined): Promise<Session[]> {
+    meSession(id: string, cancelToken?: CancelToken | undefined): Promise<Session[]> {
         let url_ = this.baseUrl + "/me/sessions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -4196,11 +4196,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processMeSessionsGet(_response);
+                return this.processMeSession(_response);
             });
     }
 
-    protected processMeSessionsGet(response: AxiosResponse): Promise<Session[]> {
+    protected processMeSession(response: AxiosResponse): Promise<Session[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4317,7 +4317,7 @@ export class Client {
      * @param id session id
      * @return OK
      */
-    meSessionsRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK> {
+    meSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/me/sessions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -4343,11 +4343,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processMeSessionsRevoke(_response);
+                return this.processMeSessionRevoke(_response);
             });
     }
 
-    protected processMeSessionsRevoke(response: AxiosResponse): Promise<OK> {
+    protected processMeSessionRevoke(response: AxiosResponse): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {

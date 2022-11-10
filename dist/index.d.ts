@@ -202,8 +202,8 @@ export declare class Client {
      * Get current logged in session
      * @return Success
      */
-    meSession(cancelToken?: CancelToken | undefined): Promise<Session>;
-    protected processMeSession(response: AxiosResponse): Promise<Session>;
+    meSessionCurrent(cancelToken?: CancelToken | undefined): Promise<Session>;
+    protected processMeSessionCurrent(response: AxiosResponse): Promise<Session>;
     /**
      * Get active sessions
      * @return Success
@@ -215,15 +215,15 @@ export declare class Client {
      * @param id session id
      * @return Success
      */
-    meSessionsGet(id: string, cancelToken?: CancelToken | undefined): Promise<Session[]>;
-    protected processMeSessionsGet(response: AxiosResponse): Promise<Session[]>;
+    meSession(id: string, cancelToken?: CancelToken | undefined): Promise<Session[]>;
+    protected processMeSession(response: AxiosResponse): Promise<Session[]>;
     /**
      * Revoke session by id
      * @param id session id
      * @return OK
      */
-    meSessionsRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processMeSessionsRevoke(response: AxiosResponse): Promise<OK>;
+    meSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processMeSessionRevoke(response: AxiosResponse): Promise<OK>;
     /**
      * Get notifications
      * @return Success
