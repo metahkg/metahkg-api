@@ -4170,7 +4170,7 @@ export class Client {
      * @param id session id
      * @return Success
      */
-    meSessionsGet(id: string, cancelToken?: CancelToken | undefined): Promise<Session[]> {
+    meSessionsGet(id: string, cancelToken?: CancelToken | undefined): Promise<Session> {
         let url_ = this.baseUrl + "/me/sessions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -4200,7 +4200,7 @@ export class Client {
             });
     }
 
-    protected processMeSessionsGet(response: AxiosResponse): Promise<Session[]> {
+    protected processMeSessionsGet(response: AxiosResponse): Promise<Session> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4215,7 +4215,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Session[]>(result200);
+            return Promise.resolve<Session>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -4309,7 +4309,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Session[]>(null as any);
+        return Promise.resolve<Session>(null as any);
     }
 
     /**
