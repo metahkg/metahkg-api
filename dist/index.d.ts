@@ -215,8 +215,8 @@ export declare class Client {
      * @param id session id
      * @return Success
      */
-    meSession(id: string, cancelToken?: CancelToken | undefined): Promise<Session[]>;
-    protected processMeSession(response: AxiosResponse): Promise<Session[]>;
+    meSession(id: string, cancelToken?: CancelToken | undefined): Promise<Session>;
+    protected processMeSession(response: AxiosResponse): Promise<Session>;
     /**
      * Revoke session by id
      * @param id session id
