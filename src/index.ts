@@ -5462,6 +5462,7 @@ export class Client {
     }
 
     /**
+     * Create category
      * @return OK
      */
     categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {

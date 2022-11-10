@@ -3887,6 +3887,7 @@ class Client {
         return Promise.resolve(null);
     }
     /**
+     * Create category
      * @return OK
      */
     categoryCreate(body, cancelToken) {

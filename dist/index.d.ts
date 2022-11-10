@@ -274,6 +274,7 @@ export declare class Client {
     categories(cancelToken?: CancelToken | undefined): Promise<Category[]>;
     protected processCategories(response: AxiosResponse): Promise<Category[]>;
     /**
+     * Create category
      * @return OK
      */
     categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
