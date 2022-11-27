@@ -3931,7 +3931,7 @@ export class Client {
      * Get current logged in session
      * @return Success
      */
-    meSession(cancelToken?: CancelToken | undefined): Promise<Session> {
+    meSessionCurrent(cancelToken?: CancelToken | undefined): Promise<Session> {
         let url_ = this.baseUrl + "/me/session";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3954,11 +3954,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processMeSession(_response);
+                return this.processMeSessionCurrent(_response);
             });
     }
 
-    protected processMeSession(response: AxiosResponse): Promise<Session> {
+    protected processMeSessionCurrent(response: AxiosResponse): Promise<Session> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4170,7 +4170,7 @@ export class Client {
      * @param id session id
      * @return Success
      */
-    meSessionsGet(id: string, cancelToken?: CancelToken | undefined): Promise<Session> {
+    meSession(id: string, cancelToken?: CancelToken | undefined): Promise<Session> {
         let url_ = this.baseUrl + "/me/sessions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -4196,11 +4196,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processMeSessionsGet(_response);
+                return this.processMeSession(_response);
             });
     }
 
-    protected processMeSessionsGet(response: AxiosResponse): Promise<Session> {
+    protected processMeSession(response: AxiosResponse): Promise<Session> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4317,7 +4317,7 @@ export class Client {
      * @param id session id
      * @return OK
      */
-    meSessionsRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK> {
+    meSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK> {
         let url_ = this.baseUrl + "/me/sessions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -4343,11 +4343,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processMeSessionsRevoke(_response);
+                return this.processMeSessionRevoke(_response);
             });
     }
 
-    protected processMeSessionsRevoke(response: AxiosResponse): Promise<OK> {
+    protected processMeSessionRevoke(response: AxiosResponse): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4860,6 +4860,125 @@ export class Client {
     }
 
     /**
+     * Get followed users
+     * @return Success
+     */
+    meFollowing(cancelToken?: CancelToken | undefined): Promise<FollowedUser[]> {
+        let url_ = this.baseUrl + "/me/following";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processMeFollowing(_response);
+            });
+    }
+
+    protected processMeFollowing(response: AxiosResponse): Promise<FollowedUser[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<FollowedUser[]>(result200);
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<FollowedUser[]>(null as any);
+    }
+
+    /**
      * Get blocked users
      * @return Success
      */
@@ -5343,6 +5462,7 @@ export class Client {
     }
 
     /**
+     * Create category
      * @return OK
      */
     categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
@@ -7102,6 +7222,312 @@ export class Client {
             );
         }
         return Promise.resolve<ThreadMeta[]>(null as any);
+    }
+
+    /**
+     * Follow user
+     * @param id user id
+     * @return OK
+     */
+    userFollow(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/users/{id}/follow";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processUserFollow(_response);
+            });
+    }
+
+    protected processUserFollow(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "User not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "User already followed",
+                status,
+                _responseText,
+                _headers,
+                result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Unfollow user
+     * @param id user id
+     * @return OK
+     */
+    userUnfollow(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/users/{id}/unfollow";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processUserUnfollow(_response);
+            });
+    }
+
+    protected processUserUnfollow(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "User not followed",
+                status,
+                _responseText,
+                _headers,
+                result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
     }
 
     /**
@@ -8899,6 +9325,16 @@ export interface Admin {
     edits?: Edits[];
     /** admin replies */
     replies?: Replies[];
+}
+
+/** Followed user (user object with follow date) */
+export interface FollowedUser extends User {
+    /** follow date */
+    date: Date;
+}
+
+export function isFollowedUser(object: any): object is FollowedUser {
+    return object && object[""] === "FollowedUser";
 }
 
 /** Blocked user (user object with block date and reason) */
