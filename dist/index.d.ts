@@ -701,6 +701,7 @@ export interface Body17 {
     /** Username or email */
     name: string;
     password: string;
+    rtoken: string;
     sameIp?: boolean;
 }
 export interface Body18 {
