@@ -1,7 +1,7 @@
 # Metahkg Api
 
 Client for the [metahkg server](https://gitlab.com/metahkg/metahkg-server).
-Generated with the [openapi spec](https://gitlab.com/metahkg/metahkg-server/-/blob/master/openapi.yaml) using [nswag](https://github.com/RicoSuter/NSwag).
+Generated with the [openapi spec](https://gitlab.com/metahkg/metahkg-server#openapi-specification) using [nswag](https://github.com/RicoSuter/NSwag).
 
 ## Regenerate
 
@@ -19,6 +19,8 @@ yarn add @metahkg/api
 
 Function names are based on operationIds. \
 For example, if the operationId is `commentCreate`, you can use `api.commentCreate`.
+
+For operationIds of requests see [api docs](https://docs.metahkg.org/docs/category/api).
 
 ```typescript
 import { Client } from "@metahkg/api";
