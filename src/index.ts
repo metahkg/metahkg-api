@@ -9561,6 +9561,7 @@ export interface Body17 {
     /** Username or email */
     name: string;
     password: string;
+    rtoken: string;
     sameIp?: boolean;
 }
 
@@ -9578,6 +9579,7 @@ export interface Body19 {
     email: string;
     /** Verification code sent to email */
     code: string;
+    rtoken: string;
     sameIp?: boolean;
 }
 
@@ -9596,6 +9598,9 @@ export interface Body22 {
     /** Verification code sent to email */
     code: string;
     password: string;
+    rtoken: string;
+    /** whether the session is restricted to a same ip */
+    sameIp?: boolean;
 }
 
 export interface Anonymous {
