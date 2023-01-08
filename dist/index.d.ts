@@ -193,38 +193,6 @@ export declare class Client {
     commentEmotionDelete(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
     protected processCommentEmotionDelete(response: AxiosResponse): Promise<OK>;
     /**
-     * Logout
-     * @return OK
-     */
-    meLogout(cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processMeLogout(response: AxiosResponse): Promise<OK>;
-    /**
-     * Get current logged in session
-     * @return Success
-     */
-    meSessionCurrent(cancelToken?: CancelToken | undefined): Promise<Session>;
-    protected processMeSessionCurrent(response: AxiosResponse): Promise<Session>;
-    /**
-     * Get active sessions
-     * @return Success
-     */
-    meSessions(cancelToken?: CancelToken | undefined): Promise<Session[]>;
-    protected processMeSessions(response: AxiosResponse): Promise<Session[]>;
-    /**
-     * Get session by id
-     * @param id session id
-     * @return Success
-     */
-    meSession(id: string, cancelToken?: CancelToken | undefined): Promise<Session>;
-    protected processMeSession(response: AxiosResponse): Promise<Session>;
-    /**
-     * Revoke session by id
-     * @param id session id
-     * @return OK
-     */
-    meSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processMeSessionRevoke(response: AxiosResponse): Promise<OK>;
-    /**
      * Get notifications
      * @return Success
      */
@@ -322,15 +290,15 @@ export declare class Client {
      * @param id user id
      * @return Success
      */
-    userEdit(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<Token>;
-    protected processUserEdit(response: AxiosResponse): Promise<Token>;
+    userEdit(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
+    protected processUserEdit(response: AxiosResponse): Promise<Anonymous7>;
     /**
      * Get user name
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
-    protected processUserName(response: AxiosResponse): Promise<Anonymous7>;
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous8>;
+    protected processUserName(response: AxiosResponse): Promise<Anonymous8>;
     /**
      * Get user avatar
      * @param id user id
@@ -423,46 +391,106 @@ export declare class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body17, cancelToken?: CancelToken | undefined): Promise<Token>;
-    protected processUsersLogin(response: AxiosResponse): Promise<Token>;
+    authLogin(body: Body17, cancelToken?: CancelToken | undefined): Promise<LoginSuccess>;
+    protected processAuthLogin(response: AxiosResponse): Promise<LoginSuccess>;
+    /**
+     * Logout
+     * @return OK
+     */
+    authLogout(cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processAuthLogout(response: AxiosResponse): Promise<OK>;
     /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUsersRegister(response: AxiosResponse): Promise<OK>;
+    authRegister(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processAuthRegister(response: AxiosResponse): Promise<OK>;
     /**
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body19, cancelToken?: CancelToken | undefined): Promise<Token>;
-    protected processUsersVerify(response: AxiosResponse): Promise<Token>;
+    authVerify(body: Body19, cancelToken?: CancelToken | undefined): Promise<LoginSuccess>;
+    protected processAuthVerify(response: AxiosResponse): Promise<LoginSuccess>;
     /**
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body20, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUsersResend(response: AxiosResponse): Promise<OK>;
+    authResend(body: Body20, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processAuthResend(response: AxiosResponse): Promise<OK>;
     /**
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body21, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUsersForgot(response: AxiosResponse): Promise<OK>;
+    authForgot(body: Body21, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processAuthForgot(response: AxiosResponse): Promise<OK>;
     /**
      * Reset password
      * @return Success
      */
-    usersReset(body: Body22, cancelToken?: CancelToken | undefined): Promise<Token>;
-    protected processUsersReset(response: AxiosResponse): Promise<Token>;
+    authReset(body: Body22, cancelToken?: CancelToken | undefined): Promise<LoginSuccess>;
+    protected processAuthReset(response: AxiosResponse): Promise<LoginSuccess>;
+    /**
+     * Get current session
+     * @return Success
+     */
+    authSessionCurrent(cancelToken?: CancelToken | undefined): Promise<Session>;
+    protected processAuthSessionCurrent(response: AxiosResponse): Promise<Session>;
+    /**
+     * Get active sessions
+     * @return Success
+     */
+    authSessions(cancelToken?: CancelToken | undefined): Promise<Session[]>;
+    protected processAuthSessions(response: AxiosResponse): Promise<Session[]>;
+    /**
+     * Get session by id
+     * @param id session id
+     * @return Success
+     */
+    authSession(id: string, cancelToken?: CancelToken | undefined): Promise<Session>;
+    protected processAuthSession(response: AxiosResponse): Promise<Session>;
+    /**
+     * Revoke session by id
+     * @param id session id
+     * @return OK
+     */
+    authSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK>;
+    protected processAuthSessionRevoke(response: AxiosResponse): Promise<OK>;
+    /**
+     * Refresh session
+     * @param id session id
+     * @return Success
+     */
+    authSessionsRefresh(id: string, body: Body23, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
+    protected processAuthSessionsRefresh(response: AxiosResponse): Promise<Anonymous9>;
+    /**
+     * Get server public key
+     * @return Success
+     */
+    serverPublicKey(cancelToken?: CancelToken | undefined): Promise<string>;
+    protected processServerPublicKey(response: AxiosResponse): Promise<string>;
 }
 export interface OK {
     success: boolean;
 }
-export interface Token {
-    /** jwt token */
-    token: string;
+export interface Session {
+    /** 30-digit random id */
+    id: string;
+    /** session created date */
+    createdAt: Date;
+    /** session expire date */
+    exp: Date;
+    /** user agent used to create the session */
+    userAgent: string;
+    /** whether the session is restricted to a same ip */
+    sameIp?: boolean;
 }
+export interface LoginSuccess extends Session {
+    token: string;
+    refreshToken: string;
+    /** sha256 hash of client's ip */
+    ip: string;
+}
+export declare function isLoginSuccess(object: any): object is LoginSuccess;
 export interface ErrorDto {
     /** status code */
     statusCode: number;
@@ -485,18 +513,6 @@ export interface User {
     name: string;
     sex: UserSex;
     role: UserRole;
-}
-export interface Session {
-    /** 30-digit random id */
-    id: string;
-    /** session created date */
-    createdAt: Date;
-    /** session expire date */
-    exp: Date;
-    /** user agent used to create the session */
-    userAgent: string;
-    /** whether the session is restricted to a same ip */
-    sameIp?: boolean;
 }
 /** Admin actions / responses */
 export interface Admin {
@@ -737,6 +753,10 @@ export interface Body22 {
     /** whether the session is restricted to a same ip */
     sameIp?: boolean;
 }
+export interface Body23 {
+    userId: number;
+    refreshToken: string;
+}
 export interface Anonymous {
     id: number;
 }
@@ -763,7 +783,14 @@ export interface Anonymous6 extends User {
 }
 export declare function isAnonymous6(object: any): object is Anonymous6;
 export interface Anonymous7 {
+    token: string;
+}
+export interface Anonymous8 {
     name: string;
+}
+export interface Anonymous9 {
+    token: string;
+    refreshToken: string;
 }
 export interface Options {
     /** body of the notification */
