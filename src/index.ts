@@ -3809,669 +3809,6 @@ export class Client {
     }
 
     /**
-     * Logout
-     * @return OK
-     */
-    meLogout(cancelToken?: CancelToken | undefined): Promise<OK> {
-        let url_ = this.baseUrl + "/me/logout";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "POST",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeLogout(_response);
-            });
-    }
-
-    protected processMeLogout(response: AxiosResponse): Promise<OK> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException(
-                "Forbidden: permission denied or user banned by an admin",
-                status,
-                _responseText,
-                _headers,
-                result403
-            );
-        } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException(
-                "Too many requests",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException(
-                "Internal server error",
-                status,
-                _responseText,
-                _headers,
-                result500
-            );
-        } else if (status === 502) {
-            const _responseText = response.data;
-            let result502: any = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException(
-                "Bad gateway",
-                status,
-                _responseText,
-                _headers,
-                result502
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<OK>(null as any);
-    }
-
-    /**
-     * Get current logged in session
-     * @return Success
-     */
-    meSessionCurrent(cancelToken?: CancelToken | undefined): Promise<Session> {
-        let url_ = this.baseUrl + "/me/session";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeSessionCurrent(_response);
-            });
-    }
-
-    protected processMeSessionCurrent(response: AxiosResponse): Promise<Session> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<Session>(result200);
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException(
-                "Forbidden: permission denied or user banned by an admin",
-                status,
-                _responseText,
-                _headers,
-                result403
-            );
-        } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException(
-                "Too many requests",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException(
-                "Internal server error",
-                status,
-                _responseText,
-                _headers,
-                result500
-            );
-        } else if (status === 502) {
-            const _responseText = response.data;
-            let result502: any = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException(
-                "Bad gateway",
-                status,
-                _responseText,
-                _headers,
-                result502
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<Session>(null as any);
-    }
-
-    /**
-     * Get active sessions
-     * @return Success
-     */
-    meSessions(cancelToken?: CancelToken | undefined): Promise<Session[]> {
-        let url_ = this.baseUrl + "/me/sessions";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeSessions(_response);
-            });
-    }
-
-    protected processMeSessions(response: AxiosResponse): Promise<Session[]> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<Session[]>(result200);
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException(
-                "Forbidden: permission denied or user banned by an admin",
-                status,
-                _responseText,
-                _headers,
-                result403
-            );
-        } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException(
-                "Too many requests",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException(
-                "Internal server error",
-                status,
-                _responseText,
-                _headers,
-                result500
-            );
-        } else if (status === 502) {
-            const _responseText = response.data;
-            let result502: any = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException(
-                "Bad gateway",
-                status,
-                _responseText,
-                _headers,
-                result502
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<Session[]>(null as any);
-    }
-
-    /**
-     * Get session by id
-     * @param id session id
-     * @return Success
-     */
-    meSession(id: string, cancelToken?: CancelToken | undefined): Promise<Session> {
-        let url_ = this.baseUrl + "/me/sessions/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeSession(_response);
-            });
-    }
-
-    protected processMeSession(response: AxiosResponse): Promise<Session> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<Session>(result200);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException(
-                "Forbidden: permission denied or user banned by an admin",
-                status,
-                _responseText,
-                _headers,
-                result403
-            );
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException(
-                "Session not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
-        } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException(
-                "Too many requests",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException(
-                "Internal server error",
-                status,
-                _responseText,
-                _headers,
-                result500
-            );
-        } else if (status === 502) {
-            const _responseText = response.data;
-            let result502: any = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException(
-                "Bad gateway",
-                status,
-                _responseText,
-                _headers,
-                result502
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<Session>(null as any);
-    }
-
-    /**
-     * Revoke session by id
-     * @param id session id
-     * @return OK
-     */
-    meSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK> {
-        let url_ = this.baseUrl + "/me/sessions/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: AxiosRequestConfig = {
-            method: "DELETE",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-
-        return this.instance
-            .request(options_)
-            .catch((_error: any) => {
-                if (isAxiosError(_error) && _error.response) {
-                    return _error.response;
-                } else {
-                    throw _error;
-                }
-            })
-            .then((_response: AxiosResponse) => {
-                return this.processMeSessionRevoke(_response);
-            });
-    }
-
-    protected processMeSessionRevoke(response: AxiosResponse): Promise<OK> {
-        const status = response.status;
-        let _headers: any = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
-        } else if (status === 401) {
-            const _responseText = response.data;
-            let result401: any = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException(
-                "Unauthorized",
-                status,
-                _responseText,
-                _headers,
-                result401
-            );
-        } else if (status === 403) {
-            const _responseText = response.data;
-            let result403: any = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException(
-                "Forbidden: permission denied or user banned by an admin",
-                status,
-                _responseText,
-                _headers,
-                result403
-            );
-        } else if (status === 404) {
-            const _responseText = response.data;
-            let result404: any = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException(
-                "Session not found",
-                status,
-                _responseText,
-                _headers,
-                result404
-            );
-        } else if (status === 409) {
-            const _responseText = response.data;
-            let result409: any = null;
-            let resultData409 = _responseText;
-            result409 = JSON.parse(resultData409);
-            return throwException(
-                "Failed to revoke an older session",
-                status,
-                _responseText,
-                _headers,
-                result409
-            );
-        } else if (status === 429) {
-            const _responseText = response.data;
-            let result429: any = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException(
-                "Too many requests",
-                status,
-                _responseText,
-                _headers,
-                result429
-            );
-        } else if (status === 500) {
-            const _responseText = response.data;
-            let result500: any = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException(
-                "Internal server error",
-                status,
-                _responseText,
-                _headers,
-                result500
-            );
-        } else if (status === 502) {
-            const _responseText = response.data;
-            let result502: any = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException(
-                "Bad gateway",
-                status,
-                _responseText,
-                _headers,
-                result502
-            );
-        } else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException(
-                "An unexpected server error occurred.",
-                status,
-                _responseText,
-                _headers
-            );
-        }
-        return Promise.resolve<OK>(null as any);
-    }
-
-    /**
      * Get notifications
      * @return Success
      */
@@ -6294,7 +5631,7 @@ export class Client {
         id: number,
         body: Body13,
         cancelToken?: CancelToken | undefined
-    ): Promise<Token> {
+    ): Promise<Anonymous7> {
         let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -6328,7 +5665,7 @@ export class Client {
             });
     }
 
-    protected processUserEdit(response: AxiosResponse): Promise<Token> {
+    protected processUserEdit(response: AxiosResponse): Promise<Anonymous7> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6343,7 +5680,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Token>(result200);
+            return Promise.resolve<Anonymous7>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -6437,7 +5774,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Token>(null as any);
+        return Promise.resolve<Anonymous7>(null as any);
     }
 
     /**
@@ -6445,7 +5782,7 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous8> {
         let url_ = this.baseUrl + "/users/{id}/name";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -6475,7 +5812,7 @@ export class Client {
             });
     }
 
-    protected processUserName(response: AxiosResponse): Promise<Anonymous7> {
+    protected processUserName(response: AxiosResponse): Promise<Anonymous8> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6490,7 +5827,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous7>(result200);
+            return Promise.resolve<Anonymous8>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -6572,7 +5909,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous7>(null as any);
+        return Promise.resolve<Anonymous8>(null as any);
     }
 
     /**
@@ -8452,8 +7789,11 @@ export class Client {
      * Login
      * @return Success
      */
-    usersLogin(body: Body17, cancelToken?: CancelToken | undefined): Promise<Token> {
-        let url_ = this.baseUrl + "/users/login";
+    authLogin(
+        body: Body17,
+        cancelToken?: CancelToken | undefined
+    ): Promise<LoginSuccess> {
+        let url_ = this.baseUrl + "/auth/login";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -8479,11 +7819,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processUsersLogin(_response);
+                return this.processAuthLogin(_response);
             });
     }
 
-    protected processUsersLogin(response: AxiosResponse): Promise<Token> {
+    protected processAuthLogin(response: AxiosResponse): Promise<LoginSuccess> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -8498,7 +7838,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Token>(result200);
+            return Promise.resolve<LoginSuccess>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -8592,15 +7932,134 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Token>(null as any);
+        return Promise.resolve<LoginSuccess>(null as any);
+    }
+
+    /**
+     * Logout
+     * @return OK
+     */
+    authLogout(cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/auth/logout";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "POST",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processAuthLogout(_response);
+            });
+    }
+
+    protected processAuthLogout(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
     }
 
     /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK> {
-        let url_ = this.baseUrl + "/users/register";
+    authRegister(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/auth/register";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -8626,11 +8085,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processUsersRegister(_response);
+                return this.processAuthRegister(_response);
             });
     }
 
-    protected processUsersRegister(response: AxiosResponse): Promise<OK> {
+    protected processAuthRegister(response: AxiosResponse): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -8734,8 +8193,11 @@ export class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body: Body19, cancelToken?: CancelToken | undefined): Promise<Token> {
-        let url_ = this.baseUrl + "/users/verify";
+    authVerify(
+        body: Body19,
+        cancelToken?: CancelToken | undefined
+    ): Promise<LoginSuccess> {
+        let url_ = this.baseUrl + "/auth/verify";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -8761,11 +8223,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processUsersVerify(_response);
+                return this.processAuthVerify(_response);
             });
     }
 
-    protected processUsersVerify(response: AxiosResponse): Promise<Token> {
+    protected processAuthVerify(response: AxiosResponse): Promise<LoginSuccess> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -8780,7 +8242,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Token>(result200);
+            return Promise.resolve<LoginSuccess>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -8862,15 +8324,15 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Token>(null as any);
+        return Promise.resolve<LoginSuccess>(null as any);
     }
 
     /**
      * Resend verification email
      * @return Success
      */
-    usersResend(body: Body20, cancelToken?: CancelToken | undefined): Promise<OK> {
-        let url_ = this.baseUrl + "/users/resend";
+    authResend(body: Body20, cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/auth/resend";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -8896,11 +8358,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processUsersResend(_response);
+                return this.processAuthResend(_response);
             });
     }
 
-    protected processUsersResend(response: AxiosResponse): Promise<OK> {
+    protected processAuthResend(response: AxiosResponse): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -9004,8 +8466,8 @@ export class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body: Body21, cancelToken?: CancelToken | undefined): Promise<OK> {
-        let url_ = this.baseUrl + "/users/forgot";
+    authForgot(body: Body21, cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/auth/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -9031,11 +8493,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processUsersForgot(_response);
+                return this.processAuthForgot(_response);
             });
     }
 
-    protected processUsersForgot(response: AxiosResponse): Promise<OK> {
+    protected processAuthForgot(response: AxiosResponse): Promise<OK> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -9139,8 +8601,11 @@ export class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body: Body22, cancelToken?: CancelToken | undefined): Promise<Token> {
-        let url_ = this.baseUrl + "/users/reset";
+    authReset(
+        body: Body22,
+        cancelToken?: CancelToken | undefined
+    ): Promise<LoginSuccess> {
+        let url_ = this.baseUrl + "/auth/reset";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -9166,11 +8631,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processUsersReset(_response);
+                return this.processAuthReset(_response);
             });
     }
 
-    protected processUsersReset(response: AxiosResponse): Promise<Token> {
+    protected processAuthReset(response: AxiosResponse): Promise<LoginSuccess> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -9185,7 +8650,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Token>(result200);
+            return Promise.resolve<LoginSuccess>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -9267,7 +8732,801 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Token>(null as any);
+        return Promise.resolve<LoginSuccess>(null as any);
+    }
+
+    /**
+     * Get current session
+     * @return Success
+     */
+    authSessionCurrent(cancelToken?: CancelToken | undefined): Promise<Session> {
+        let url_ = this.baseUrl + "/auth/session";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processAuthSessionCurrent(_response);
+            });
+    }
+
+    protected processAuthSessionCurrent(response: AxiosResponse): Promise<Session> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Session>(result200);
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Session>(null as any);
+    }
+
+    /**
+     * Get active sessions
+     * @return Success
+     */
+    authSessions(cancelToken?: CancelToken | undefined): Promise<Session[]> {
+        let url_ = this.baseUrl + "/auth/sessions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processAuthSessions(_response);
+            });
+    }
+
+    protected processAuthSessions(response: AxiosResponse): Promise<Session[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Session[]>(result200);
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Session[]>(null as any);
+    }
+
+    /**
+     * Get session by id
+     * @param id session id
+     * @return Success
+     */
+    authSession(id: string, cancelToken?: CancelToken | undefined): Promise<Session> {
+        let url_ = this.baseUrl + "/auth/sessions/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processAuthSession(_response);
+            });
+    }
+
+    protected processAuthSession(response: AxiosResponse): Promise<Session> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Session>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Session not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Session>(null as any);
+    }
+
+    /**
+     * Revoke session by id
+     * @param id session id
+     * @return OK
+     */
+    authSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK> {
+        let url_ = this.baseUrl + "/auth/sessions/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "DELETE",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processAuthSessionRevoke(_response);
+            });
+    }
+
+    protected processAuthSessionRevoke(response: AxiosResponse): Promise<OK> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Session not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "Failed to revoke an older session",
+                status,
+                _responseText,
+                _headers,
+                result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<OK>(null as any);
+    }
+
+    /**
+     * Refresh session
+     * @param id session id
+     * @return Success
+     */
+    authSessionsRefresh(
+        id: string,
+        body: Body23,
+        cancelToken?: CancelToken | undefined
+    ): Promise<Anonymous9> {
+        let url_ = this.baseUrl + "/auth/sessions/{id}/refresh";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processAuthSessionsRefresh(_response);
+            });
+    }
+
+    protected processAuthSessionsRefresh(response: AxiosResponse): Promise<Anonymous9> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Anonymous9>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Invalid refresh token",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Refreshing with another ip is not allowed (sameIp is enabled for this session)",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Session not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Anonymous9>(null as any);
+    }
+
+    /**
+     * Get server public key
+     * @return Success
+     */
+    serverPublicKey(cancelToken?: CancelToken | undefined): Promise<string> {
+        let url_ = this.baseUrl + "/server/publickey";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "text/plain",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processServerPublicKey(_response);
+            });
+    }
+
+    protected processServerPublicKey(response: AxiosResponse): Promise<string> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = resultData200;
+            return Promise.resolve<string>(result200);
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<string>(null as any);
     }
 }
 
@@ -9275,9 +9534,28 @@ export interface OK {
     success: boolean;
 }
 
-export interface Token {
-    /** jwt token */
+export interface Session {
+    /** 30-digit random id */
+    id: string;
+    /** session created date */
+    createdAt: Date;
+    /** session expire date */
+    exp: Date;
+    /** user agent used to create the session */
+    userAgent: string;
+    /** whether the session is restricted to a same ip */
+    sameIp?: boolean;
+}
+
+export interface LoginSuccess extends Session {
     token: string;
+    refreshToken: string;
+    /** sha256 hash of client's ip */
+    ip: string;
+}
+
+export function isLoginSuccess(object: any): object is LoginSuccess {
+    return object && object[""] === "LoginSuccess";
 }
 
 export interface ErrorDto {
@@ -9305,19 +9583,6 @@ export interface User {
     name: string;
     sex: UserSex;
     role: UserRole;
-}
-
-export interface Session {
-    /** 30-digit random id */
-    id: string;
-    /** session created date */
-    createdAt: Date;
-    /** session expire date */
-    exp: Date;
-    /** user agent used to create the session */
-    userAgent: string;
-    /** whether the session is restricted to a same ip */
-    sameIp?: boolean;
 }
 
 /** Admin actions / responses */
@@ -9603,6 +9868,11 @@ export interface Body22 {
     sameIp?: boolean;
 }
 
+export interface Body23 {
+    userId: number;
+    refreshToken: string;
+}
+
 export interface Anonymous {
     id: number;
 }
@@ -9638,7 +9908,16 @@ export function isAnonymous6(object: any): object is Anonymous6 {
 }
 
 export interface Anonymous7 {
+    token: string;
+}
+
+export interface Anonymous8 {
     name: string;
+}
+
+export interface Anonymous9 {
+    token: string;
+    refreshToken: string;
 }
 
 export interface Options {
