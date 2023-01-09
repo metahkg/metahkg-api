@@ -754,7 +754,6 @@ export interface Body22 {
     sameIp?: boolean;
 }
 export interface Body23 {
-    userId: number;
     refreshToken: string;
 }
 export interface Anonymous {

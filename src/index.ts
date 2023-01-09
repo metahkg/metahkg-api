@@ -9869,7 +9869,6 @@ export interface Body22 {
 }
 
 export interface Body23 {
-    userId: number;
     refreshToken: string;
 }
 
