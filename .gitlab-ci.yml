@@ -58,7 +58,7 @@ tagging:
       when: never
     - if: $CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "master"
       changes:
-	- package.json
+        - package.json
 
 publish:
   image: node:latest
