@@ -9284,7 +9284,7 @@ export class Client {
      * @param id session id
      * @return Success
      */
-    authSessionsRefresh(
+    authSessionRefresh(
         id: string,
         body: Body23,
         cancelToken?: CancelToken | undefined
@@ -9318,11 +9318,11 @@ export class Client {
                 }
             })
             .then((_response: AxiosResponse) => {
-                return this.processAuthSessionsRefresh(_response);
+                return this.processAuthSessionRefresh(_response);
             });
     }
 
-    protected processAuthSessionsRefresh(response: AxiosResponse): Promise<Anonymous9> {
+    protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous9> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -9535,7 +9535,7 @@ export interface OK {
 }
 
 export interface Session {
-    /** 30-digit random id */
+    /** 30-digit random session id */
     id: string;
     /** session created date */
     createdAt: Date;
@@ -9543,7 +9543,6 @@ export interface Session {
     exp: Date;
     /** user agent used to create the session */
     userAgent: string;
-    /** whether the session is restricted to a same ip */
     sameIp?: boolean;
 }
 
@@ -9842,7 +9841,6 @@ export interface Body18 {
 
 export interface Body19 {
     email: string;
-    /** Verification code sent to email */
     code: string;
     rtoken: string;
     sameIp?: boolean;
@@ -9860,11 +9858,9 @@ export interface Body21 {
 
 export interface Body22 {
     email: string;
-    /** Verification code sent to email */
     code: string;
     password: string;
     rtoken: string;
-    /** whether the session is restricted to a same ip */
     sameIp?: boolean;
 }
 

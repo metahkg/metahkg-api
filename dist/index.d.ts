@@ -460,8 +460,8 @@ export declare class Client {
      * @param id session id
      * @return Success
      */
-    authSessionsRefresh(id: string, body: Body23, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
-    protected processAuthSessionsRefresh(response: AxiosResponse): Promise<Anonymous9>;
+    authSessionRefresh(id: string, body: Body23, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
+    protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous9>;
     /**
      * Get server public key
      * @return Success
@@ -473,7 +473,7 @@ export interface OK {
     success: boolean;
 }
 export interface Session {
-    /** 30-digit random id */
+    /** 30-digit random session id */
     id: string;
     /** session created date */
     createdAt: Date;
@@ -481,7 +481,6 @@ export interface Session {
     exp: Date;
     /** user agent used to create the session */
     userAgent: string;
-    /** whether the session is restricted to a same ip */
     sameIp?: boolean;
 }
 export interface LoginSuccess extends Session {
@@ -731,7 +730,6 @@ export interface Body18 {
 }
 export interface Body19 {
     email: string;
-    /** Verification code sent to email */
     code: string;
     rtoken: string;
     sameIp?: boolean;
@@ -746,11 +744,9 @@ export interface Body21 {
 }
 export interface Body22 {
     email: string;
-    /** Verification code sent to email */
     code: string;
     password: string;
     rtoken: string;
-    /** whether the session is restricted to a same ip */
     sameIp?: boolean;
 }
 export interface Body23 {

@@ -6614,7 +6614,7 @@ class Client {
      * @param id session id
      * @return Success
      */
-    authSessionsRefresh(id, body, cancelToken) {
+    authSessionRefresh(id, body, cancelToken) {
         let url_ = this.baseUrl + "/auth/sessions/{id}/refresh";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -6642,10 +6642,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processAuthSessionsRefresh(_response);
+            return this.processAuthSessionRefresh(_response);
         });
     }
-    processAuthSessionsRefresh(response) {
+    processAuthSessionRefresh(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
