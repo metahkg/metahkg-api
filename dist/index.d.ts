@@ -463,6 +463,12 @@ export declare class Client {
     authSessionRefresh(id: string, body: Body23, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
     protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous9>;
     /**
+     * Get server config
+     * @return Success
+     */
+    serverConfig(cancelToken?: CancelToken | undefined): Promise<ServerConfig>;
+    protected processServerConfig(response: AxiosResponse): Promise<ServerConfig>;
+    /**
      * Get server public key
      * @return Success
      */
@@ -495,6 +501,8 @@ export interface ErrorDto {
     statusCode: number;
     /** error message */
     error: string;
+    /** detailed error message */
+    message?: string;
 }
 export interface Notification {
     /** title of the notification */
@@ -631,6 +639,20 @@ export interface Star {
     id: number;
     /** date when star was created */
     date: Date;
+}
+export declare type RegisterMode = "normal" | "none" | "invite";
+export declare type VisibilityMode = "public" | "internal";
+export interface ServerConfig {
+    visibility: VisibilityMode;
+    register: Register;
+    /** the domain this instance of metahkg is on */
+    domain: string;
+    /** the domain for metahkg links */
+    linksDomain: string;
+    /** vapid public key (for notifications) */
+    vapidPublicKey: string;
+    /** whether cors is enabled */
+    cors: boolean;
 }
 export interface Body {
     title: string;
@@ -816,6 +838,11 @@ export interface Conversation extends Comment {
     score?: number;
 }
 export declare function isConversation(object: any): object is Conversation;
+export interface Register {
+    mode: RegisterMode;
+    /** allowed domains */
+    domains?: string[];
+}
 export interface Keys {
     /** auth key */
     auth: string;

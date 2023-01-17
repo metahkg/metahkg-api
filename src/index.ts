@@ -100,6 +100,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -405,6 +417,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -554,6 +578,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -710,6 +746,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -865,6 +913,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -1012,6 +1072,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -1158,6 +1230,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -2137,6 +2221,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -2296,6 +2392,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -2457,6 +2565,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -2611,6 +2731,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -2767,6 +2899,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -2910,6 +3054,18 @@ export class Client {
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
             return Promise.resolve<Anonymous3>(result200);
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -3053,6 +3209,30 @@ export class Client {
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
             return Promise.resolve<Anonymous4[]>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -3213,6 +3393,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -3361,6 +3553,18 @@ export class Client {
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
             return Promise.resolve<OK>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
@@ -4738,6 +4942,18 @@ export class Client {
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
             return Promise.resolve<Category[]>(result200);
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -4860,6 +5076,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -4996,6 +5224,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 404) {
             const _responseText = response.data;
             let result404: any = null;
@@ -5126,6 +5366,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -5261,6 +5513,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -5415,6 +5679,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -5549,6 +5825,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -5840,6 +6128,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -6001,6 +6301,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -6488,6 +6800,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -7252,6 +7576,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -7398,6 +7734,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -7554,6 +7902,18 @@ export class Client {
                 _headers,
                 result400
             );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
+            );
         } else if (status === 403) {
             const _responseText = response.data;
             let result403: any = null;
@@ -7700,6 +8060,18 @@ export class Client {
                 _responseText,
                 _headers,
                 result400
+            );
+        } else if (status === 401) {
+            const _responseText = response.data;
+            let result401: any = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException(
+                "Unauthorized",
+                status,
+                _responseText,
+                _headers,
+                result401
             );
         } else if (status === 403) {
             const _responseText = response.data;
@@ -9435,6 +9807,101 @@ export class Client {
     }
 
     /**
+     * Get server config
+     * @return Success
+     */
+    serverConfig(cancelToken?: CancelToken | undefined): Promise<ServerConfig> {
+        let url_ = this.baseUrl + "/server/config";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processServerConfig(_response);
+            });
+    }
+
+    protected processServerConfig(response: AxiosResponse): Promise<ServerConfig> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<ServerConfig>(result200);
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<ServerConfig>(null as any);
+    }
+
+    /**
      * Get server public key
      * @return Success
      */
@@ -9562,6 +10029,8 @@ export interface ErrorDto {
     statusCode: number;
     /** error message */
     error: string;
+    /** detailed error message */
+    message?: string;
 }
 
 export interface Notification {
@@ -9718,6 +10187,23 @@ export interface Star {
     id: number;
     /** date when star was created */
     date: Date;
+}
+
+export type RegisterMode = "normal" | "none" | "invite";
+
+export type VisibilityMode = "public" | "internal";
+
+export interface ServerConfig {
+    visibility: VisibilityMode;
+    register: Register;
+    /** the domain this instance of metahkg is on */
+    domain: string;
+    /** the domain for metahkg links */
+    linksDomain: string;
+    /** vapid public key (for notifications) */
+    vapidPublicKey: string;
+    /** whether cors is enabled */
+    cors: boolean;
 }
 
 export interface Body {
@@ -9955,6 +10441,12 @@ export interface Conversation extends Comment {
 
 export function isConversation(object: any): object is Conversation {
     return object && object[""] === "Conversation";
+}
+
+export interface Register {
+    mode: RegisterMode;
+    /** allowed domains */
+    domains?: string[];
 }
 
 export interface Keys {
