@@ -98,5 +98,3 @@ build:
 
 include:
   - template: Auto-DevOps.gitlab-ci.yml
-    rules:
-      - if: $UPDATE != "true"
