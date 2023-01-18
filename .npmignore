@@ -5,7 +5,6 @@
 /.idea/
 /cyclonedx-npm-yarn.json
 /gl-sbom-npm-yarn.cdx.json
-/src/
 /yarn.lock
 /Dockerfile
 /patch.ts

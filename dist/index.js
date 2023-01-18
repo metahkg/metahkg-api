@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.isConversation = exports.isQuote = exports.isAnonymous6 = exports.isBlockedUser = exports.isFollowedUser = exports.Client = void 0;
+exports.ApiException = exports.isConversation = exports.isQuote = exports.isAnonymous6 = exports.isBlockedUser = exports.isFollowedUser = exports.isLoginSuccess = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -82,6 +82,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -306,6 +313,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -422,6 +436,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -529,6 +550,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -638,6 +666,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -743,6 +778,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -847,6 +889,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -1530,6 +1579,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -1641,6 +1697,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -1754,6 +1817,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -1862,6 +1932,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -1972,6 +2049,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -2074,6 +2158,13 @@ class Client {
             result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -2175,6 +2266,20 @@ class Client {
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -2289,6 +2394,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -2393,6 +2505,13 @@ class Client {
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
         }
         else if (status === 401) {
             const _responseText = response.data;
@@ -2663,484 +2782,6 @@ class Client {
             let resultData410 = _responseText;
             result410 = JSON.parse(resultData410);
             return throwException("Comment removed", status, _responseText, _headers, result410);
-        }
-        else if (status === 429) {
-            const _responseText = response.data;
-            let result429 = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException("Too many requests", status, _responseText, _headers, result429);
-        }
-        else if (status === 500) {
-            const _responseText = response.data;
-            let result500 = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException("Internal server error", status, _responseText, _headers, result500);
-        }
-        else if (status === 502) {
-            const _responseText = response.data;
-            let result502 = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException("Bad gateway", status, _responseText, _headers, result502);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
-     * Logout
-     * @return OK
-     */
-    meLogout(cancelToken) {
-        let url_ = this.baseUrl + "/me/logout";
-        url_ = url_.replace(/[?&]$/, "");
-        let options_ = {
-            method: "POST",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processMeLogout(_response);
-        });
-    }
-    processMeLogout(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 401) {
-            const _responseText = response.data;
-            let result401 = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-        }
-        else if (status === 403) {
-            const _responseText = response.data;
-            let result403 = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException("Forbidden: permission denied or user banned by an admin", status, _responseText, _headers, result403);
-        }
-        else if (status === 429) {
-            const _responseText = response.data;
-            let result429 = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException("Too many requests", status, _responseText, _headers, result429);
-        }
-        else if (status === 500) {
-            const _responseText = response.data;
-            let result500 = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException("Internal server error", status, _responseText, _headers, result500);
-        }
-        else if (status === 502) {
-            const _responseText = response.data;
-            let result502 = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException("Bad gateway", status, _responseText, _headers, result502);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
-     * Get current logged in session
-     * @return Success
-     */
-    meSessionCurrent(cancelToken) {
-        let url_ = this.baseUrl + "/me/session";
-        url_ = url_.replace(/[?&]$/, "");
-        let options_ = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processMeSessionCurrent(_response);
-        });
-    }
-    processMeSessionCurrent(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 401) {
-            const _responseText = response.data;
-            let result401 = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-        }
-        else if (status === 403) {
-            const _responseText = response.data;
-            let result403 = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException("Forbidden: permission denied or user banned by an admin", status, _responseText, _headers, result403);
-        }
-        else if (status === 429) {
-            const _responseText = response.data;
-            let result429 = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException("Too many requests", status, _responseText, _headers, result429);
-        }
-        else if (status === 500) {
-            const _responseText = response.data;
-            let result500 = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException("Internal server error", status, _responseText, _headers, result500);
-        }
-        else if (status === 502) {
-            const _responseText = response.data;
-            let result502 = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException("Bad gateway", status, _responseText, _headers, result502);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
-     * Get active sessions
-     * @return Success
-     */
-    meSessions(cancelToken) {
-        let url_ = this.baseUrl + "/me/sessions";
-        url_ = url_.replace(/[?&]$/, "");
-        let options_ = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processMeSessions(_response);
-        });
-    }
-    processMeSessions(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 401) {
-            const _responseText = response.data;
-            let result401 = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-        }
-        else if (status === 403) {
-            const _responseText = response.data;
-            let result403 = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException("Forbidden: permission denied or user banned by an admin", status, _responseText, _headers, result403);
-        }
-        else if (status === 429) {
-            const _responseText = response.data;
-            let result429 = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException("Too many requests", status, _responseText, _headers, result429);
-        }
-        else if (status === 500) {
-            const _responseText = response.data;
-            let result500 = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException("Internal server error", status, _responseText, _headers, result500);
-        }
-        else if (status === 502) {
-            const _responseText = response.data;
-            let result502 = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException("Bad gateway", status, _responseText, _headers, result502);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
-     * Get session by id
-     * @param id session id
-     * @return Success
-     */
-    meSession(id, cancelToken) {
-        let url_ = this.baseUrl + "/me/sessions/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-        let options_ = {
-            method: "GET",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processMeSession(_response);
-        });
-    }
-    processMeSession(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 400) {
-            const _responseText = response.data;
-            let result400 = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException("Invalid request", status, _responseText, _headers, result400);
-        }
-        else if (status === 401) {
-            const _responseText = response.data;
-            let result401 = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-        }
-        else if (status === 403) {
-            const _responseText = response.data;
-            let result403 = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException("Forbidden: permission denied or user banned by an admin", status, _responseText, _headers, result403);
-        }
-        else if (status === 404) {
-            const _responseText = response.data;
-            let result404 = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException("Session not found", status, _responseText, _headers, result404);
-        }
-        else if (status === 429) {
-            const _responseText = response.data;
-            let result429 = null;
-            let resultData429 = _responseText;
-            result429 = JSON.parse(resultData429);
-            return throwException("Too many requests", status, _responseText, _headers, result429);
-        }
-        else if (status === 500) {
-            const _responseText = response.data;
-            let result500 = null;
-            let resultData500 = _responseText;
-            result500 = JSON.parse(resultData500);
-            return throwException("Internal server error", status, _responseText, _headers, result500);
-        }
-        else if (status === 502) {
-            const _responseText = response.data;
-            let result502 = null;
-            let resultData502 = _responseText;
-            result502 = JSON.parse(resultData502);
-            return throwException("Bad gateway", status, _responseText, _headers, result502);
-        }
-        else if (status !== 200 && status !== 204) {
-            const _responseText = response.data;
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-        }
-        return Promise.resolve(null);
-    }
-    /**
-     * Revoke session by id
-     * @param id session id
-     * @return OK
-     */
-    meSessionRevoke(id, cancelToken) {
-        let url_ = this.baseUrl + "/me/sessions/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-        let options_ = {
-            method: "DELETE",
-            url: url_,
-            headers: {
-                Accept: "application/json",
-            },
-            cancelToken,
-        };
-        return this.instance
-            .request(options_)
-            .catch((_error) => {
-            if (isAxiosError(_error) && _error.response) {
-                return _error.response;
-            }
-            else {
-                throw _error;
-            }
-        })
-            .then((_response) => {
-            return this.processMeSessionRevoke(_response);
-        });
-    }
-    processMeSessionRevoke(response) {
-        const status = response.status;
-        let _headers = {};
-        if (response.headers && typeof response.headers === "object") {
-            for (let k in response.headers) {
-                if (response.headers.hasOwnProperty(k)) {
-                    _headers[k] = response.headers[k];
-                }
-            }
-        }
-        if (status === 200) {
-            const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
-        }
-        else if (status === 400) {
-            const _responseText = response.data;
-            let result400 = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException("Invalid request", status, _responseText, _headers, result400);
-        }
-        else if (status === 401) {
-            const _responseText = response.data;
-            let result401 = null;
-            let resultData401 = _responseText;
-            result401 = JSON.parse(resultData401);
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-        }
-        else if (status === 403) {
-            const _responseText = response.data;
-            let result403 = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
-            return throwException("Forbidden: permission denied or user banned by an admin", status, _responseText, _headers, result403);
-        }
-        else if (status === 404) {
-            const _responseText = response.data;
-            let result404 = null;
-            let resultData404 = _responseText;
-            result404 = JSON.parse(resultData404);
-            return throwException("Session not found", status, _responseText, _headers, result404);
-        }
-        else if (status === 409) {
-            const _responseText = response.data;
-            let result409 = null;
-            let resultData409 = _responseText;
-            result409 = JSON.parse(resultData409);
-            return throwException("Failed to revoke an older session", status, _responseText, _headers, result409);
         }
         else if (status === 429) {
             const _responseText = response.data;
@@ -3852,6 +3493,13 @@ class Client {
             result200 = JSON.parse(resultData200);
             return Promise.resolve(result200);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -3941,6 +3589,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -4040,6 +3695,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 404) {
             const _responseText = response.data;
             let result404 = null;
@@ -4133,6 +3795,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -4231,6 +3900,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -4345,6 +4021,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -4442,6 +4125,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -4649,6 +4339,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -4771,6 +4468,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -5115,6 +4819,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -5654,6 +5365,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -5758,6 +5476,13 @@ class Client {
             let resultData400 = _responseText;
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
         }
         else if (status === 403) {
             const _responseText = response.data;
@@ -5867,6 +5592,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -5972,6 +5704,13 @@ class Client {
             result400 = JSON.parse(resultData400);
             return throwException("Invalid request", status, _responseText, _headers, result400);
         }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
         else if (status === 403) {
             const _responseText = response.data;
             let result403 = null;
@@ -6024,8 +5763,8 @@ class Client {
      * Login
      * @return Success
      */
-    usersLogin(body, cancelToken) {
-        let url_ = this.baseUrl + "/users/login";
+    authLogin(body, cancelToken) {
+        let url_ = this.baseUrl + "/auth/login";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
         let options_ = {
@@ -6049,10 +5788,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUsersLogin(_response);
+            return this.processAuthLogin(_response);
         });
     }
-    processUsersLogin(response) {
+    processAuthLogin(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6125,11 +5864,98 @@ class Client {
         return Promise.resolve(null);
     }
     /**
+     * Logout
+     * @return OK
+     */
+    authLogout(cancelToken) {
+        let url_ = this.baseUrl + "/auth/logout";
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "POST",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processAuthLogout(_response);
+        });
+    }
+    processAuthLogout(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden: permission denied or user banned by an admin", status, _responseText, _headers, result403);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
      * Register
      * @return Success, verification email sent.
      */
-    usersRegister(body, cancelToken) {
-        let url_ = this.baseUrl + "/users/register";
+    authRegister(body, cancelToken) {
+        let url_ = this.baseUrl + "/auth/register";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
         let options_ = {
@@ -6153,10 +5979,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUsersRegister(_response);
+            return this.processAuthRegister(_response);
         });
     }
-    processUsersRegister(response) {
+    processAuthRegister(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6225,8 +6051,8 @@ class Client {
      * Verify email
      * @return Success
      */
-    usersVerify(body, cancelToken) {
-        let url_ = this.baseUrl + "/users/verify";
+    authVerify(body, cancelToken) {
+        let url_ = this.baseUrl + "/auth/verify";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
         let options_ = {
@@ -6250,10 +6076,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUsersVerify(_response);
+            return this.processAuthVerify(_response);
         });
     }
-    processUsersVerify(response) {
+    processAuthVerify(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6322,8 +6148,8 @@ class Client {
      * Resend verification email
      * @return Success
      */
-    usersResend(body, cancelToken) {
-        let url_ = this.baseUrl + "/users/resend";
+    authResend(body, cancelToken) {
+        let url_ = this.baseUrl + "/auth/resend";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
         let options_ = {
@@ -6347,10 +6173,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUsersResend(_response);
+            return this.processAuthResend(_response);
         });
     }
-    processUsersResend(response) {
+    processAuthResend(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6419,8 +6245,8 @@ class Client {
      * Forgot password
      * @return Success
      */
-    usersForgot(body, cancelToken) {
-        let url_ = this.baseUrl + "/users/forgot";
+    authForgot(body, cancelToken) {
+        let url_ = this.baseUrl + "/auth/forgot";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
         let options_ = {
@@ -6444,10 +6270,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUsersForgot(_response);
+            return this.processAuthForgot(_response);
         });
     }
-    processUsersForgot(response) {
+    processAuthForgot(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6516,8 +6342,8 @@ class Client {
      * Reset password
      * @return Success
      */
-    usersReset(body, cancelToken) {
-        let url_ = this.baseUrl + "/users/reset";
+    authReset(body, cancelToken) {
+        let url_ = this.baseUrl + "/auth/reset";
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
         let options_ = {
@@ -6541,10 +6367,10 @@ class Client {
             }
         })
             .then((_response) => {
-            return this.processUsersReset(_response);
+            return this.processAuthReset(_response);
         });
     }
-    processUsersReset(response) {
+    processAuthReset(response) {
         const status = response.status;
         let _headers = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6609,8 +6435,657 @@ class Client {
         }
         return Promise.resolve(null);
     }
+    /**
+     * Get current session
+     * @return Success
+     */
+    authSessionCurrent(cancelToken) {
+        let url_ = this.baseUrl + "/auth/session";
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processAuthSessionCurrent(_response);
+        });
+    }
+    processAuthSessionCurrent(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden: permission denied or user banned by an admin", status, _responseText, _headers, result403);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Get active sessions
+     * @return Success
+     */
+    authSessions(cancelToken) {
+        let url_ = this.baseUrl + "/auth/sessions";
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processAuthSessions(_response);
+        });
+    }
+    processAuthSessions(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden: permission denied or user banned by an admin", status, _responseText, _headers, result403);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Get session by id
+     * @param id session id
+     * @return Success
+     */
+    authSession(id, cancelToken) {
+        let url_ = this.baseUrl + "/auth/sessions/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processAuthSession(_response);
+        });
+    }
+    processAuthSession(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden: permission denied or user banned by an admin", status, _responseText, _headers, result403);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("Session not found", status, _responseText, _headers, result404);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Revoke session by id
+     * @param id session id
+     * @return OK
+     */
+    authSessionRevoke(id, cancelToken) {
+        let url_ = this.baseUrl + "/auth/sessions/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "DELETE",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processAuthSessionRevoke(_response);
+        });
+    }
+    processAuthSessionRevoke(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Forbidden: permission denied or user banned by an admin", status, _responseText, _headers, result403);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("Session not found", status, _responseText, _headers, result404);
+        }
+        else if (status === 409) {
+            const _responseText = response.data;
+            let result409 = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException("Failed to revoke an older session", status, _responseText, _headers, result409);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Refresh session
+     * @param id session id
+     * @return Success
+     */
+    authSessionRefresh(id, body, cancelToken) {
+        let url_ = this.baseUrl + "/auth/sessions/{id}/refresh";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processAuthSessionRefresh(_response);
+        });
+    }
+    processAuthSessionRefresh(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 400) {
+            const _responseText = response.data;
+            let result400 = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException("Invalid request", status, _responseText, _headers, result400);
+        }
+        else if (status === 401) {
+            const _responseText = response.data;
+            let result401 = null;
+            let resultData401 = _responseText;
+            result401 = JSON.parse(resultData401);
+            return throwException("Invalid refresh token", status, _responseText, _headers, result401);
+        }
+        else if (status === 403) {
+            const _responseText = response.data;
+            let result403 = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException("Refreshing with another ip is not allowed (sameIp is enabled for this session)", status, _responseText, _headers, result403);
+        }
+        else if (status === 404) {
+            const _responseText = response.data;
+            let result404 = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException("Session not found", status, _responseText, _headers, result404);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Get server config
+     * @return Success
+     */
+    serverConfig(cancelToken) {
+        let url_ = this.baseUrl + "/server/config";
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processServerConfig(_response);
+        });
+    }
+    processServerConfig(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve(result200);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
+    /**
+     * Get server public key
+     * @return Success
+     */
+    serverPublicKey(cancelToken) {
+        let url_ = this.baseUrl + "/server/publickey";
+        url_ = url_.replace(/[?&]$/, "");
+        let options_ = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "text/plain",
+            },
+            cancelToken,
+        };
+        return this.instance
+            .request(options_)
+            .catch((_error) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            }
+            else {
+                throw _error;
+            }
+        })
+            .then((_response) => {
+            return this.processServerPublicKey(_response);
+        });
+    }
+    processServerPublicKey(response) {
+        const status = response.status;
+        let _headers = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200 = null;
+            let resultData200 = _responseText;
+            result200 = resultData200;
+            return Promise.resolve(result200);
+        }
+        else if (status === 429) {
+            const _responseText = response.data;
+            let result429 = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException("Too many requests", status, _responseText, _headers, result429);
+        }
+        else if (status === 500) {
+            const _responseText = response.data;
+            let result500 = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException("Internal server error", status, _responseText, _headers, result500);
+        }
+        else if (status === 502) {
+            const _responseText = response.data;
+            let result502 = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException("Bad gateway", status, _responseText, _headers, result502);
+        }
+        else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve(null);
+    }
 }
 exports.Client = Client;
+function isLoginSuccess(object) {
+    return object && object[""] === "LoginSuccess";
+}
+exports.isLoginSuccess = isLoginSuccess;
 function isFollowedUser(object) {
     return object && object[""] === "FollowedUser";
 }
