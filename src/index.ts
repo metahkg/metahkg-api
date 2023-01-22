@@ -10089,10 +10089,12 @@ export interface Category {
     name: string;
     /** category tags */
     tags?: string[];
-    /** category is hidden */
-    hidden?: boolean;
-    /** category is pinned */
+    /** whether category is pinned */
     pinned?: boolean;
+    /** whether the category is hidden */
+    hidden?: boolean;
+    /** whether the category is nsfw */
+    nsfw?: boolean;
 }
 
 export interface Image {
@@ -10268,15 +10270,18 @@ export interface Body10 {
 
 export interface Body11 {
     name: string;
-    hidden?: boolean;
     tags?: string[];
     pinned?: boolean;
+    hidden?: boolean;
+    nsfw?: boolean;
 }
 
 export interface Body12 {
     name?: string;
     tags?: string[];
     pinned?: boolean;
+    hidden?: boolean;
+    nsfw?: boolean;
 }
 
 export type Sort3 = "latest" | "viral";
