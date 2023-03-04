@@ -30,7 +30,7 @@ export class Client {
         this.baseUrl =
             baseUrl !== undefined && baseUrl !== null
                 ? baseUrl
-                : "https://metahkg.org/api";
+                : "https://dev.metahkg.org/api";
     }
 
     /**
@@ -678,13 +678,13 @@ export class Client {
     /**
      * Edit thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
     threadEdit(
         id: number,
         body: Body2,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -699,7 +699,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -718,7 +717,7 @@ export class Client {
             });
     }
 
-    protected processThreadEdit(response: AxiosResponse): Promise<OK> {
+    protected processThreadEdit(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -728,12 +727,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -839,19 +835,19 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Delete thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
     threadDelete(
         id: number,
         body: Body3,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -866,7 +862,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -885,7 +880,7 @@ export class Client {
             });
     }
 
-    protected processThreadDelete(response: AxiosResponse): Promise<OK> {
+    protected processThreadDelete(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -895,12 +890,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -1006,7 +998,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -1330,13 +1322,13 @@ export class Client {
     /**
      * Pin comment
      * @param id thread id
-     * @return OK
+     * @return Success
      */
     threadPin(
         id: number,
         body: Body4,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}/pin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1351,7 +1343,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -1370,7 +1361,7 @@ export class Client {
             });
     }
 
-    protected processThreadPin(response: AxiosResponse): Promise<OK> {
+    protected processThreadPin(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1380,12 +1371,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -1491,15 +1479,15 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Unpin comment
      * @param id thread id
-     * @return OK
+     * @return Success
      */
-    threadUnpin(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    threadUnpin(id: number, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}/pin";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1509,9 +1497,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "DELETE",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -1529,7 +1515,7 @@ export class Client {
             });
     }
 
-    protected processThreadUnpin(response: AxiosResponse): Promise<OK> {
+    protected processThreadUnpin(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1539,12 +1525,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -1650,15 +1633,15 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Star thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
-    threadStar(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    threadStar(id: number, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}/star";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1668,9 +1651,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -1688,7 +1669,7 @@ export class Client {
             });
     }
 
-    protected processThreadStar(response: AxiosResponse): Promise<OK> {
+    protected processThreadStar(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1698,12 +1679,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -1821,15 +1799,15 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Unstar thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
-    threadUnstar(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    threadUnstar(id: number, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}/unstar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1839,9 +1817,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -1859,7 +1835,7 @@ export class Client {
             });
     }
 
-    protected processThreadUnstar(response: AxiosResponse): Promise<OK> {
+    protected processThreadUnstar(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -1869,12 +1845,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -1992,7 +1965,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -2321,14 +2294,14 @@ export class Client {
      * Edit comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
     commentEdit(
         id: number,
         cid: number,
         body: Body6,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}/comments/{cid}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2346,7 +2319,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -2365,7 +2337,7 @@ export class Client {
             });
     }
 
-    protected processCommentEdit(response: AxiosResponse): Promise<OK> {
+    protected processCommentEdit(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2375,12 +2347,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -2486,21 +2455,21 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Delete comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
     commentDelete(
         id: number,
         cid: number,
         body: Body7,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}/comments/{cid}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -2518,7 +2487,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -2537,7 +2505,7 @@ export class Client {
             });
     }
 
-    protected processCommentDelete(response: AxiosResponse): Promise<OK> {
+    protected processCommentDelete(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -2547,12 +2515,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -2658,7 +2623,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -3493,14 +3458,14 @@ export class Client {
      * Vote on comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
     commentVote(
         body: Body8,
         id: number,
         cid: number,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/vote";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -3518,7 +3483,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -3537,7 +3501,7 @@ export class Client {
             });
     }
 
-    protected processCommentVote(response: AxiosResponse): Promise<OK> {
+    protected processCommentVote(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3547,12 +3511,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -3658,21 +3619,21 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Emotion on comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
     commentEmotionSet(
         id: number,
         cid: number,
         body: Body9,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/emotion";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -3690,7 +3651,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -3709,7 +3669,7 @@ export class Client {
             });
     }
 
-    protected processCommentEmotionSet(response: AxiosResponse): Promise<OK> {
+    protected processCommentEmotionSet(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3719,12 +3679,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -3830,20 +3787,20 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Delete emotion
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
     commentEmotionDelete(
         id: number,
         cid: number,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/emotion";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -3856,9 +3813,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "DELETE",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -3876,7 +3831,7 @@ export class Client {
             });
     }
 
-    protected processCommentEmotionDelete(response: AxiosResponse): Promise<OK> {
+    protected processCommentEmotionDelete(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -3886,12 +3841,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -4009,7 +3961,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -4133,12 +4085,12 @@ export class Client {
 
     /**
      * Subscribe to notification
-     * @return OK
+     * @return Success
      */
     meNotificationsSubscribe(
         body: Body10,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/me/notifications/subscribe";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -4150,7 +4102,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -4169,7 +4120,7 @@ export class Client {
             });
     }
 
-    protected processMeNotificationsSubscribe(response: AxiosResponse): Promise<OK> {
+    protected processMeNotificationsSubscribe(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4179,12 +4130,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -4266,23 +4214,21 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Unsubscribe to notification
-     * @return OK
+     * @return Success
      */
-    meNotificationsUnsubscribe(cancelToken?: CancelToken | undefined): Promise<OK> {
+    meNotificationsUnsubscribe(cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/me/notifications/unsubscribe";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -4300,7 +4246,7 @@ export class Client {
             });
     }
 
-    protected processMeNotificationsUnsubscribe(response: AxiosResponse): Promise<OK> {
+    protected processMeNotificationsUnsubscribe(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4310,12 +4256,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -4397,7 +4340,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -5016,9 +4959,9 @@ export class Client {
 
     /**
      * Create category
-     * @return OK
+     * @return Success
      */
-    categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK> {
+    categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/categories";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5030,7 +4973,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -5049,7 +4991,7 @@ export class Client {
             });
     }
 
-    protected processCategoryCreate(response: AxiosResponse): Promise<OK> {
+    protected processCategoryCreate(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -5059,12 +5001,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -5158,7 +5097,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -5299,13 +5238,13 @@ export class Client {
     /**
      * Edit a category
      * @param id category id
-     * @return OK
+     * @return Success
      */
     categoryEdit(
         id: number,
         body: Body12,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/categories/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -5320,7 +5259,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -5339,7 +5277,7 @@ export class Client {
             });
     }
 
-    protected processCategoryEdit(response: AxiosResponse): Promise<OK> {
+    protected processCategoryEdit(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -5349,12 +5287,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -5448,15 +5383,15 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Delete a category
      * @param id category id
-     * @return OK
+     * @return Success
      */
-    categoryDelete(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    categoryDelete(id: number, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/categories/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -5466,9 +5401,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "DELETE",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -5486,7 +5419,7 @@ export class Client {
             });
     }
 
-    protected processCategoryDelete(response: AxiosResponse): Promise<OK> {
+    protected processCategoryDelete(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -5496,12 +5429,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -5595,7 +5525,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -6390,13 +6320,13 @@ export class Client {
      * Upload avatar
      * @param id user id
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
-     * @return OK
+     * @return Success
      */
     userAvatarUpload(
         id: number,
         avatar?: FileParameter,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/users/{id}/avatar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -6417,9 +6347,7 @@ export class Client {
             data: content_,
             method: "PUT",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -6437,7 +6365,7 @@ export class Client {
             });
     }
 
-    protected processUserAvatarUpload(response: AxiosResponse): Promise<OK> {
+    protected processUserAvatarUpload(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6447,12 +6375,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -6570,15 +6495,15 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Delete avatar
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userAvatarDelete(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    userAvatarDelete(id: number, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/users/{id}/avatar";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -6588,9 +6513,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "DELETE",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -6608,7 +6531,7 @@ export class Client {
             });
     }
 
-    protected processUserAvatarDelete(response: AxiosResponse): Promise<OK> {
+    protected processUserAvatarDelete(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6618,12 +6541,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -6717,7 +6637,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -6888,9 +6808,9 @@ export class Client {
     /**
      * Follow user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userFollow(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    userFollow(id: number, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/users/{id}/follow";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -6900,9 +6820,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -6920,7 +6838,7 @@ export class Client {
             });
     }
 
-    protected processUserFollow(response: AxiosResponse): Promise<OK> {
+    protected processUserFollow(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6930,12 +6848,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -7041,15 +6956,15 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Unfollow user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userUnfollow(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    userUnfollow(id: number, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/users/{id}/unfollow";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -7059,9 +6974,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -7079,7 +6992,7 @@ export class Client {
             });
     }
 
-    protected processUserUnfollow(response: AxiosResponse): Promise<OK> {
+    protected processUserUnfollow(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -7089,12 +7002,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -7188,19 +7098,19 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Block user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userBlock(
         id: number,
         body: Body14,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/users/{id}/block";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -7215,7 +7125,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -7234,7 +7143,7 @@ export class Client {
             });
     }
 
-    protected processUserBlock(response: AxiosResponse): Promise<OK> {
+    protected processUserBlock(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -7244,12 +7153,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -7355,15 +7261,15 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Unblock user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userUnblock(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    userUnblock(id: number, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/users/{id}/unblock";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -7373,9 +7279,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -7393,7 +7297,7 @@ export class Client {
             });
     }
 
-    protected processUserUnblock(response: AxiosResponse): Promise<OK> {
+    protected processUserUnblock(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -7403,12 +7307,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -7502,19 +7403,19 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Mute user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userMute(
         id: number,
         body: Body15,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/users/{id}/mute";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -7529,7 +7430,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -7548,7 +7448,7 @@ export class Client {
             });
     }
 
-    protected processUserMute(response: AxiosResponse): Promise<OK> {
+    protected processUserMute(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -7558,12 +7458,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -7669,15 +7566,15 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Unmute user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userUnmute(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    userUnmute(id: number, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/users/{id}/unmute";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -7687,9 +7584,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -7707,7 +7602,7 @@ export class Client {
             });
     }
 
-    protected processUserUnmute(response: AxiosResponse): Promise<OK> {
+    protected processUserUnmute(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -7717,12 +7612,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -7828,19 +7720,19 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Ban user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userBan(
         id: number,
         body: Body16,
         cancelToken?: CancelToken | undefined
-    ): Promise<OK> {
+    ): Promise<void> {
         let url_ = this.baseUrl + "/users/{id}/ban";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -7855,7 +7747,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -7874,7 +7765,7 @@ export class Client {
             });
     }
 
-    protected processUserBan(response: AxiosResponse): Promise<OK> {
+    protected processUserBan(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -7884,12 +7775,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -7995,15 +7883,15 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Unban user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userUnban(id: number, cancelToken?: CancelToken | undefined): Promise<OK> {
+    userUnban(id: number, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/users/{id}/unban";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -8013,9 +7901,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -8033,7 +7919,7 @@ export class Client {
             });
     }
 
-    protected processUserUnban(response: AxiosResponse): Promise<OK> {
+    protected processUserUnban(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -8043,12 +7929,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -8154,7 +8037,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -8309,18 +8192,16 @@ export class Client {
 
     /**
      * Logout
-     * @return OK
+     * @return Success
      */
-    authLogout(cancelToken?: CancelToken | undefined): Promise<OK> {
+    authLogout(cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/auth/logout";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -8338,7 +8219,7 @@ export class Client {
             });
     }
 
-    protected processAuthLogout(response: AxiosResponse): Promise<OK> {
+    protected processAuthLogout(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -8348,12 +8229,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
@@ -8423,14 +8301,14 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Register
      * @return Success, verification email sent.
      */
-    authRegister(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK> {
+    authRegister(body: Body18, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/auth/register";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -8442,7 +8320,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -8461,7 +8338,7 @@ export class Client {
             });
     }
 
-    protected processAuthRegister(response: AxiosResponse): Promise<OK> {
+    protected processAuthRegister(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -8471,12 +8348,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -8558,7 +8432,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -8703,7 +8577,7 @@ export class Client {
      * Resend verification email
      * @return Success
      */
-    authResend(body: Body20, cancelToken?: CancelToken | undefined): Promise<OK> {
+    authResend(body: Body20, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/auth/resend";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -8715,7 +8589,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -8734,7 +8607,7 @@ export class Client {
             });
     }
 
-    protected processAuthResend(response: AxiosResponse): Promise<OK> {
+    protected processAuthResend(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -8744,12 +8617,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -8831,14 +8701,14 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
      * Forgot password
      * @return Success
      */
-    authForgot(body: Body21, cancelToken?: CancelToken | undefined): Promise<OK> {
+    authForgot(body: Body21, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/auth/forgot";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -8850,7 +8720,6 @@ export class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -8869,7 +8738,7 @@ export class Client {
             });
     }
 
-    protected processAuthForgot(response: AxiosResponse): Promise<OK> {
+    protected processAuthForgot(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -8879,12 +8748,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -8966,7 +8832,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -9495,9 +9361,9 @@ export class Client {
     /**
      * Revoke session by id
      * @param id session id
-     * @return OK
+     * @return Success
      */
-    authSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK> {
+    authSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/auth/sessions/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -9507,9 +9373,7 @@ export class Client {
         let options_: AxiosRequestConfig = {
             method: "DELETE",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
 
@@ -9527,7 +9391,7 @@ export class Client {
             });
     }
 
-    protected processAuthSessionRevoke(response: AxiosResponse): Promise<OK> {
+    protected processAuthSessionRevoke(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -9537,12 +9401,9 @@ export class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200: any = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve<OK>(result200);
+            return Promise.resolve<void>(null as any);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -9648,7 +9509,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<OK>(null as any);
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -9997,10 +9858,6 @@ export class Client {
     }
 }
 
-export interface OK {
-    success: boolean;
-}
-
 export interface Session {
     /** 30-digit random session id */
     id: string;
@@ -10089,10 +9946,12 @@ export interface Category {
     name: string;
     /** category tags */
     tags?: string[];
-    /** category is hidden */
-    hidden?: boolean;
-    /** category is pinned */
+    /** whether category is pinned */
     pinned?: boolean;
+    /** whether the category is hidden */
+    hidden?: boolean;
+    /** whether the category is nsfw */
+    nsfw?: boolean;
 }
 
 export interface Image {
@@ -10268,15 +10127,18 @@ export interface Body10 {
 
 export interface Body11 {
     name: string;
-    hidden?: boolean;
     tags?: string[];
     pinned?: boolean;
+    hidden?: boolean;
+    nsfw?: boolean;
 }
 
 export interface Body12 {
     name?: string;
     tags?: string[];
     pinned?: boolean;
+    hidden?: boolean;
+    nsfw?: boolean;
 }
 
 export type Sort3 = "latest" | "viral";

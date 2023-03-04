@@ -20,7 +20,7 @@ class Client {
         this.baseUrl =
             baseUrl !== undefined && baseUrl !== null
                 ? baseUrl
-                : "https://metahkg.org/api";
+                : "https://dev.metahkg.org/api";
     }
     /**
      * Get threads
@@ -494,7 +494,7 @@ class Client {
     /**
      * Edit thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
     threadEdit(id, body, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}";
@@ -509,7 +509,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -537,12 +536,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -609,7 +605,7 @@ class Client {
     /**
      * Delete thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
     threadDelete(id, body, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}";
@@ -624,7 +620,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -652,12 +647,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -948,7 +940,7 @@ class Client {
     /**
      * Pin comment
      * @param id thread id
-     * @return OK
+     * @return Success
      */
     threadPin(id, body, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}/pin";
@@ -963,7 +955,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -991,12 +982,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -1063,7 +1051,7 @@ class Client {
     /**
      * Unpin comment
      * @param id thread id
-     * @return OK
+     * @return Success
      */
     threadUnpin(id, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}/pin";
@@ -1074,9 +1062,7 @@ class Client {
         let options_ = {
             method: "DELETE",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -1103,12 +1089,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -1175,7 +1158,7 @@ class Client {
     /**
      * Star thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
     threadStar(id, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}/star";
@@ -1186,9 +1169,7 @@ class Client {
         let options_ = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -1215,12 +1196,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -1294,7 +1272,7 @@ class Client {
     /**
      * Unstar thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
     threadUnstar(id, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}/unstar";
@@ -1305,9 +1283,7 @@ class Client {
         let options_ = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -1334,12 +1310,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -1638,7 +1611,7 @@ class Client {
      * Edit comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
     commentEdit(id, cid, body, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}/comments/{cid}";
@@ -1656,7 +1629,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -1684,12 +1656,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -1757,7 +1726,7 @@ class Client {
      * Delete comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
     commentDelete(id, cid, body, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}/comments/{cid}";
@@ -1775,7 +1744,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -1803,12 +1771,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -2453,7 +2418,7 @@ class Client {
      * Vote on comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
     commentVote(body, id, cid, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/vote";
@@ -2471,7 +2436,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -2499,12 +2463,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -2572,7 +2533,7 @@ class Client {
      * Emotion on comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
     commentEmotionSet(id, cid, body, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/emotion";
@@ -2590,7 +2551,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -2618,12 +2578,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -2691,7 +2648,7 @@ class Client {
      * Delete emotion
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
     commentEmotionDelete(id, cid, cancelToken) {
         let url_ = this.baseUrl + "/threads/{id}/comments/{cid}/emotion";
@@ -2705,9 +2662,7 @@ class Client {
         let options_ = {
             method: "DELETE",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -2734,12 +2689,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -2899,7 +2851,7 @@ class Client {
     }
     /**
      * Subscribe to notification
-     * @return OK
+     * @return Success
      */
     meNotificationsSubscribe(body, cancelToken) {
         let url_ = this.baseUrl + "/me/notifications/subscribe";
@@ -2911,7 +2863,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -2939,12 +2890,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -2996,7 +2944,7 @@ class Client {
     }
     /**
      * Unsubscribe to notification
-     * @return OK
+     * @return Success
      */
     meNotificationsUnsubscribe(cancelToken) {
         let url_ = this.baseUrl + "/me/notifications/unsubscribe";
@@ -3004,9 +2952,7 @@ class Client {
         let options_ = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -3033,12 +2979,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -3536,7 +3479,7 @@ class Client {
     }
     /**
      * Create category
-     * @return OK
+     * @return Success
      */
     categoryCreate(body, cancelToken) {
         let url_ = this.baseUrl + "/categories";
@@ -3548,7 +3491,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -3576,12 +3518,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -3739,7 +3678,7 @@ class Client {
     /**
      * Edit a category
      * @param id category id
-     * @return OK
+     * @return Success
      */
     categoryEdit(id, body, cancelToken) {
         let url_ = this.baseUrl + "/categories/{id}";
@@ -3754,7 +3693,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -3782,12 +3720,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -3847,7 +3782,7 @@ class Client {
     /**
      * Delete a category
      * @param id category id
-     * @return OK
+     * @return Success
      */
     categoryDelete(id, cancelToken) {
         let url_ = this.baseUrl + "/categories/{id}";
@@ -3858,9 +3793,7 @@ class Client {
         let options_ = {
             method: "DELETE",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -3887,12 +3820,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -4521,7 +4451,7 @@ class Client {
      * Upload avatar
      * @param id user id
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
-     * @return OK
+     * @return Success
      */
     userAvatarUpload(id, avatar, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/avatar";
@@ -4538,9 +4468,7 @@ class Client {
             data: content_,
             method: "PUT",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -4567,12 +4495,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -4646,7 +4571,7 @@ class Client {
     /**
      * Delete avatar
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userAvatarDelete(id, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/avatar";
@@ -4657,9 +4582,7 @@ class Client {
         let options_ = {
             method: "DELETE",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -4686,12 +4609,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -4871,7 +4791,7 @@ class Client {
     /**
      * Follow user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userFollow(id, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/follow";
@@ -4882,9 +4802,7 @@ class Client {
         let options_ = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -4911,12 +4829,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -4983,7 +4898,7 @@ class Client {
     /**
      * Unfollow user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userUnfollow(id, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/unfollow";
@@ -4994,9 +4909,7 @@ class Client {
         let options_ = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -5023,12 +4936,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -5088,7 +4998,7 @@ class Client {
     /**
      * Block user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userBlock(id, body, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/block";
@@ -5103,7 +5013,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -5131,12 +5040,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -5203,7 +5109,7 @@ class Client {
     /**
      * Unblock user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userUnblock(id, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/unblock";
@@ -5214,9 +5120,7 @@ class Client {
         let options_ = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -5243,12 +5147,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -5308,7 +5209,7 @@ class Client {
     /**
      * Mute user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userMute(id, body, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/mute";
@@ -5323,7 +5224,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -5351,12 +5251,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -5423,7 +5320,7 @@ class Client {
     /**
      * Unmute user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userUnmute(id, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/unmute";
@@ -5434,9 +5331,7 @@ class Client {
         let options_ = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -5463,12 +5358,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -5535,7 +5427,7 @@ class Client {
     /**
      * Ban user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userBan(id, body, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/ban";
@@ -5550,7 +5442,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -5578,12 +5469,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -5650,7 +5538,7 @@ class Client {
     /**
      * Unban user
      * @param id user id
-     * @return OK
+     * @return Success
      */
     userUnban(id, cancelToken) {
         let url_ = this.baseUrl + "/users/{id}/unban";
@@ -5661,9 +5549,7 @@ class Client {
         let options_ = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -5690,12 +5576,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -5865,7 +5748,7 @@ class Client {
     }
     /**
      * Logout
-     * @return OK
+     * @return Success
      */
     authLogout(cancelToken) {
         let url_ = this.baseUrl + "/auth/logout";
@@ -5873,9 +5756,7 @@ class Client {
         let options_ = {
             method: "POST",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -5902,12 +5783,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 401) {
             const _responseText = response.data;
@@ -5964,7 +5842,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -5992,12 +5869,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -6158,7 +6032,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -6186,12 +6059,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -6255,7 +6125,6 @@ class Client {
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json",
             },
             cancelToken,
         };
@@ -6283,12 +6152,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;
@@ -6717,7 +6583,7 @@ class Client {
     /**
      * Revoke session by id
      * @param id session id
-     * @return OK
+     * @return Success
      */
     authSessionRevoke(id, cancelToken) {
         let url_ = this.baseUrl + "/auth/sessions/{id}";
@@ -6728,9 +6594,7 @@ class Client {
         let options_ = {
             method: "DELETE",
             url: url_,
-            headers: {
-                Accept: "application/json",
-            },
+            headers: {},
             cancelToken,
         };
         return this.instance
@@ -6757,12 +6621,9 @@ class Client {
                 }
             }
         }
-        if (status === 200) {
+        if (status === 204) {
             const _responseText = response.data;
-            let result200 = null;
-            let resultData200 = _responseText;
-            result200 = JSON.parse(resultData200);
-            return Promise.resolve(result200);
+            return Promise.resolve(null);
         }
         else if (status === 400) {
             const _responseText = response.data;

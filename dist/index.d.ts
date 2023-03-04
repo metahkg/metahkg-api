@@ -43,17 +43,17 @@ export declare class Client {
     /**
      * Edit thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
-    threadEdit(id: number, body: Body2, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processThreadEdit(response: AxiosResponse): Promise<OK>;
+    threadEdit(id: number, body: Body2, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processThreadEdit(response: AxiosResponse): Promise<void>;
     /**
      * Delete thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
-    threadDelete(id: number, body: Body3, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processThreadDelete(response: AxiosResponse): Promise<OK>;
+    threadDelete(id: number, body: Body3, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processThreadDelete(response: AxiosResponse): Promise<void>;
     /**
      * Get thread images
      * @param id thread id
@@ -71,31 +71,31 @@ export declare class Client {
     /**
      * Pin comment
      * @param id thread id
-     * @return OK
+     * @return Success
      */
-    threadPin(id: number, body: Body4, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processThreadPin(response: AxiosResponse): Promise<OK>;
+    threadPin(id: number, body: Body4, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processThreadPin(response: AxiosResponse): Promise<void>;
     /**
      * Unpin comment
      * @param id thread id
-     * @return OK
+     * @return Success
      */
-    threadUnpin(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processThreadUnpin(response: AxiosResponse): Promise<OK>;
+    threadUnpin(id: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processThreadUnpin(response: AxiosResponse): Promise<void>;
     /**
      * Star thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
-    threadStar(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processThreadStar(response: AxiosResponse): Promise<OK>;
+    threadStar(id: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processThreadStar(response: AxiosResponse): Promise<void>;
     /**
      * Unstar thread
      * @param id thread id
-     * @return OK
+     * @return Success
      */
-    threadUnstar(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processThreadUnstar(response: AxiosResponse): Promise<OK>;
+    threadUnstar(id: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processThreadUnstar(response: AxiosResponse): Promise<void>;
     /**
      * Create comment
      * @param id thread id
@@ -115,18 +115,18 @@ export declare class Client {
      * Edit comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
-    commentEdit(id: number, cid: number, body: Body6, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCommentEdit(response: AxiosResponse): Promise<OK>;
+    commentEdit(id: number, cid: number, body: Body6, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processCommentEdit(response: AxiosResponse): Promise<void>;
     /**
      * Delete comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
-    commentDelete(id: number, cid: number, body: Body7, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCommentDelete(response: AxiosResponse): Promise<OK>;
+    commentDelete(id: number, cid: number, body: Body7, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processCommentDelete(response: AxiosResponse): Promise<void>;
     /**
      * Get replies
      * @param id thread id
@@ -172,26 +172,26 @@ export declare class Client {
      * Vote on comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
-    commentVote(body: Body8, id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCommentVote(response: AxiosResponse): Promise<OK>;
+    commentVote(body: Body8, id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processCommentVote(response: AxiosResponse): Promise<void>;
     /**
      * Emotion on comment
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
-    commentEmotionSet(id: number, cid: number, body: Body9, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCommentEmotionSet(response: AxiosResponse): Promise<OK>;
+    commentEmotionSet(id: number, cid: number, body: Body9, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processCommentEmotionSet(response: AxiosResponse): Promise<void>;
     /**
      * Delete emotion
      * @param id thread id
      * @param cid comment id
-     * @return OK
+     * @return Success
      */
-    commentEmotionDelete(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCommentEmotionDelete(response: AxiosResponse): Promise<OK>;
+    commentEmotionDelete(id: number, cid: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processCommentEmotionDelete(response: AxiosResponse): Promise<void>;
     /**
      * Get notifications
      * @return Success
@@ -200,16 +200,16 @@ export declare class Client {
     protected processMeNotifications(response: AxiosResponse): Promise<Notification[]>;
     /**
      * Subscribe to notification
-     * @return OK
+     * @return Success
      */
-    meNotificationsSubscribe(body: Body10, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processMeNotificationsSubscribe(response: AxiosResponse): Promise<OK>;
+    meNotificationsSubscribe(body: Body10, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processMeNotificationsSubscribe(response: AxiosResponse): Promise<void>;
     /**
      * Unsubscribe to notification
-     * @return OK
+     * @return Success
      */
-    meNotificationsUnsubscribe(cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processMeNotificationsUnsubscribe(response: AxiosResponse): Promise<OK>;
+    meNotificationsUnsubscribe(cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processMeNotificationsUnsubscribe(response: AxiosResponse): Promise<void>;
     /**
      * Get followed users
      * @return Success
@@ -243,10 +243,10 @@ export declare class Client {
     protected processCategories(response: AxiosResponse): Promise<Category[]>;
     /**
      * Create category
-     * @return OK
+     * @return Success
      */
-    categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCategoryCreate(response: AxiosResponse): Promise<OK>;
+    categoryCreate(body: Body11, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processCategoryCreate(response: AxiosResponse): Promise<void>;
     /**
      * Get category
      * @param id category id
@@ -257,17 +257,17 @@ export declare class Client {
     /**
      * Edit a category
      * @param id category id
-     * @return OK
+     * @return Success
      */
-    categoryEdit(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCategoryEdit(response: AxiosResponse): Promise<OK>;
+    categoryEdit(id: number, body: Body12, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processCategoryEdit(response: AxiosResponse): Promise<void>;
     /**
      * Delete a category
      * @param id category id
-     * @return OK
+     * @return Success
      */
-    categoryDelete(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processCategoryDelete(response: AxiosResponse): Promise<OK>;
+    categoryDelete(id: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processCategoryDelete(response: AxiosResponse): Promise<void>;
     /**
      * Get threads in a category
      * @param id category id
@@ -310,17 +310,17 @@ export declare class Client {
      * Upload avatar
      * @param id user id
      * @param avatar (optional) Avatar image. Must be smaller than 2MB. Png, jpg, jpeg, jfif, svg, gif, webp are supported.
-     * @return OK
+     * @return Success
      */
-    userAvatarUpload(id: number, avatar?: FileParameter, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUserAvatarUpload(response: AxiosResponse): Promise<OK>;
+    userAvatarUpload(id: number, avatar?: FileParameter, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processUserAvatarUpload(response: AxiosResponse): Promise<void>;
     /**
      * Delete avatar
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userAvatarDelete(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUserAvatarDelete(response: AxiosResponse): Promise<OK>;
+    userAvatarDelete(id: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processUserAvatarDelete(response: AxiosResponse): Promise<void>;
     /**
      * Get threads created by a user
      * @param id user id
@@ -334,59 +334,59 @@ export declare class Client {
     /**
      * Follow user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userFollow(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUserFollow(response: AxiosResponse): Promise<OK>;
+    userFollow(id: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processUserFollow(response: AxiosResponse): Promise<void>;
     /**
      * Unfollow user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userUnfollow(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUserUnfollow(response: AxiosResponse): Promise<OK>;
+    userUnfollow(id: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processUserUnfollow(response: AxiosResponse): Promise<void>;
     /**
      * Block user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userBlock(id: number, body: Body14, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUserBlock(response: AxiosResponse): Promise<OK>;
+    userBlock(id: number, body: Body14, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processUserBlock(response: AxiosResponse): Promise<void>;
     /**
      * Unblock user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userUnblock(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUserUnblock(response: AxiosResponse): Promise<OK>;
+    userUnblock(id: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processUserUnblock(response: AxiosResponse): Promise<void>;
     /**
      * Mute user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userMute(id: number, body: Body15, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUserMute(response: AxiosResponse): Promise<OK>;
+    userMute(id: number, body: Body15, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processUserMute(response: AxiosResponse): Promise<void>;
     /**
      * Unmute user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userUnmute(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUserUnmute(response: AxiosResponse): Promise<OK>;
+    userUnmute(id: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processUserUnmute(response: AxiosResponse): Promise<void>;
     /**
      * Ban user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userBan(id: number, body: Body16, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUserBan(response: AxiosResponse): Promise<OK>;
+    userBan(id: number, body: Body16, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processUserBan(response: AxiosResponse): Promise<void>;
     /**
      * Unban user
      * @param id user id
-     * @return OK
+     * @return Success
      */
-    userUnban(id: number, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processUserUnban(response: AxiosResponse): Promise<OK>;
+    userUnban(id: number, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processUserUnban(response: AxiosResponse): Promise<void>;
     /**
      * Login
      * @return Success
@@ -395,16 +395,16 @@ export declare class Client {
     protected processAuthLogin(response: AxiosResponse): Promise<LoginSuccess>;
     /**
      * Logout
-     * @return OK
+     * @return Success
      */
-    authLogout(cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processAuthLogout(response: AxiosResponse): Promise<OK>;
+    authLogout(cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processAuthLogout(response: AxiosResponse): Promise<void>;
     /**
      * Register
      * @return Success, verification email sent.
      */
-    authRegister(body: Body18, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processAuthRegister(response: AxiosResponse): Promise<OK>;
+    authRegister(body: Body18, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processAuthRegister(response: AxiosResponse): Promise<void>;
     /**
      * Verify email
      * @return Success
@@ -415,14 +415,14 @@ export declare class Client {
      * Resend verification email
      * @return Success
      */
-    authResend(body: Body20, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processAuthResend(response: AxiosResponse): Promise<OK>;
+    authResend(body: Body20, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processAuthResend(response: AxiosResponse): Promise<void>;
     /**
      * Forgot password
      * @return Success
      */
-    authForgot(body: Body21, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processAuthForgot(response: AxiosResponse): Promise<OK>;
+    authForgot(body: Body21, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processAuthForgot(response: AxiosResponse): Promise<void>;
     /**
      * Reset password
      * @return Success
@@ -451,10 +451,10 @@ export declare class Client {
     /**
      * Revoke session by id
      * @param id session id
-     * @return OK
+     * @return Success
      */
-    authSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<OK>;
-    protected processAuthSessionRevoke(response: AxiosResponse): Promise<OK>;
+    authSessionRevoke(id: string, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processAuthSessionRevoke(response: AxiosResponse): Promise<void>;
     /**
      * Refresh session
      * @param id session id
@@ -474,9 +474,6 @@ export declare class Client {
      */
     serverPublicKey(cancelToken?: CancelToken | undefined): Promise<string>;
     protected processServerPublicKey(response: AxiosResponse): Promise<string>;
-}
-export interface OK {
-    success: boolean;
 }
 export interface Session {
     /** 30-digit random session id */
@@ -548,10 +545,12 @@ export interface Category {
     name: string;
     /** category tags */
     tags?: string[];
-    /** category is hidden */
-    hidden?: boolean;
-    /** category is pinned */
+    /** whether category is pinned */
     pinned?: boolean;
+    /** whether the category is hidden */
+    hidden?: boolean;
+    /** whether the category is nsfw */
+    nsfw?: boolean;
 }
 export interface Image {
     cid: number;
@@ -703,14 +702,17 @@ export interface Body10 {
 }
 export interface Body11 {
     name: string;
-    hidden?: boolean;
     tags?: string[];
     pinned?: boolean;
+    hidden?: boolean;
+    nsfw?: boolean;
 }
 export interface Body12 {
     name?: string;
     tags?: string[];
     pinned?: boolean;
+    hidden?: boolean;
+    nsfw?: boolean;
 }
 export declare type Sort3 = "latest" | "viral";
 export interface Body13 {
