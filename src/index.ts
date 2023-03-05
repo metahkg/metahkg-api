@@ -10063,6 +10063,8 @@ export interface ServerConfig {
     vapidPublicKey: string;
     /** whether cors is enabled */
     cors: boolean;
+    /** uses recaptcha or turnstile */
+    captcha: ServerConfigCaptcha;
 }
 
 export interface Body {
@@ -10310,6 +10312,8 @@ export interface Register {
     /** allowed domains */
     domains?: string[];
 }
+
+export type ServerConfigCaptcha = "recaptcha" | "turnstile";
 
 export interface Keys {
     /** auth key */
