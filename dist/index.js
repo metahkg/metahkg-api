@@ -213,7 +213,7 @@ class Client {
             let result429 = null;
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
-            return throwException("Recaptcha token invalid, or too many requests", status, _responseText, _headers, result429);
+            return throwException("Captcha token invalid, or too many requests", status, _responseText, _headers, result429);
         }
         else if (status === 500) {
             const _responseText = response.data;
@@ -1469,7 +1469,7 @@ class Client {
             let result429 = null;
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
-            return throwException("Recaptcha token invalid, or too many requests", status, _responseText, _headers, result429);
+            return throwException("Captcha token invalid, or too many requests", status, _responseText, _headers, result429);
         }
         else if (status === 500) {
             const _responseText = response.data;
@@ -6089,7 +6089,7 @@ class Client {
             let result429 = null;
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
-            return throwException("Recaptcha token invalid, or too many requests", status, _responseText, _headers, result429);
+            return throwException("Captcha token invalid, or too many requests", status, _responseText, _headers, result429);
         }
         else if (status === 500) {
             const _responseText = response.data;
@@ -6182,7 +6182,7 @@ class Client {
             let result429 = null;
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
-            return throwException("Recaptcha token invalid, or too many requests", status, _responseText, _headers, result429);
+            return throwException("Captcha token invalid, or too many requests", status, _responseText, _headers, result429);
         }
         else if (status === 500) {
             const _responseText = response.data;

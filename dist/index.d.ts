@@ -656,7 +656,7 @@ export interface ServerConfig {
 export interface Body {
     title: string;
     comment: string;
-    rtoken: string;
+    captchaToken: string;
     category: number;
 }
 export declare type Mode = "title" | "op";
@@ -676,7 +676,7 @@ export interface Body4 {
 }
 export interface Body5 {
     comment: string;
-    rtoken: string;
+    captchaToken: string;
     quote?: number;
 }
 export interface Body6 {
@@ -740,7 +740,7 @@ export interface Body17 {
     /** Username or email */
     name: string;
     password: string;
-    rtoken: string;
+    captchaToken: string;
     sameIp?: boolean;
 }
 export interface Body18 {
@@ -748,29 +748,29 @@ export interface Body18 {
     email: string;
     password: string;
     sex: UserSex;
-    rtoken: string;
+    captchaToken: string;
     /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
     inviteCode?: string;
 }
 export interface Body19 {
     email: string;
     code: string;
-    rtoken: string;
+    captchaToken: string;
     sameIp?: boolean;
 }
 export interface Body20 {
     email: string;
-    rtoken: string;
+    captchaToken: string;
 }
 export interface Body21 {
     email: string;
-    rtoken: string;
+    captchaToken: string;
 }
 export interface Body22 {
     email: string;
     code: string;
     password: string;
-    rtoken: string;
+    captchaToken: string;
     sameIp?: boolean;
 }
 export interface Body23 {
