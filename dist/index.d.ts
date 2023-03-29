@@ -474,6 +474,39 @@ export declare class Client {
      */
     serverPublicKey(cancelToken?: CancelToken | undefined): Promise<string>;
     protected processServerPublicKey(response: AxiosResponse): Promise<string>;
+    /**
+     * Get invite codes
+     * @return Success
+     */
+    serverInviteCodes(cancelToken?: CancelToken | undefined): Promise<Invite[]>;
+    protected processServerInviteCodes(response: AxiosResponse): Promise<Invite[]>;
+    /**
+     * Create invite code
+     * @return Success
+     */
+    serverInviteCodesCreate(body: Body24, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processServerInviteCodesCreate(response: AxiosResponse): Promise<void>;
+    /**
+     * Generate invite code
+     * @param body (optional)
+     * @return Success
+     */
+    serverInviteCodesGenerate(body?: Body25, cancelToken?: CancelToken | undefined): Promise<Anonymous10>;
+    protected processServerInviteCodesGenerate(response: AxiosResponse): Promise<Anonymous10>;
+    /**
+     * Get invite code info
+     * @param code invite code
+     * @return Success
+     */
+    serverInviteCodesInfo(code: string, cancelToken?: CancelToken | undefined): Promise<Invite>;
+    protected processServerInviteCodesInfo(response: AxiosResponse): Promise<Invite>;
+    /**
+     * Delete an invite code
+     * @param code invite code
+     * @return Success
+     */
+    serverInviteCodesDelete(code: string, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processServerInviteCodesDelete(response: AxiosResponse): Promise<void>;
 }
 export interface Session {
     /** 30-digit random session id */
@@ -538,6 +571,13 @@ export interface BlockedUser extends User {
     reason: string;
 }
 export declare function isBlockedUser(object: any): object is BlockedUser;
+export interface Invite {
+    code: string;
+    /** description as set by creator */
+    description?: string;
+    createdAt: Date;
+    [key: string]: any;
+}
 export interface Category {
     /** category id */
     id: number;
@@ -751,7 +791,6 @@ export interface Body18 {
     password: string;
     sex: UserSex;
     captchaToken: string;
-    /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
     inviteCode?: string;
 }
 export interface Body19 {
@@ -777,6 +816,13 @@ export interface Body22 {
 }
 export interface Body23 {
     refreshToken: string;
+}
+export interface Body24 {
+    code: string;
+    description?: string;
+}
+export interface Body25 {
+    description?: string;
 }
 export interface Anonymous {
     id: number;
@@ -812,6 +858,9 @@ export interface Anonymous8 {
 export interface Anonymous9 {
     token: string;
     refreshToken: string;
+}
+export interface Anonymous10 {
+    code: string;
 }
 export interface Options {
     /** body of the notification */
