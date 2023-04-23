@@ -4259,18 +4259,6 @@ export class Client {
         if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
@@ -4283,17 +4271,17 @@ export class Client {
                 _headers,
                 result401
             );
-        } else if (status === 403) {
+        } else if (status === 404) {
             const _responseText = response.data;
-            let result403: any = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
             return throwException(
-                "Forbidden: permission denied or user banned by an admin",
+                "Not subscribed",
                 status,
                 _responseText,
                 _headers,
-                result403
+                result404
             );
         } else if (status === 429) {
             const _responseText = response.data;
