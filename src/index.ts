@@ -10598,6 +10598,8 @@ export interface Image {
     cid: number;
     /** image source url */
     src: string;
+    /** hmac-signed image source url */
+    signature: string;
 }
 
 export interface RemovedComment {
@@ -10615,7 +10617,7 @@ export interface Comment {
     comment: string;
     /** comment converted to plain text */
     text: string;
-    images: string[];
+    images: Images[];
     createdAt: Date;
     /** shortened link to the comment */
     slink: string;
@@ -10638,7 +10640,7 @@ export interface CommentC {
     user: User;
     comment: string;
     text: string;
-    images: string[];
+    images: Images[];
     createdAt: Date;
     slink: string;
     visibility?: Visibility;
@@ -10942,6 +10944,11 @@ export interface Replies {
     /** admin's reply */
     reply: string;
     date: Date;
+}
+
+export interface Images {
+    src: string;
+    signature: string;
 }
 
 export interface Quote extends CommentC {
