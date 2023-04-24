@@ -578,6 +578,7 @@ export interface Invite {
     createdAt: Date;
     [key: string]: any;
 }
+export declare type Visibility = "public" | "internal";
 export interface Category {
     /** category id */
     id: number;
@@ -615,6 +616,7 @@ export interface Comment {
     createdAt: Date;
     /** shortened link to the comment */
     slink: string;
+    visibility?: Visibility;
     quote?: Quote;
     /** number of downvotes */
     D?: number;
@@ -635,6 +637,7 @@ export interface CommentC {
     images: string[];
     createdAt: Date;
     slink: string;
+    visibility?: Visibility;
     quote?: Quote;
 }
 export interface Thread {
@@ -657,6 +660,7 @@ export interface Thread {
     lastModified: Date;
     /** shortened link to the thread */
     slink: string;
+    visibility?: Visibility;
     /** pinned comment */
     pin?: CommentC;
     admin?: Admin;
@@ -680,9 +684,8 @@ export interface Star {
     date: Date;
 }
 export declare type RegisterMode = "normal" | "none" | "invite";
-export declare type VisibilityMode = "public" | "internal";
 export interface ServerConfig {
-    visibility: VisibilityMode;
+    visibility: Visibility;
     register: Register;
     /** the domain this instance of metahkg is on */
     domain: string;
@@ -700,6 +703,7 @@ export interface Body {
     comment: string;
     captchaToken: string;
     category: number;
+    visibility?: Visibility;
 }
 export declare type Mode = "title" | "op";
 export declare type Sort = "relevance" | "created" | "lastcomment";
@@ -720,6 +724,7 @@ export interface Body5 {
     comment: string;
     captchaToken: string;
     quote?: number;
+    visibility?: Visibility;
 }
 export interface Body6 {
     comment: string;
