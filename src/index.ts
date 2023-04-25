@@ -10602,6 +10602,13 @@ export interface Image {
     signature: string;
 }
 
+export interface Link {
+    /** link url */
+    url: string;
+    /** hmac-signed link url */
+    signature: string;
+}
+
 export interface RemovedComment {
     id: number;
     removed: boolean;
@@ -10617,6 +10624,7 @@ export interface Comment {
     comment: string;
     /** comment converted to plain text */
     text: string;
+    links: Link[];
     images: Images[];
     createdAt: Date;
     /** shortened link to the comment */
@@ -10640,6 +10648,7 @@ export interface CommentC {
     user: User;
     comment: string;
     text: string;
+    links: Link[];
     images: Images[];
     createdAt: Date;
     slink: string;
