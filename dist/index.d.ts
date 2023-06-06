@@ -697,6 +697,7 @@ export declare type RegisterMode = "normal" | "none" | "invite";
 export interface ServerConfig {
     visibility: Visibility;
     register: Register;
+    domains: Domains;
     /** the domain this instance of metahkg is on */
     domain: string;
     /** the domain for metahkg links */
@@ -705,8 +706,9 @@ export interface ServerConfig {
     vapidPublicKey: string;
     /** whether cors is enabled */
     cors: boolean;
-    /** uses recaptcha or turnstile */
-    captcha: ServerConfigCaptcha;
+    captcha: Captcha;
+    /** the branding to replace Metahkg */
+    branding?: string;
 }
 export interface Body {
     title: string;
@@ -915,7 +917,23 @@ export interface Register {
     /** allowed domains */
     domains?: string[];
 }
-export declare type ServerConfigCaptcha = "recaptcha" | "turnstile";
+export interface Domains {
+    main?: string;
+    /** the domain for [metahkg links](https://gitlab.com/metahkg/metahkg-links) */
+    links?: string;
+    /** the domain for images ([imageproxy](https://gitlab.com/metahkg/forks/imageproxy) and [imgpush](https://gitlab.com/metahkg/forks/imgpush)) */
+    images?: string;
+    /** the domain for [rlp proxy](https://gitlab.com/metahkg/rlp-proxy-rewrite) */
+    rlpProxy?: string;
+    /** the domain for [metahkg redirect](https://gitlab.com/metahkg/metahkg-redirect) */
+    redirect?: string;
+}
+export interface Captcha {
+    /** captcha provider */
+    type: CaptchaType;
+    /** the corresponding site key */
+    siteKey: string;
+}
 export interface Keys {
     /** auth key */
     auth: string;
@@ -930,6 +948,7 @@ export interface Data {
     threadId: number;
     commentId?: number;
 }
+export declare type CaptchaType = "recaptcha" | "turnstile";
 export declare type DataType = "thread" | "comment" | "reply" | "emotion" | "votes";
 export interface FileParameter {
     data: any;
