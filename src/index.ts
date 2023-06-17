@@ -289,7 +289,7 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Recaptcha token invalid, or too many requests",
+                "Captcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
@@ -2081,7 +2081,7 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Recaptcha token invalid, or too many requests",
+                "Captcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
@@ -4259,18 +4259,6 @@ export class Client {
         if (status === 204) {
             const _responseText = response.data;
             return Promise.resolve<void>(null as any);
-        } else if (status === 400) {
-            const _responseText = response.data;
-            let result400: any = null;
-            let resultData400 = _responseText;
-            result400 = JSON.parse(resultData400);
-            return throwException(
-                "Invalid request",
-                status,
-                _responseText,
-                _headers,
-                result400
-            );
         } else if (status === 401) {
             const _responseText = response.data;
             let result401: any = null;
@@ -4283,17 +4271,17 @@ export class Client {
                 _headers,
                 result401
             );
-        } else if (status === 403) {
+        } else if (status === 404) {
             const _responseText = response.data;
-            let result403: any = null;
-            let resultData403 = _responseText;
-            result403 = JSON.parse(resultData403);
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
             return throwException(
-                "Forbidden: permission denied or user banned by an admin",
+                "Not subscribed",
                 status,
                 _responseText,
                 _headers,
-                result403
+                result404
             );
         } else if (status === 429) {
             const _responseText = response.data;
@@ -8662,7 +8650,7 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Recaptcha token invalid, or too many requests",
+                "Captcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
@@ -8793,7 +8781,7 @@ export class Client {
             let resultData429 = _responseText;
             result429 = JSON.parse(resultData429);
             return throwException(
-                "Recaptcha token invalid, or too many requests",
+                "Captcha token invalid, or too many requests",
                 status,
                 _responseText,
                 _headers,
@@ -9856,6 +9844,647 @@ export class Client {
         }
         return Promise.resolve<string>(null as any);
     }
+
+    /**
+     * Get invite codes
+     * @return Success
+     */
+    serverInviteCodes(cancelToken?: CancelToken | undefined): Promise<Invite[]> {
+        let url_ = this.baseUrl + "/server/invitecodes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processServerInviteCodes(_response);
+            });
+    }
+
+    protected processServerInviteCodes(response: AxiosResponse): Promise<Invite[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Invite[]>(result200);
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Invite[]>(null as any);
+    }
+
+    /**
+     * Create invite code
+     * @return Success
+     */
+    serverInviteCodesCreate(
+        body: Body24,
+        cancelToken?: CancelToken | undefined
+    ): Promise<void> {
+        let url_ = this.baseUrl + "/server/invitecodes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processServerInviteCodesCreate(_response);
+            });
+    }
+
+    protected processServerInviteCodesCreate(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 204) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 409) {
+            const _responseText = response.data;
+            let result409: any = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException(
+                "Invite code already exists",
+                status,
+                _responseText,
+                _headers,
+                result409
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * Generate invite code
+     * @param body (optional)
+     * @return Success
+     */
+    serverInviteCodesGenerate(
+        body?: Body25,
+        cancelToken?: CancelToken | undefined
+    ): Promise<Anonymous10> {
+        let url_ = this.baseUrl + "/server/invitecodes/generate";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "POST",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processServerInviteCodesGenerate(_response);
+            });
+    }
+
+    protected processServerInviteCodesGenerate(
+        response: AxiosResponse
+    ): Promise<Anonymous10> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Anonymous10>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Anonymous10>(null as any);
+    }
+
+    /**
+     * Get invite code info
+     * @param code invite code
+     * @return Success
+     */
+    serverInviteCodesInfo(
+        code: string,
+        cancelToken?: CancelToken | undefined
+    ): Promise<Invite> {
+        let url_ = this.baseUrl + "/server/invitecodes/{code}";
+        if (code === undefined || code === null)
+            throw new Error("The parameter 'code' must be defined.");
+        url_ = url_.replace("{code}", encodeURIComponent("" + code));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processServerInviteCodesInfo(_response);
+            });
+    }
+
+    protected processServerInviteCodesInfo(response: AxiosResponse): Promise<Invite> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Invite>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Invite code not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Invite>(null as any);
+    }
+
+    /**
+     * Delete an invite code
+     * @param code invite code
+     * @return Success
+     */
+    serverInviteCodesDelete(
+        code: string,
+        cancelToken?: CancelToken | undefined
+    ): Promise<void> {
+        let url_ = this.baseUrl + "/server/invitecodes/{code}";
+        if (code === undefined || code === null)
+            throw new Error("The parameter 'code' must be defined.");
+        url_ = url_.replace("{code}", encodeURIComponent("" + code));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "DELETE",
+            url: url_,
+            headers: {},
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processServerInviteCodesDelete(_response);
+            });
+    }
+
+    protected processServerInviteCodesDelete(response: AxiosResponse): Promise<void> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 204) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(null as any);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Invite code not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<void>(null as any);
+    }
 }
 
 export interface Session {
@@ -9939,6 +10568,17 @@ export function isBlockedUser(object: any): object is BlockedUser {
     return object && object[""] === "BlockedUser";
 }
 
+export interface Invite {
+    code: string;
+    /** description as set by creator */
+    description?: string;
+    createdAt: Date;
+
+    [key: string]: any;
+}
+
+export type Visibility = "public" | "internal";
+
 export interface Category {
     /** category id */
     id: number;
@@ -9958,6 +10598,15 @@ export interface Image {
     cid: number;
     /** image source url */
     src: string;
+    /** hmac-signed image source url */
+    signature: string;
+}
+
+export interface Link {
+    /** link url */
+    url: string;
+    /** hmac-signed link url */
+    signature: string;
 }
 
 export interface RemovedComment {
@@ -9975,10 +10624,12 @@ export interface Comment {
     comment: string;
     /** comment converted to plain text */
     text: string;
-    images: string[];
+    links: Link[];
+    images: Images[];
     createdAt: Date;
     /** shortened link to the comment */
     slink: string;
+    visibility?: Visibility;
     quote?: Quote;
     /** number of downvotes */
     D?: number;
@@ -9997,9 +10648,11 @@ export interface CommentC {
     user: User;
     comment: string;
     text: string;
-    images: string[];
+    links: Link[];
+    images: Images[];
     createdAt: Date;
     slink: string;
+    visibility?: Visibility;
     quote?: Quote;
 }
 
@@ -10023,6 +10676,7 @@ export interface Thread {
     lastModified: Date;
     /** shortened link to the thread */
     slink: string;
+    visibility?: Visibility;
     /** pinned comment */
     pin?: CommentC;
     admin?: Admin;
@@ -10050,10 +10704,8 @@ export interface Star {
 
 export type RegisterMode = "normal" | "none" | "invite";
 
-export type VisibilityMode = "public" | "internal";
-
 export interface ServerConfig {
-    visibility: VisibilityMode;
+    visibility: Visibility;
     register: Register;
     /** the domain this instance of metahkg is on */
     domain: string;
@@ -10063,13 +10715,16 @@ export interface ServerConfig {
     vapidPublicKey: string;
     /** whether cors is enabled */
     cors: boolean;
+    /** uses recaptcha or turnstile */
+    captcha: ServerConfigCaptcha;
 }
 
 export interface Body {
     title: string;
     comment: string;
-    rtoken: string;
+    captchaToken: string;
     category: number;
+    visibility?: Visibility;
 }
 
 export type Mode = "title" | "op";
@@ -10095,8 +10750,9 @@ export interface Body4 {
 
 export interface Body5 {
     comment: string;
-    rtoken: string;
+    captchaToken: string;
     quote?: number;
+    visibility?: Visibility;
 }
 
 export interface Body6 {
@@ -10173,7 +10829,7 @@ export interface Body17 {
     /** Username or email */
     name: string;
     password: string;
-    rtoken: string;
+    captchaToken: string;
     sameIp?: boolean;
 }
 
@@ -10182,38 +10838,46 @@ export interface Body18 {
     email: string;
     password: string;
     sex: UserSex;
-    rtoken: string;
-    /** Invite code, required if admin set register=invite See [register mode](https://docs.metahkg.org/docs/customize/registermode) */
+    captchaToken: string;
     inviteCode?: string;
 }
 
 export interface Body19 {
     email: string;
     code: string;
-    rtoken: string;
+    captchaToken: string;
     sameIp?: boolean;
 }
 
 export interface Body20 {
     email: string;
-    rtoken: string;
+    captchaToken: string;
 }
 
 export interface Body21 {
     email: string;
-    rtoken: string;
+    captchaToken: string;
 }
 
 export interface Body22 {
     email: string;
     code: string;
     password: string;
-    rtoken: string;
+    captchaToken: string;
     sameIp?: boolean;
 }
 
 export interface Body23 {
     refreshToken: string;
+}
+
+export interface Body24 {
+    code: string;
+    description?: string;
+}
+
+export interface Body25 {
+    description?: string;
 }
 
 export interface Anonymous {
@@ -10263,6 +10927,10 @@ export interface Anonymous9 {
     refreshToken: string;
 }
 
+export interface Anonymous10 {
+    code: string;
+}
+
 export interface Options {
     /** body of the notification */
     body: string;
@@ -10285,6 +10953,11 @@ export interface Replies {
     /** admin's reply */
     reply: string;
     date: Date;
+}
+
+export interface Images {
+    src: string;
+    signature: string;
 }
 
 export interface Quote extends CommentC {
@@ -10310,6 +10983,8 @@ export interface Register {
     /** allowed domains */
     domains?: string[];
 }
+
+export type ServerConfigCaptcha = "recaptcha" | "turnstile";
 
 export interface Keys {
     /** auth key */
