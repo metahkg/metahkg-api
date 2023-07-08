@@ -1,6 +1,6 @@
 {
   "name": "@metahkg/api",
-  "version": "6.11.1",
+  "version": "6.11.2",
   "access": "public",
   "description": "Access the metahkg api.",
   "main": "dist/index.js",

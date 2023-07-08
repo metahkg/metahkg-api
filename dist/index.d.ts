@@ -898,7 +898,7 @@ export interface Body25 {
 }
 export interface Body26 {
     title: string;
-    options: GuessGameOption[];
+    options: string[];
 }
 export interface Body27 {
     /** index of option */
