@@ -522,17 +522,17 @@ export declare class Client {
     protected processGamesGuess(response: AxiosResponse): Promise<GuessGame>;
     /**
      * Make a guess (bet)
-     * @param unnamed (optional)
+     * @param id game id
      * @return Success
      */
-    gamesGuessGuess(body: Body27, unnamed?: string, cancelToken?: CancelToken | undefined): Promise<void>;
+    gamesGuessGuess(id: string, body: Body27, cancelToken?: CancelToken | undefined): Promise<void>;
     protected processGamesGuessGuess(response: AxiosResponse): Promise<void>;
     /**
      * Release answer
-     * @param unnamed (optional)
+     * @param id game id
      * @return Success
      */
-    gamesGuessAnswer(body: Body28, unnamed?: string, cancelToken?: CancelToken | undefined): Promise<void>;
+    gamesGuessAnswer(id: string, body: Body28, cancelToken?: CancelToken | undefined): Promise<void>;
     protected processGamesGuessAnswer(response: AxiosResponse): Promise<void>;
 }
 export interface Session {

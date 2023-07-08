@@ -7572,11 +7572,14 @@ class Client {
     }
     /**
      * Make a guess (bet)
-     * @param unnamed (optional)
+     * @param id game id
      * @return Success
      */
-    gamesGuessGuess(body, unnamed, cancelToken) {
+    gamesGuessGuess(id, body, cancelToken) {
         let url_ = this.baseUrl + "/games/guess/{id}/guess";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
         let options_ = {
@@ -7666,11 +7669,14 @@ class Client {
     }
     /**
      * Release answer
-     * @param unnamed (optional)
+     * @param id game id
      * @return Success
      */
-    gamesGuessAnswer(body, unnamed, cancelToken) {
+    gamesGuessAnswer(id, body, cancelToken) {
         let url_ = this.baseUrl + "/games/guess/{id}/answer";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
         const content_ = JSON.stringify(body);
         let options_ = {

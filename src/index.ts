@@ -10737,15 +10737,18 @@ export class Client {
 
     /**
      * Make a guess (bet)
-     * @param unnamed (optional)
+     * @param id game id
      * @return Success
      */
     gamesGuessGuess(
+        id: string,
         body: Body27,
-        unnamed?: string,
         cancelToken?: CancelToken | undefined
     ): Promise<void> {
         let url_ = this.baseUrl + "/games/guess/{id}/guess";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -10873,15 +10876,18 @@ export class Client {
 
     /**
      * Release answer
-     * @param unnamed (optional)
+     * @param id game id
      * @return Success
      */
     gamesGuessAnswer(
+        id: string,
         body: Body28,
-        unnamed?: string,
         cancelToken?: CancelToken | undefined
     ): Promise<void> {
         let url_ = this.baseUrl + "/games/guess/{id}/answer";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
