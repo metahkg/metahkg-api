@@ -507,9 +507,36 @@ export declare class Client {
      */
     serverInviteCodesDelete(code: string, cancelToken?: CancelToken | undefined): Promise<void>;
     protected processServerInviteCodesDelete(response: AxiosResponse): Promise<void>;
+    /**
+     * Create a guess game
+     * @return Success
+     */
+    gamesGuessCreate(body: Body26, cancelToken?: CancelToken | undefined): Promise<Anonymous11>;
+    protected processGamesGuessCreate(response: AxiosResponse): Promise<Anonymous11>;
+    /**
+     * Get game info
+     * @param id game id
+     * @return Success
+     */
+    gamesGuess(id: string, cancelToken?: CancelToken | undefined): Promise<GuessGame>;
+    protected processGamesGuess(response: AxiosResponse): Promise<GuessGame>;
+    /**
+     * Make a guess (bet)
+     * @param unnamed (optional)
+     * @return Success
+     */
+    gamesGuessGuess(body: Body27, unnamed?: string, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processGamesGuessGuess(response: AxiosResponse): Promise<void>;
+    /**
+     * Release answer
+     * @param unnamed (optional)
+     * @return Success
+     */
+    gamesGuessAnswer(body: Body28, unnamed?: string, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processGamesGuessAnswer(response: AxiosResponse): Promise<void>;
 }
 export interface Session {
-    /** 30-digit random session id */
+    /** 60-digit random session id */
     id: string;
     /** session created date */
     createdAt: Date;
@@ -710,6 +737,25 @@ export interface ServerConfig {
     /** the branding to replace Metahkg */
     branding?: string;
 }
+export interface GuessGame {
+    id: string;
+    host: User;
+    createdAt: string;
+    endedAt?: string;
+    type: GuessGameType;
+    title: string;
+    options: GuessGameOption[];
+    /** total number of tokens (pool) */
+    tokens?: number;
+    answer?: number[];
+}
+export interface GuessGameOption {
+    text: string;
+    /** odds of the option */
+    odds?: number;
+    /** number of tokens betting the option */
+    tokens?: number;
+}
 export interface Body {
     title: string;
     comment: string;
@@ -841,6 +887,19 @@ export interface Body24 {
 export interface Body25 {
     description?: string;
 }
+export interface Body26 {
+    title: string;
+    options: GuessGameOption[];
+}
+export interface Body27 {
+    /** index of option */
+    option: number;
+    /** number of tokens to bet */
+    tokens: number;
+}
+export interface Body28 {
+    answer: number;
+}
 export interface Anonymous {
     id: number;
 }
@@ -878,6 +937,9 @@ export interface Anonymous9 {
 }
 export interface Anonymous10 {
     code: string;
+}
+export interface Anonymous11 {
+    id: string;
 }
 export interface Options {
     /** body of the notification */
@@ -934,6 +996,7 @@ export interface Captcha {
     /** the corresponding site key */
     siteKey: string;
 }
+export declare type GuessGameType = "guess";
 export interface Keys {
     /** auth key */
     auth: string;
