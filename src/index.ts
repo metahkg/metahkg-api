@@ -11135,6 +11135,17 @@ export interface RemovedComment {
     removed: boolean;
 }
 
+export interface HTMLComment {
+    type: HTMLCommentType;
+    /** comment in stringified html */
+    html: string;
+}
+
+export interface GameComment {
+    type: GameCommentType;
+    gameId: string;
+}
+
 /** Comment object */
 export interface Comment {
     /** comment id */
@@ -11300,7 +11311,7 @@ export interface Body5 {
 }
 
 export interface Body6 {
-    comment: string;
+    html: string;
     /** Reason for editing comment */
     reason: string;
 }
@@ -11518,6 +11529,10 @@ export interface Replies {
     reply: string;
     date: Date;
 }
+
+export type HTMLCommentType = "html";
+
+export type GameCommentType = "game";
 
 export interface Images {
     src: string;
