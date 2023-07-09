@@ -82,7 +82,7 @@ publish:
 
 build:
   stage: build
-  retry: 5
+  retry: 2
   rules:
     - if: $UPDATE
       when: never
