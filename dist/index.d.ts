@@ -508,18 +508,18 @@ export declare class Client {
     serverInviteCodesDelete(code: string, cancelToken?: CancelToken | undefined): Promise<void>;
     protected processServerInviteCodesDelete(response: AxiosResponse): Promise<void>;
     /**
+     * Get game info
+     * @param id game id
+     * @return Success
+     */
+    games(id: string, cancelToken?: CancelToken | undefined): Promise<GuessGame>;
+    protected processGames(response: AxiosResponse): Promise<GuessGame>;
+    /**
      * Create a guess game
      * @return Success
      */
     gamesGuessCreate(body: Body26, cancelToken?: CancelToken | undefined): Promise<Anonymous11>;
     protected processGamesGuessCreate(response: AxiosResponse): Promise<Anonymous11>;
-    /**
-     * Get game info
-     * @param id game id
-     * @return Success
-     */
-    gamesGuess(id: string, cancelToken?: CancelToken | undefined): Promise<GuessGame>;
-    protected processGamesGuess(response: AxiosResponse): Promise<GuessGame>;
     /**
      * Make a guess (bet)
      * @param id game id
@@ -639,6 +639,8 @@ export interface RemovedComment {
 }
 /** comment content */
 export interface HTMLComment {
+    type: "html";
+    html: string;
 }
 export interface GameComment {
     type: GameCommentType;
@@ -1054,5 +1056,4 @@ export declare class ApiException extends Error {
     protected isApiException: boolean;
     static isApiException(obj: any): obj is ApiException;
 }
-declare type CommentContent = HTMLComment | GameComment;
-export {};
+export declare type CommentContent = HTMLComment | GameComment;
