@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.isConversation = exports.isQuote = exports.isAnonymous6 = exports.isBlockedUser = exports.isFollowedUser = exports.isLoginSuccess = exports.Client = void 0;
+exports.ApiException = exports.isConversation = exports.isQuote = exports.isAnonymous6 = exports.isCommentContent = exports.isBlockedUser = exports.isFollowedUser = exports.isLoginSuccess = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -7778,6 +7778,10 @@ function isBlockedUser(object) {
     return object && object[""] === "BlockedUser";
 }
 exports.isBlockedUser = isBlockedUser;
+function isCommentContent(object) {
+    return object && object[""] === "CommentContent";
+}
+exports.isCommentContent = isCommentContent;
 function isAnonymous6(object) {
     return object && object[""] === "Anonymous6";
 }

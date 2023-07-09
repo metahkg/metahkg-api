@@ -11152,14 +11152,21 @@ export interface GameComment {
     gameId: string;
 }
 
+export interface CommentContent extends HTMLComment {
+    [key: string]: any;
+}
+
+export function isCommentContent(object: any): object is CommentContent {
+    return object && object[""] === "CommentContent";
+}
+
 /** Comment object */
 export interface Comment {
     /** comment id */
     id: number;
     /** user created the comment */
     user: User;
-    /** comment in stringified html */
-    comment: string;
+    comment: CommentContent;
     /** comment converted to plain text */
     text: string;
     links: Link[];
@@ -11184,7 +11191,7 @@ export interface Comment {
 export interface CommentC {
     id: number;
     user: User;
-    comment: string;
+    comment: CommentContent;
     text: string;
     links: Link[];
     images: Images[];
@@ -11282,7 +11289,7 @@ export interface GuessGameOption {
 
 export interface Body {
     title: string;
-    comment: string;
+    comment: CommentContent;
     captchaToken: string;
     category: number;
     visibility?: Visibility;
@@ -11310,7 +11317,7 @@ export interface Body4 {
 }
 
 export interface Body5 {
-    comment: string;
+    comment: CommentContent;
     captchaToken: string;
     quote?: number;
     visibility?: Visibility;
@@ -11484,7 +11491,8 @@ export interface Anonymous6 extends User {
     /** Number of threads created by user */
     count: number;
     /** Date and time when user was created */
-    createdAt?: Date;
+    createdAt: Date;
+    games?: Games;
 }
 
 export function isAnonymous6(object: any): object is Anonymous6 {
@@ -11597,6 +11605,10 @@ export interface Keys {
     p256dh: string;
 }
 
+export interface Games {
+    guess?: Guess;
+}
+
 export interface Data {
     /** type of the notification */
     type: DataType;
@@ -11607,6 +11619,10 @@ export interface Data {
 }
 
 export type CaptchaType = "recaptcha" | "turnstile";
+
+export interface Guess {
+    tokens: number;
+}
 
 export type DataType = "thread" | "comment" | "reply" | "emotion" | "votes";
 
