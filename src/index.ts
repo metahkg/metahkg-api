@@ -11155,7 +11155,7 @@ export interface RemovedComment {
 
 /** comment content */
 export interface HTMLComment {
-    type: "html";
+    type: HTMLCommentType;
     html: string;
 }
 
