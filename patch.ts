@@ -18,7 +18,7 @@ file = file.replace(
 );
 file = file.concat(`export type CommentContent = HTMLComment | GameComment`);
 file = file.replace(/Comment2/g, "CommentContent");
-file = file.replace("export interface HTMLComment {", 'export interface HTMLComment { type: "html", html: string ')
+file = file.replace("export interface HTMLComment {", 'export interface HTMLComment { type: HTMLCommentType, html: string ')
 
 const reqFolOpt =
     /([a-z|A-Z|\d]+)\?: ([a-z|A-Z|\d]+) ?, ?([a-z|A-Z|\d]+): ([a-z|A-Z|\d]+)/g;

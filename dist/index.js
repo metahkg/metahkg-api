@@ -7633,6 +7633,13 @@ class Client {
             result404 = JSON.parse(resultData404);
             return throwException("Game / Option not found", status, _responseText, _headers, result404);
         }
+        else if (status === 409) {
+            const _responseText = response.data;
+            let result409 = null;
+            let resultData409 = _responseText;
+            result409 = JSON.parse(resultData409);
+            return throwException("insufficient tokens / guessing in own game", status, _responseText, _headers, result409);
+        }
         else if (status === 410) {
             const _responseText = response.data;
             let result410 = null;
