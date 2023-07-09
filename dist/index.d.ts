@@ -637,19 +637,13 @@ export interface RemovedComment {
     id: number;
     removed: boolean;
 }
+/** comment content */
 export interface HTMLComment {
-    type: HTMLCommentType;
-    /** comment in stringified html */
-    html: string;
 }
 export interface GameComment {
     type: GameCommentType;
     gameId: string;
 }
-export interface CommentContent extends HTMLComment {
-    [key: string]: any;
-}
-export declare function isCommentContent(object: any): object is CommentContent;
 /** Comment object */
 export interface Comment {
     /** comment id */
@@ -1060,3 +1054,5 @@ export declare class ApiException extends Error {
     protected isApiException: boolean;
     static isApiException(obj: any): obj is ApiException;
 }
+declare type CommentContent = HTMLComment | GameComment;
+export {};

@@ -11141,23 +11141,12 @@ export interface RemovedComment {
     removed: boolean;
 }
 
-export interface HTMLComment {
-    type: HTMLCommentType;
-    /** comment in stringified html */
-    html: string;
-}
+/** comment content */
+export interface HTMLComment {}
 
 export interface GameComment {
     type: GameCommentType;
     gameId: string;
-}
-
-export interface CommentContent extends HTMLComment {
-    [key: string]: any;
-}
-
-export function isCommentContent(object: any): object is CommentContent {
-    return object && object[""] === "CommentContent";
 }
 
 /** Comment object */
@@ -11682,3 +11671,4 @@ function throwException(
 function isAxiosError(obj?: any): obj is AxiosError {
     return obj && obj.isAxiosError === true;
 }
+type CommentContent = HTMLComment | GameComment;
