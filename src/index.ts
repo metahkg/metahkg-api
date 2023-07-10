@@ -4827,6 +4827,144 @@ export class Client {
     }
 
     /**
+     * Get user's bets
+     * @param id game id
+     * @return Success
+     */
+    meGamesGuess(
+        id: string,
+        cancelToken?: CancelToken | undefined
+    ): Promise<Anonymous6[]> {
+        let url_ = this.baseUrl + "/me/games/guess/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processMeGamesGuess(_response);
+            });
+    }
+
+    protected processMeGamesGuess(response: AxiosResponse): Promise<Anonymous6[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Anonymous6[]>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404 = _responseText;
+            result404 = JSON.parse(resultData404);
+            return throwException(
+                "Game not found",
+                status,
+                _responseText,
+                _headers,
+                result404
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Anonymous6[]>(null as any);
+    }
+
+    /**
      * Get categories
      * @return Success
      */
@@ -5686,7 +5824,7 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6> {
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
         let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -5716,7 +5854,7 @@ export class Client {
             });
     }
 
-    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6> {
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous7> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -5731,7 +5869,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous6>(result200);
+            return Promise.resolve<Anonymous7>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -5825,7 +5963,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous6>(null as any);
+        return Promise.resolve<Anonymous7>(null as any);
     }
 
     /**
@@ -5837,7 +5975,7 @@ export class Client {
         id: number,
         body: Body13,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous7> {
+    ): Promise<Anonymous8> {
         let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -5871,7 +6009,7 @@ export class Client {
             });
     }
 
-    protected processUserEdit(response: AxiosResponse): Promise<Anonymous7> {
+    protected processUserEdit(response: AxiosResponse): Promise<Anonymous8> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -5886,7 +6024,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous7>(result200);
+            return Promise.resolve<Anonymous8>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -5980,7 +6118,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous7>(null as any);
+        return Promise.resolve<Anonymous8>(null as any);
     }
 
     /**
@@ -5988,7 +6126,7 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous8> {
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous9> {
         let url_ = this.baseUrl + "/users/{id}/name";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -6018,7 +6156,7 @@ export class Client {
             });
     }
 
-    protected processUserName(response: AxiosResponse): Promise<Anonymous8> {
+    protected processUserName(response: AxiosResponse): Promise<Anonymous9> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6033,7 +6171,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous8>(result200);
+            return Promise.resolve<Anonymous9>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -6127,7 +6265,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous8>(null as any);
+        return Promise.resolve<Anonymous9>(null as any);
     }
 
     /**
@@ -9509,7 +9647,7 @@ export class Client {
         id: string,
         body: Body23,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous9> {
+    ): Promise<Anonymous10> {
         let url_ = this.baseUrl + "/auth/sessions/{id}/refresh";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -9543,7 +9681,7 @@ export class Client {
             });
     }
 
-    protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous9> {
+    protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous10> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -9558,7 +9696,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous9>(result200);
+            return Promise.resolve<Anonymous10>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -9652,7 +9790,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous9>(null as any);
+        return Promise.resolve<Anonymous10>(null as any);
     }
 
     /**
@@ -10094,7 +10232,7 @@ export class Client {
     serverInviteCodesGenerate(
         body?: Body25,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous10> {
+    ): Promise<Anonymous11> {
         let url_ = this.baseUrl + "/server/invitecodes/generate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -10127,7 +10265,7 @@ export class Client {
 
     protected processServerInviteCodesGenerate(
         response: AxiosResponse
-    ): Promise<Anonymous10> {
+    ): Promise<Anonymous11> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -10142,7 +10280,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous10>(result200);
+            return Promise.resolve<Anonymous11>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -10212,7 +10350,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous10>(null as any);
+        return Promise.resolve<Anonymous11>(null as any);
     }
 
     /**
@@ -10487,15 +10625,28 @@ export class Client {
     }
 
     /**
-     * Get game info
-     * @param id game id
+     * Get game list
+     * @param page (optional) Page number for pagination (optional, default: 1)
+     * @param sort (optional) Sort order for the games (optional, default: latest)
+     * @param limit (optional) Maximum number of games per page (optional, default: 25)
      * @return Success
      */
-    games(id: string, cancelToken?: CancelToken | undefined): Promise<GuessGame> {
-        let url_ = this.baseUrl + "/games/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+    games(
+        page?: number,
+        sort?: Sort5,
+        limit?: number,
+        cancelToken?: CancelToken | undefined
+    ): Promise<Game[]> {
+        let url_ = this.baseUrl + "/games?";
+        if (page === null) throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (sort === null) throw new Error("The parameter 'sort' cannot be null.");
+        else if (sort !== undefined)
+            url_ += "sort=" + encodeURIComponent("" + sort) + "&";
+        if (limit === null) throw new Error("The parameter 'limit' cannot be null.");
+        else if (limit !== undefined)
+            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -10521,7 +10672,7 @@ export class Client {
             });
     }
 
-    protected processGames(response: AxiosResponse): Promise<GuessGame> {
+    protected processGames(response: AxiosResponse): Promise<Game[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -10536,7 +10687,130 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<GuessGame>(result200);
+            return Promise.resolve<Game[]>(result200);
+        } else if (status === 400) {
+            const _responseText = response.data;
+            let result400: any = null;
+            let resultData400 = _responseText;
+            result400 = JSON.parse(resultData400);
+            return throwException(
+                "Invalid request",
+                status,
+                _responseText,
+                _headers,
+                result400
+            );
+        } else if (status === 403) {
+            const _responseText = response.data;
+            let result403: any = null;
+            let resultData403 = _responseText;
+            result403 = JSON.parse(resultData403);
+            return throwException(
+                "Forbidden: permission denied or user banned by an admin",
+                status,
+                _responseText,
+                _headers,
+                result403
+            );
+        } else if (status === 429) {
+            const _responseText = response.data;
+            let result429: any = null;
+            let resultData429 = _responseText;
+            result429 = JSON.parse(resultData429);
+            return throwException(
+                "Too many requests",
+                status,
+                _responseText,
+                _headers,
+                result429
+            );
+        } else if (status === 500) {
+            const _responseText = response.data;
+            let result500: any = null;
+            let resultData500 = _responseText;
+            result500 = JSON.parse(resultData500);
+            return throwException(
+                "Internal server error",
+                status,
+                _responseText,
+                _headers,
+                result500
+            );
+        } else if (status === 502) {
+            const _responseText = response.data;
+            let result502: any = null;
+            let resultData502 = _responseText;
+            result502 = JSON.parse(resultData502);
+            return throwException(
+                "Bad gateway",
+                status,
+                _responseText,
+                _headers,
+                result502
+            );
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException(
+                "An unexpected server error occurred.",
+                status,
+                _responseText,
+                _headers
+            );
+        }
+        return Promise.resolve<Game[]>(null as any);
+    }
+
+    /**
+     * Get game info
+     * @param id game id
+     * @return Success
+     */
+    game(id: string, cancelToken?: CancelToken | undefined): Promise<Game> {
+        let url_ = this.baseUrl + "/games/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                Accept: "application/json",
+            },
+            cancelToken,
+        };
+
+        return this.instance
+            .request(options_)
+            .catch((_error: any) => {
+                if (isAxiosError(_error) && _error.response) {
+                    return _error.response;
+                } else {
+                    throw _error;
+                }
+            })
+            .then((_response: AxiosResponse) => {
+                return this.processGame(_response);
+            });
+    }
+
+    protected processGame(response: AxiosResponse): Promise<Game> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200 = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<Game>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -10606,7 +10880,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<GuessGame>(null as any);
+        return Promise.resolve<Game>(null as any);
     }
 
     /**
@@ -10616,7 +10890,7 @@ export class Client {
     gamesGuessCreate(
         body: Body26,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous11> {
+    ): Promise<Anonymous12> {
         let url_ = this.baseUrl + "/games/guess";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -10647,7 +10921,7 @@ export class Client {
             });
     }
 
-    protected processGamesGuessCreate(response: AxiosResponse): Promise<Anonymous11> {
+    protected processGamesGuessCreate(response: AxiosResponse): Promise<Anonymous12> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -10662,7 +10936,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous11>(result200);
+            return Promise.resolve<Anonymous12>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -10732,7 +11006,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous11>(null as any);
+        return Promise.resolve<Anonymous12>(null as any);
     }
 
     /**
@@ -11274,6 +11548,7 @@ export interface GuessGame {
     id: string;
     host: User;
     createdAt: string;
+    lastModified: string;
     endedAt?: string;
     type: GuessGameType;
     title: string;
@@ -11283,12 +11558,26 @@ export interface GuessGame {
     answer?: number[];
 }
 
+export interface Game extends GuessGame {
+    id: string;
+    host: User;
+    createdAt: string;
+    lastModified: string;
+    endedAt?: string;
+    type: GameType;
+}
+
+export function isGame(object: any): object is Game {
+    return object && object[""] === "Game";
+}
+
 export interface GuessGameOption {
     text: string;
     /** odds of the option */
     odds?: number;
     /** number of tokens betting the option */
     tokens?: number;
+    date?: string;
 }
 
 export interface Body {
@@ -11452,6 +11741,8 @@ export interface Body25 {
     description?: string;
 }
 
+export type Sort5 = "latest" | "oldest" | "popular";
+
 export interface Body26 {
     title: string;
     options: string[];
@@ -11491,7 +11782,14 @@ export interface Anonymous5 {
     vote: Vote;
 }
 
-export interface Anonymous6 extends User {
+export interface Anonymous6 {
+    user: User;
+    tokens: number;
+    option: number;
+    date: string;
+}
+
+export interface Anonymous7 extends User {
     /** Number of threads created by user */
     count: number;
     /** Date and time when user was created */
@@ -11499,28 +11797,28 @@ export interface Anonymous6 extends User {
     games?: Games;
 }
 
-export function isAnonymous6(object: any): object is Anonymous6 {
-    return object && object[""] === "Anonymous6";
-}
-
-export interface Anonymous7 {
-    token: string;
+export function isAnonymous7(object: any): object is Anonymous7 {
+    return object && object[""] === "Anonymous7";
 }
 
 export interface Anonymous8 {
-    name: string;
+    token: string;
 }
 
 export interface Anonymous9 {
+    name: string;
+}
+
+export interface Anonymous10 {
     token: string;
     refreshToken: string;
 }
 
-export interface Anonymous10 {
+export interface Anonymous11 {
     code: string;
 }
 
-export interface Anonymous11 {
+export interface Anonymous12 {
     id: string;
 }
 
@@ -11600,6 +11898,8 @@ export interface Captcha {
     siteKey: string;
 }
 
+export type GameType = "guess";
+
 export type GuessGameType = "guess";
 
 export interface Keys {
@@ -11610,7 +11910,7 @@ export interface Keys {
 }
 
 export interface Games {
-    guess?: Guess;
+    tokens: number;
 }
 
 export interface Data {
@@ -11623,10 +11923,6 @@ export interface Data {
 }
 
 export type CaptchaType = "recaptcha" | "turnstile";
-
-export interface Guess {
-    tokens: number;
-}
 
 export type DataType = "thread" | "comment" | "reply" | "emotion" | "votes";
 
