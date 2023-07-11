@@ -7,7 +7,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApiException = exports.isConversation = exports.isQuote = exports.isAnonymous7 = exports.isGame = exports.isBlockedUser = exports.isFollowedUser = exports.isLoginSuccess = exports.Client = void 0;
+exports.ApiException = exports.isConversation = exports.isQuote = exports.isAnonymous6 = exports.isGame = exports.isBlockedUser = exports.isFollowedUser = exports.isLoginSuccess = exports.Client = void 0;
 /* tslint:disable */
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
@@ -7492,9 +7492,10 @@ class Client {
      * @param page (optional) Page number for pagination (optional, default: 1)
      * @param sort (optional) Sort order for the games (optional, default: latest)
      * @param limit (optional) Maximum number of games per page (optional, default: 25)
+     * @param type (optional) type of game
      * @return Success
      */
-    games(page, sort, limit, cancelToken) {
+    games(page, sort, limit, type, cancelToken) {
         let url_ = this.baseUrl + "/games?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -7508,6 +7509,10 @@ class Client {
             throw new Error("The parameter 'limit' cannot be null.");
         else if (limit !== undefined)
             url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+        if (type === null)
+            throw new Error("The parameter 'type' cannot be null.");
+        else if (type !== undefined)
+            url_ += "type=" + encodeURIComponent("" + type) + "&";
         url_ = url_.replace(/[?&]$/, "");
         let options_ = {
             method: "GET",
@@ -7989,10 +7994,10 @@ function isGame(object) {
     return object && object[""] === "Game";
 }
 exports.isGame = isGame;
-function isAnonymous7(object) {
-    return object && object[""] === "Anonymous7";
+function isAnonymous6(object) {
+    return object && object[""] === "Anonymous6";
 }
-exports.isAnonymous7 = isAnonymous7;
+exports.isAnonymous6 = isAnonymous6;
 function isQuote(object) {
     return object && object[""] === "Quote";
 }

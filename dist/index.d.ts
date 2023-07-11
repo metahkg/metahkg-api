@@ -240,8 +240,8 @@ export declare class Client {
      * @param id game id
      * @return Success
      */
-    meGamesGuess(id: string, cancelToken?: CancelToken | undefined): Promise<Anonymous6[]>;
-    protected processMeGamesGuess(response: AxiosResponse): Promise<Anonymous6[]>;
+    meGamesGuess(id: string, cancelToken?: CancelToken | undefined): Promise<UserGuess[]>;
+    protected processMeGamesGuess(response: AxiosResponse): Promise<UserGuess[]>;
     /**
      * Get categories
      * @return Success
@@ -290,22 +290,22 @@ export declare class Client {
      * @param id user id
      * @return Success
      */
-    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
-    protected processUserProfile(response: AxiosResponse): Promise<Anonymous7>;
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6>;
     /**
      * Edit user info
      * @param id user id
      * @return Success
      */
-    userEdit(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<Anonymous8>;
-    protected processUserEdit(response: AxiosResponse): Promise<Anonymous8>;
+    userEdit(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
+    protected processUserEdit(response: AxiosResponse): Promise<Anonymous7>;
     /**
      * Get user name
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
-    protected processUserName(response: AxiosResponse): Promise<Anonymous9>;
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous8>;
+    protected processUserName(response: AxiosResponse): Promise<Anonymous8>;
     /**
      * Get user avatar
      * @param id user id
@@ -467,8 +467,8 @@ export declare class Client {
      * @param id session id
      * @return Success
      */
-    authSessionRefresh(id: string, body: Body23, cancelToken?: CancelToken | undefined): Promise<Anonymous10>;
-    protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous10>;
+    authSessionRefresh(id: string, body: Body23, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
+    protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous9>;
     /**
      * Get server config
      * @return Success
@@ -498,8 +498,8 @@ export declare class Client {
      * @param body (optional)
      * @return Success
      */
-    serverInviteCodesGenerate(body?: Body25, cancelToken?: CancelToken | undefined): Promise<Anonymous11>;
-    protected processServerInviteCodesGenerate(response: AxiosResponse): Promise<Anonymous11>;
+    serverInviteCodesGenerate(body?: Body25, cancelToken?: CancelToken | undefined): Promise<Anonymous10>;
+    protected processServerInviteCodesGenerate(response: AxiosResponse): Promise<Anonymous10>;
     /**
      * Get invite code info
      * @param code invite code
@@ -519,9 +519,10 @@ export declare class Client {
      * @param page (optional) Page number for pagination (optional, default: 1)
      * @param sort (optional) Sort order for the games (optional, default: latest)
      * @param limit (optional) Maximum number of games per page (optional, default: 25)
+     * @param type (optional) type of game
      * @return Success
      */
-    games(page?: number, sort?: Sort5, limit?: number, cancelToken?: CancelToken | undefined): Promise<Game[]>;
+    games(page?: number, sort?: Sort5, limit?: number, type?: Type, cancelToken?: CancelToken | undefined): Promise<Game[]>;
     protected processGames(response: AxiosResponse): Promise<Game[]>;
     /**
      * Get game info
@@ -534,8 +535,8 @@ export declare class Client {
      * Create a guess game
      * @return Success
      */
-    gamesGuessCreate(body: Body26, cancelToken?: CancelToken | undefined): Promise<Anonymous12>;
-    protected processGamesGuessCreate(response: AxiosResponse): Promise<Anonymous12>;
+    gamesGuessCreate(body: Body26, cancelToken?: CancelToken | undefined): Promise<Anonymous11>;
+    protected processGamesGuessCreate(response: AxiosResponse): Promise<Anonymous11>;
     /**
      * Make a guess (bet)
      * @param id game id
@@ -764,9 +765,9 @@ export interface ServerConfig {
 export interface GuessGame {
     id: string;
     host: User;
-    createdAt: string;
-    lastModified: string;
-    endedAt?: string;
+    createdAt: Date;
+    lastModified: Date;
+    endedAt?: Date;
     type: GuessGameType;
     title: string;
     options: GuessGameOption[];
@@ -777,9 +778,9 @@ export interface GuessGame {
 export interface Game extends GuessGame {
     id: string;
     host: User;
-    createdAt: string;
-    lastModified: string;
-    endedAt?: string;
+    createdAt: Date;
+    lastModified: Date;
+    endedAt?: Date;
     type: GameType;
 }
 export declare function isGame(object: any): object is Game;
@@ -789,7 +790,13 @@ export interface GuessGameOption {
     odds?: number;
     /** number of tokens betting the option */
     tokens?: number;
-    date?: string;
+    date?: Date;
+}
+export interface UserGuess {
+    user: User;
+    tokens: number;
+    option: number;
+    date: Date;
 }
 export interface Body {
     title: string;
@@ -923,6 +930,7 @@ export interface Body25 {
     description?: string;
 }
 export declare type Sort5 = "latest" | "oldest" | "popular";
+export declare type Type = "guess";
 export interface Body26 {
     title: string;
     options: string[];
@@ -954,34 +962,28 @@ export interface Anonymous5 {
     cid: number;
     vote: Vote;
 }
-export interface Anonymous6 {
-    user: User;
-    tokens: number;
-    option: number;
-    date: string;
-}
-export interface Anonymous7 extends User {
+export interface Anonymous6 extends User {
     /** Number of threads created by user */
     count: number;
     /** Date and time when user was created */
     createdAt: Date;
     games?: Games;
 }
-export declare function isAnonymous7(object: any): object is Anonymous7;
-export interface Anonymous8 {
+export declare function isAnonymous6(object: any): object is Anonymous6;
+export interface Anonymous7 {
     token: string;
 }
-export interface Anonymous9 {
+export interface Anonymous8 {
     name: string;
 }
-export interface Anonymous10 {
+export interface Anonymous9 {
     token: string;
     refreshToken: string;
 }
-export interface Anonymous11 {
+export interface Anonymous10 {
     code: string;
 }
-export interface Anonymous12 {
+export interface Anonymous11 {
     id: string;
 }
 export interface Options {

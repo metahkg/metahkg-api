@@ -4834,7 +4834,7 @@ export class Client {
     meGamesGuess(
         id: string,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous6[]> {
+    ): Promise<UserGuess[]> {
         let url_ = this.baseUrl + "/me/games/guess/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -4864,7 +4864,7 @@ export class Client {
             });
     }
 
-    protected processMeGamesGuess(response: AxiosResponse): Promise<Anonymous6[]> {
+    protected processMeGamesGuess(response: AxiosResponse): Promise<UserGuess[]> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -4879,7 +4879,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous6[]>(result200);
+            return Promise.resolve<UserGuess[]>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -4961,7 +4961,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous6[]>(null as any);
+        return Promise.resolve<UserGuess[]>(null as any);
     }
 
     /**
@@ -5824,7 +5824,7 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7> {
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6> {
         let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -5854,7 +5854,7 @@ export class Client {
             });
     }
 
-    protected processUserProfile(response: AxiosResponse): Promise<Anonymous7> {
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -5869,7 +5869,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous7>(result200);
+            return Promise.resolve<Anonymous6>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -5963,7 +5963,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous7>(null as any);
+        return Promise.resolve<Anonymous6>(null as any);
     }
 
     /**
@@ -5975,7 +5975,7 @@ export class Client {
         id: number,
         body: Body13,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous8> {
+    ): Promise<Anonymous7> {
         let url_ = this.baseUrl + "/users/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -6009,7 +6009,7 @@ export class Client {
             });
     }
 
-    protected processUserEdit(response: AxiosResponse): Promise<Anonymous8> {
+    protected processUserEdit(response: AxiosResponse): Promise<Anonymous7> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6024,7 +6024,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous8>(result200);
+            return Promise.resolve<Anonymous7>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -6118,7 +6118,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous8>(null as any);
+        return Promise.resolve<Anonymous7>(null as any);
     }
 
     /**
@@ -6126,7 +6126,7 @@ export class Client {
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous9> {
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous8> {
         let url_ = this.baseUrl + "/users/{id}/name";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -6156,7 +6156,7 @@ export class Client {
             });
     }
 
-    protected processUserName(response: AxiosResponse): Promise<Anonymous9> {
+    protected processUserName(response: AxiosResponse): Promise<Anonymous8> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -6171,7 +6171,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous9>(result200);
+            return Promise.resolve<Anonymous8>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -6265,7 +6265,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous9>(null as any);
+        return Promise.resolve<Anonymous8>(null as any);
     }
 
     /**
@@ -9647,7 +9647,7 @@ export class Client {
         id: string,
         body: Body23,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous10> {
+    ): Promise<Anonymous9> {
         let url_ = this.baseUrl + "/auth/sessions/{id}/refresh";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -9681,7 +9681,7 @@ export class Client {
             });
     }
 
-    protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous10> {
+    protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous9> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -9696,7 +9696,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous10>(result200);
+            return Promise.resolve<Anonymous9>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -9790,7 +9790,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous10>(null as any);
+        return Promise.resolve<Anonymous9>(null as any);
     }
 
     /**
@@ -10232,7 +10232,7 @@ export class Client {
     serverInviteCodesGenerate(
         body?: Body25,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous11> {
+    ): Promise<Anonymous10> {
         let url_ = this.baseUrl + "/server/invitecodes/generate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -10265,7 +10265,7 @@ export class Client {
 
     protected processServerInviteCodesGenerate(
         response: AxiosResponse
-    ): Promise<Anonymous11> {
+    ): Promise<Anonymous10> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -10280,7 +10280,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous11>(result200);
+            return Promise.resolve<Anonymous10>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -10350,7 +10350,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous11>(null as any);
+        return Promise.resolve<Anonymous10>(null as any);
     }
 
     /**
@@ -10629,12 +10629,14 @@ export class Client {
      * @param page (optional) Page number for pagination (optional, default: 1)
      * @param sort (optional) Sort order for the games (optional, default: latest)
      * @param limit (optional) Maximum number of games per page (optional, default: 25)
+     * @param type (optional) type of game
      * @return Success
      */
     games(
         page?: number,
         sort?: Sort5,
         limit?: number,
+        type?: Type,
         cancelToken?: CancelToken | undefined
     ): Promise<Game[]> {
         let url_ = this.baseUrl + "/games?";
@@ -10647,6 +10649,9 @@ export class Client {
         if (limit === null) throw new Error("The parameter 'limit' cannot be null.");
         else if (limit !== undefined)
             url_ += "limit=" + encodeURIComponent("" + limit) + "&";
+        if (type === null) throw new Error("The parameter 'type' cannot be null.");
+        else if (type !== undefined)
+            url_ += "type=" + encodeURIComponent("" + type) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -10890,7 +10895,7 @@ export class Client {
     gamesGuessCreate(
         body: Body26,
         cancelToken?: CancelToken | undefined
-    ): Promise<Anonymous12> {
+    ): Promise<Anonymous11> {
         let url_ = this.baseUrl + "/games/guess";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -10921,7 +10926,7 @@ export class Client {
             });
     }
 
-    protected processGamesGuessCreate(response: AxiosResponse): Promise<Anonymous12> {
+    protected processGamesGuessCreate(response: AxiosResponse): Promise<Anonymous11> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -10936,7 +10941,7 @@ export class Client {
             let result200: any = null;
             let resultData200 = _responseText;
             result200 = JSON.parse(resultData200);
-            return Promise.resolve<Anonymous12>(result200);
+            return Promise.resolve<Anonymous11>(result200);
         } else if (status === 400) {
             const _responseText = response.data;
             let result400: any = null;
@@ -11006,7 +11011,7 @@ export class Client {
                 _headers
             );
         }
-        return Promise.resolve<Anonymous12>(null as any);
+        return Promise.resolve<Anonymous11>(null as any);
     }
 
     /**
@@ -11547,9 +11552,9 @@ export interface ServerConfig {
 export interface GuessGame {
     id: string;
     host: User;
-    createdAt: string;
-    lastModified: string;
-    endedAt?: string;
+    createdAt: Date;
+    lastModified: Date;
+    endedAt?: Date;
     type: GuessGameType;
     title: string;
     options: GuessGameOption[];
@@ -11561,9 +11566,9 @@ export interface GuessGame {
 export interface Game extends GuessGame {
     id: string;
     host: User;
-    createdAt: string;
-    lastModified: string;
-    endedAt?: string;
+    createdAt: Date;
+    lastModified: Date;
+    endedAt?: Date;
     type: GameType;
 }
 
@@ -11577,7 +11582,14 @@ export interface GuessGameOption {
     odds?: number;
     /** number of tokens betting the option */
     tokens?: number;
-    date?: string;
+    date?: Date;
+}
+
+export interface UserGuess {
+    user: User;
+    tokens: number;
+    option: number;
+    date: Date;
 }
 
 export interface Body {
@@ -11743,6 +11755,8 @@ export interface Body25 {
 
 export type Sort5 = "latest" | "oldest" | "popular";
 
+export type Type = "guess";
+
 export interface Body26 {
     title: string;
     options: string[];
@@ -11782,14 +11796,7 @@ export interface Anonymous5 {
     vote: Vote;
 }
 
-export interface Anonymous6 {
-    user: User;
-    tokens: number;
-    option: number;
-    date: string;
-}
-
-export interface Anonymous7 extends User {
+export interface Anonymous6 extends User {
     /** Number of threads created by user */
     count: number;
     /** Date and time when user was created */
@@ -11797,28 +11804,28 @@ export interface Anonymous7 extends User {
     games?: Games;
 }
 
-export function isAnonymous7(object: any): object is Anonymous7 {
-    return object && object[""] === "Anonymous7";
+export function isAnonymous6(object: any): object is Anonymous6 {
+    return object && object[""] === "Anonymous6";
 }
 
-export interface Anonymous8 {
+export interface Anonymous7 {
     token: string;
 }
 
-export interface Anonymous9 {
+export interface Anonymous8 {
     name: string;
 }
 
-export interface Anonymous10 {
+export interface Anonymous9 {
     token: string;
     refreshToken: string;
 }
 
-export interface Anonymous11 {
+export interface Anonymous10 {
     code: string;
 }
 
-export interface Anonymous12 {
+export interface Anonymous11 {
     id: string;
 }
 
