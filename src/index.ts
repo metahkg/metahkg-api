@@ -11770,7 +11770,7 @@ export interface Body27 {
 }
 
 export interface Body28 {
-    answer: number;
+    answer: number[];
 }
 
 export interface Anonymous {

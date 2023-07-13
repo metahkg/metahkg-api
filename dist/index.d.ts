@@ -942,7 +942,7 @@ export interface Body27 {
     tokens: number;
 }
 export interface Body28 {
-    answer: number;
+    answer: number[];
 }
 export interface Anonymous {
     id: number;
