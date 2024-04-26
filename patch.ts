@@ -16,7 +16,7 @@ file = file.replace(
     'threads && threads.forEach(item => { url_ += "threads=" + encodeURIComponent("" + item) + "&"; });',
     'url_ += "threads=" + JSON.stringify(threads) + "&";'
 );
-file = file.concat(`export type CommentContent = HTMLComment | GameComment`);
+file = file.concat(`export type CommentContent = HTMLComment | PollComment`);
 file = file.replace(/Comment2/g, "CommentContent");
 file = file.replace("export interface HTMLComment {", 'export interface HTMLComment { type: HTMLCommentType, html: string ')
 
