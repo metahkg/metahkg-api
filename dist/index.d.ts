@@ -236,12 +236,12 @@ export declare class Client {
     meVotesThread(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous5[]>;
     protected processMeVotesThread(response: AxiosResponse): Promise<Anonymous5[]>;
     /**
-     * Get user's bets
-     * @param id game id
+     * Get user's vote
+     * @param id poll id
      * @return Success
      */
-    meGamesGuess(id: string, cancelToken?: CancelToken | undefined): Promise<UserGuess[]>;
-    protected processMeGamesGuess(response: AxiosResponse): Promise<UserGuess[]>;
+    mePollsVote(id: string, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
+    protected processMePollsVote(response: AxiosResponse): Promise<Anonymous6>;
     /**
      * Get categories
      * @return Success
@@ -290,22 +290,22 @@ export declare class Client {
      * @param id user id
      * @return Success
      */
-    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous6>;
-    protected processUserProfile(response: AxiosResponse): Promise<Anonymous6>;
+    userProfile(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
+    protected processUserProfile(response: AxiosResponse): Promise<Anonymous7>;
     /**
      * Edit user info
      * @param id user id
      * @return Success
      */
-    userEdit(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<Anonymous7>;
-    protected processUserEdit(response: AxiosResponse): Promise<Anonymous7>;
+    userEdit(id: number, body: Body13, cancelToken?: CancelToken | undefined): Promise<Anonymous8>;
+    protected processUserEdit(response: AxiosResponse): Promise<Anonymous8>;
     /**
      * Get user name
      * @param id user id
      * @return Success
      */
-    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous8>;
-    protected processUserName(response: AxiosResponse): Promise<Anonymous8>;
+    userName(id: number, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
+    protected processUserName(response: AxiosResponse): Promise<Anonymous9>;
     /**
      * Get user avatar
      * @param id user id
@@ -467,8 +467,8 @@ export declare class Client {
      * @param id session id
      * @return Success
      */
-    authSessionRefresh(id: string, body: Body23, cancelToken?: CancelToken | undefined): Promise<Anonymous9>;
-    protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous9>;
+    authSessionRefresh(id: string, body: Body23, cancelToken?: CancelToken | undefined): Promise<Anonymous10>;
+    protected processAuthSessionRefresh(response: AxiosResponse): Promise<Anonymous10>;
     /**
      * Get server config
      * @return Success
@@ -498,8 +498,8 @@ export declare class Client {
      * @param body (optional)
      * @return Success
      */
-    serverInviteCodesGenerate(body?: Body25, cancelToken?: CancelToken | undefined): Promise<Anonymous10>;
-    protected processServerInviteCodesGenerate(response: AxiosResponse): Promise<Anonymous10>;
+    serverInviteCodesGenerate(body?: Body25, cancelToken?: CancelToken | undefined): Promise<Anonymous11>;
+    protected processServerInviteCodesGenerate(response: AxiosResponse): Promise<Anonymous11>;
     /**
      * Get invite code info
      * @param code invite code
@@ -515,42 +515,25 @@ export declare class Client {
     serverInviteCodesDelete(code: string, cancelToken?: CancelToken | undefined): Promise<void>;
     protected processServerInviteCodesDelete(response: AxiosResponse): Promise<void>;
     /**
-     * Get game list
-     * @param page (optional) Page number for pagination (optional, default: 1)
-     * @param sort (optional) Sort order for the games (optional, default: latest)
-     * @param limit (optional) Maximum number of games per page (optional, default: 25)
-     * @param type (optional) type of game
+     * Get poll info
+     * @param id poll id
      * @return Success
      */
-    games(page?: number, sort?: Sort5, limit?: number, type?: Type, cancelToken?: CancelToken | undefined): Promise<Game[]>;
-    protected processGames(response: AxiosResponse): Promise<Game[]>;
+    pollsInfo(id: string, cancelToken?: CancelToken | undefined): Promise<Poll>;
+    protected processPollsInfo(response: AxiosResponse): Promise<Poll>;
     /**
-     * Get game info
-     * @param id game id
+     * Create a poll
      * @return Success
      */
-    game(id: string, cancelToken?: CancelToken | undefined): Promise<Game>;
-    protected processGame(response: AxiosResponse): Promise<Game>;
+    pollsCreate(body: Body26, cancelToken?: CancelToken | undefined): Promise<Anonymous12>;
+    protected processPollsCreate(response: AxiosResponse): Promise<Anonymous12>;
     /**
-     * Create a guess game
+     * Make a vote
+     * @param id poll id
      * @return Success
      */
-    gamesGuessCreate(body: Body26, cancelToken?: CancelToken | undefined): Promise<Anonymous11>;
-    protected processGamesGuessCreate(response: AxiosResponse): Promise<Anonymous11>;
-    /**
-     * Make a guess (bet)
-     * @param id game id
-     * @return Success
-     */
-    gamesGuessGuess(id: string, body: Body27, cancelToken?: CancelToken | undefined): Promise<void>;
-    protected processGamesGuessGuess(response: AxiosResponse): Promise<void>;
-    /**
-     * Release answer
-     * @param id game id
-     * @return Success
-     */
-    gamesGuessAnswer(id: string, body: Body28, cancelToken?: CancelToken | undefined): Promise<void>;
-    protected processGamesGuessAnswer(response: AxiosResponse): Promise<void>;
+    pollsVote(id: string, body: Body27, cancelToken?: CancelToken | undefined): Promise<void>;
+    protected processPollsVote(response: AxiosResponse): Promise<void>;
 }
 export interface Session {
     /** 60-digit random session id */
@@ -659,9 +642,8 @@ export interface HTMLComment {
     type: HTMLCommentType;
     html: string;
 }
-export interface GameComment {
-    type: GameCommentType;
-    gameId: string;
+export interface PollComment {
+    pollId: string;
 }
 /** Comment object */
 export interface Comment {
@@ -762,39 +744,21 @@ export interface ServerConfig {
     /** the branding to replace Metahkg */
     branding?: string;
 }
-export interface GuessGame {
+export interface Poll {
     id: string;
-    host: User;
-    createdAt: Date;
-    lastModified: Date;
-    endedAt?: Date;
-    type: GuessGameType;
-    title: string;
-    options: GuessGameOption[];
-    /** total number of tokens (pool) */
-    tokens?: number;
-    answer?: number[];
-}
-export interface Game extends GuessGame {
-    id: string;
-    host: User;
-    createdAt: Date;
-    lastModified: Date;
-    endedAt?: Date;
-    type: GameType;
-}
-export declare function isGame(object: any): object is Game;
-export interface GuessGameOption {
-    text: string;
-    /** odds of the option */
-    odds?: number;
-    /** number of tokens betting the option */
-    tokens?: number;
-    date?: Date;
-}
-export interface UserGuess {
     user: User;
-    tokens: number;
+    createdAt: Date;
+    lastModified: Date;
+    endsAt?: Date;
+    title: string;
+    options: PollOption[];
+}
+export interface PollOption {
+    text: string;
+    votes: number;
+}
+export interface UserVote {
+    user: User;
     option: number;
     date: Date;
 }
@@ -929,20 +893,14 @@ export interface Body24 {
 export interface Body25 {
     description?: string;
 }
-export declare type Sort5 = "latest" | "oldest" | "popular";
-export declare type Type = "guess";
 export interface Body26 {
     title: string;
     options: string[];
+    endsAt?: Date;
 }
 export interface Body27 {
     /** index of option */
     option: number;
-    /** number of tokens to bet */
-    tokens: number;
-}
-export interface Body28 {
-    answer: number[];
 }
 export interface Anonymous {
     id: number;
@@ -962,28 +920,30 @@ export interface Anonymous5 {
     cid: number;
     vote: Vote;
 }
-export interface Anonymous6 extends User {
+export interface Anonymous6 {
+    vote: number;
+}
+export interface Anonymous7 extends User {
     /** Number of threads created by user */
     count: number;
     /** Date and time when user was created */
     createdAt: Date;
-    games?: Games;
 }
-export declare function isAnonymous6(object: any): object is Anonymous6;
-export interface Anonymous7 {
+export declare function isAnonymous7(object: any): object is Anonymous7;
+export interface Anonymous8 {
     token: string;
 }
-export interface Anonymous8 {
+export interface Anonymous9 {
     name: string;
 }
-export interface Anonymous9 {
+export interface Anonymous10 {
     token: string;
     refreshToken: string;
 }
-export interface Anonymous10 {
+export interface Anonymous11 {
     code: string;
 }
-export interface Anonymous11 {
+export interface Anonymous12 {
     id: string;
 }
 export interface Options {
@@ -1006,7 +966,6 @@ export interface Replies {
     date: Date;
 }
 export declare type HTMLCommentType = "html";
-export declare type GameCommentType = "game";
 export interface Images {
     src: string;
     signature: string;
@@ -1043,16 +1002,11 @@ export interface Captcha {
     /** the corresponding site key */
     siteKey: string;
 }
-export declare type GameType = "guess";
-export declare type GuessGameType = "guess";
 export interface Keys {
     /** auth key */
     auth: string;
     /** p256dh key */
     p256dh: string;
-}
-export interface Games {
-    tokens: number;
 }
 export interface Data {
     /** type of the notification */
@@ -1090,4 +1044,4 @@ export declare class ApiException extends Error {
     protected isApiException: boolean;
     static isApiException(obj: any): obj is ApiException;
 }
-export declare type CommentContent = HTMLComment | GameComment;
+export declare type CommentContent = HTMLComment | PollComment;
